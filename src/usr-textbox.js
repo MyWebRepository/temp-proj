@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 
 /**
  * `usr-textbox`
@@ -9,6 +9,16 @@ import { LitElement, html } from 'lit-element';
  * @demo demo/index.html
  */
 class UsrTextbox extends LitElement {
+  static get styles() {
+    return [ 
+      css`:host { display: inline-block; border: solid 1px gray; }`,
+      css`::slotted(*) { visibility: visible !important; }`,
+      css`input { border-style: none; }`,
+      css`.container { display: flex; flex-direction: row; }`,
+      css`.slot-container { align-self: center; padding: 0 0 0 0.2em; }`
+    ];
+  }
+
   static get properties() {
     return {
       value: {type: String, reflect: true},
@@ -31,21 +41,8 @@ class UsrTextbox extends LitElement {
   /*connectedCallback() { 
   }*/
 
-  /*createRenderRoot() {
-    this.attachShadow({mode: "open"});
-    return this;
-  }*/
-
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
-
-    /*if (name == 'value') {
-      let inputElement = this.shadowRoot.querySelector('input');
-
-      if (inputElement != null) {
-        this.shadowRoot.querySelector('input').value = this.value;
-      }
-    }*/
   }
 
   get inputHTML() {
@@ -66,26 +63,6 @@ class UsrTextbox extends LitElement {
 
   render () {
     return html`
-      <style>
-        :host {
-          display: inline-block;
-          border: solid 1px gray;
-        }
-        ::slotted(*) {
-          visibility: visible !important;
-        }
-        input {
-          border-style: none;
-        }
-        .container {
-          display: flex;
-          flex-direction: row;
-        }
-        .slot-container {
-          align-self: center;
-          padding: 0 0 0 0.2em;
-        }
-      </style>
       <div class="container">
         <div class="slot-container"><slot></slot></div>
         <div>${this.inputHTML}</div>
