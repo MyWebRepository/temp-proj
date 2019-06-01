@@ -12,18 +12,18 @@ class UsrTextbox extends LitElement {
   static get styles() {
     return [ 
       css`:host { display: inline-block; border: solid 1px gray; }`,
-      css`::slotted(*) { visibility: visible !important; }`,
-      css`input { border-style: none; }`,
-      css`.container { display: flex; flex-direction: row; }`,
+      css`::slotted(span) { visibility: visible !important; font-size: var(--usr-icon-font-size, 14px) }`,
+      css`input { border-style: none; outline: 0px; font-size: var(--usr-text-font-size, 14px) }`,
+      css`.container { display: flex; flex-direction: row; overflow: hidden; }`,
       css`.slot-container { align-self: center; padding: 0 0 0 0.2em; }`
     ];
   }
 
   static get properties() {
     return {
-      value: {type: String, reflect: true},
-      readonly: {type: Boolean},
-      disabled: {type: Boolean}
+      value: { type: String, reflect: true },
+      readonly: { type: Boolean },
+      disabled: { type: Boolean }
     };
   }
 
