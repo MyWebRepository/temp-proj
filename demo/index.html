@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>usr-textbox demo</title>
+
+    <style>
+      .usr-textbox {
+        font-size: 30px;
+      }
+    </style>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <script type="module">
+      //import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+      //import '@polymer/iron-demo-helpers/demo-snippet';
+    </script>
+
+    <script type="module" src="../src/usr-textbox.js"></script>
+
+    <!--custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>-->
+  </head>
+  <body>
+    <div>
+        <usr-textbox value="12345" disabled="false">
+          <span style="visibility:hidden">$</span>
+        </usr-textbox>
+        <!--<usr-textbox value="12345" readonly="true">
+          <span style="visibility:hidden">$$</span>
+        </usr-textbox>
+        <usr-textbox value="12345">
+          <span style="visibility:hidden">$$$</span>
+        </usr-textbox>
+        <usr-textbox value="12345">
+          <span style="visibility:hidden">A</span>
+        </usr-textbox>
+        <usr-textbox value="12345">
+          <span style="visibility:hidden">C</span>
+        </usr-textbox>-->
+    </div>
+    <!--<input id="aa" type="text" value="qwrqwtwq">-->
+  </body>
+</html>
