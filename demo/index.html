@@ -12,6 +12,9 @@
         --usr-text-font-size: 14px;
         width: 300px;
       }
+      usr-textbox.usr-invalid {
+        border: 1px solid red;
+      }
     </style>
 
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -30,7 +33,7 @@
   </head>
   <body>
     <div>
-        <usr-textbox value="12345">
+        <usr-textbox value="12345" required>
           <span style="visibility:hidden">$</span>
         </usr-textbox>
         <!--<usr-textbox value="12345" readonly="true">

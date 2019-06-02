@@ -41,9 +41,11 @@ class UsrTextbox extends LitElement {
     this.value = '';
     this.readonly = null;
     this.disabled = null;
+    this.required = null;
     
     this.updateComplete.then(() => {
       let classes = ['usr-untouched', 'usr-pristine'];
+
       if (this.value != null && this.value.trim() != '') {
         classes.push('usr-valid');
       } else {
@@ -56,8 +58,8 @@ class UsrTextbox extends LitElement {
 
   onInput(e) {
     this.value = e.target.value;
-    
     let classList = this.shadowRoot.host.classList;
+
     if (classList.contains('usr-untouched')) {
       classList.replace('usr-untouched', 'usr-touched');
     }
