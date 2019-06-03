@@ -39,23 +39,32 @@ class UsrTextbox extends LitElement {
 
   constructor() {
     super();
+
+    // Observables
     this.value = '';
     this.readonly = null;
     this.disabled = null;
     this.required = null;
     this.pattern = null;
-    this._valid = true;
+
+    // Non-observable
+    this.validity = { requiredError: false, patternMismatch: false, valid: true };
 
     this.updateComplete.then(() => {
-      if (this.required == null && this.pattern == null) return;
+      if (this._noValidation()) return;
 
+      let exists = this._exists(this.value);
+      let matches = this._matches(this.value);
       let classes = ['usr-untouched', 'usr-pristine'];
-      if (this.value != null && this.value.trim() != '') {
+
+      if (exists && matches) {
         classes.push('usr-valid');
-        this._valid = true;
+        this.validity.valid = true;
       } else {
         classes.push('usr-invalid');
-        this._valid = false;
+        this.validity.valid = false;
+        this.validity.requiredError = !exists;
+        this.validity.patternMismatch = !matches;
         let invalidEvent = new Event('invalid');
         this.dispatchEvent(invalidEvent);
       }
@@ -65,38 +74,47 @@ class UsrTextbox extends LitElement {
   }
 
   onInput(e) {
-    if (this.required == null && this.pattern == null) return;
+    if (this._noValidation()) return;
 
     this.value = e.target.value;
+    let exists = this._exists(this.value);
+    let matches = this._matches(this.value);
     let classList = this.shadowRoot.host.classList;
 
     if (classList.contains('usr-untouched')) {
       classList.replace('usr-untouched', 'usr-touched');
     }
+    
     if (classList.contains('usr-pristine')) {
       classList.replace('usr-pristine', 'usr-dirty');
     }
-    if (this.value != null && this.value.trim() != '') {
+
+    if (exists && matches) {
       if (classList.contains('usr-invalid')) {
         classList.replace('usr-invalid', 'usr-valid');
-        this._valid = true;
+        this.validity.valid = true;
+        this.validity.requiredError = true;
+        this.validity.patternMismatch = true;
       }
     } else {
       if (classList.contains('usr-valid')) {
         classList.replace('usr-valid', 'usr-invalid');
-        this._valid = false;
+        this.validity.valid = false;
+        this.validity.requiredError = !exists;
+        this.validity.patternMismatch = !matches;
         let invalidEvent = new Event('invalid');
         this.dispatchEvent(invalidEvent);
       }
     }
   }
 
-  onKeyup(e) {
+  onFocus(e) {
     //this.value = e.target.value;
   }
 
-  /*connectedCallback() { 
-  }*/
+  onBlur(e) {
+    //this.value = e.target.value;
+  }
 
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
@@ -128,7 +146,21 @@ class UsrTextbox extends LitElement {
   }
 
   checkValidity() {
-    return this._valid;
+    return this.validity.valid;
+  }
+
+  _noValidation() {
+    return this.required == null && this.pattern == null;
+  }
+
+  _exists(val) {
+    if (this.required == null) return true;
+    return val != null && val.trim() != '';
+  }
+
+  _matches(val) {
+    if (this.pattern == null) return true;
+    return (new RegExp(this.pattern)).test(val);
   }
 }
 
