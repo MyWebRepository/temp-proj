@@ -24,10 +24,11 @@ class UsrTextbox extends LitElement {
       value: { 
         type: String, 
         reflect: true, 
-        hasChanged(newVal, oldVal) {
-          return newVal == oldVal; 
+        hasChanged: (newVal, oldVal) => {
+          return newVal != oldVal; 
         } 
       },
+      dir: { type: String },
       readonly: { type: String },
       disabled: { type: String },
       required: { type: String },
@@ -42,34 +43,21 @@ class UsrTextbox extends LitElement {
 
     // Observables
     this.value = '';
+    this.dir = null;
     this.readonly = null;
     this.disabled = null;
     this.required = null;
     this.pattern = null;
+    this.maxlength = null;
+    this.minlength = null;
 
     // Non-observable
     this.validity = { requiredError: false, patternMismatch: false, valid: true };
 
     this.updateComplete.then(() => {
-      if (this._noValidation()) return;
-
-      let exists = this._exists(this.value);
-      let matches = this._matches(this.value);
-      let classes = ['usr-untouched', 'usr-pristine'];
-
-      if (exists && matches) {
-        classes.push('usr-valid');
-        this.validity.valid = true;
-      } else {
-        classes.push('usr-invalid');
-        this.validity.valid = false;
-        this.validity.requiredError = !exists;
-        this.validity.patternMismatch = !matches;
-        let invalidEvent = new Event('invalid');
-        this.dispatchEvent(invalidEvent);
-      }
-
-      this.shadowRoot.host.classList.add(...classes);
+      console.log("updatecomplete");
+      this._setClasses();
+      this._setAttributes();
     });
   }
 
@@ -77,8 +65,74 @@ class UsrTextbox extends LitElement {
     if (this._noValidation()) return;
 
     this.value = e.target.value;
+    this._updateClasses(this.value);
+  }
+
+  onFocus(e) {
+    //this.value = e.target.value;
+  }
+
+  onBlur(e) {
+    //this.value = e.target.value;
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    this[name] = newValue;
+  }
+
+  render () {
+    console.log("render");
+    return html`
+      <div class="container">
+        <div class="slot-container"><slot></slot></div>
+        <input type="text" value="${this.value}" @input="${this.onInput}" @focus="${this.onFocus}">
+      </div>
+    `;
+  }
+
+  checkValidity() {
+    return this.validity.valid;
+  }
+
+  _noValidation() {
+    return this.required == null && this.pattern == null;
+  }
+
+  _exists(val) {
+    if (this.required == null) return true;
+    return val != null && val.trim() != '';
+  }
+
+  _matches(val) {
+    if (this.pattern == null) return true;
+    return (new RegExp(this.pattern)).test(val);
+  }
+
+  _setClasses() {
+    if (this._noValidation()) return;
+
     let exists = this._exists(this.value);
     let matches = this._matches(this.value);
+    let classes = ['usr-untouched', 'usr-pristine'];
+
+    if (exists && matches) {
+      classes.push('usr-valid');
+      this.validity.valid = true;
+    } else {
+      classes.push('usr-invalid');
+      this.validity.valid = false;
+      this.validity.requiredError = !exists;
+      this.validity.patternMismatch = !matches;
+      let invalidEvent = new Event('invalid');
+      this.dispatchEvent(invalidEvent);
+    }
+
+    this.shadowRoot.host.classList.add(...classes);
+  }
+
+  _updateClasses(val) {
+    let exists = this._exists(val);
+    let matches = this._matches(val);
     let classList = this.shadowRoot.host.classList;
 
     if (classList.contains('usr-untouched')) {
@@ -108,59 +162,25 @@ class UsrTextbox extends LitElement {
     }
   }
 
-  onFocus(e) {
-    //this.value = e.target.value;
-  }
+  _setAttributes() {
+    let inputElement = this.shadowRoot.querySelector('input');
+    if (inputElement == null) return;
 
-  onBlur(e) {
-    //this.value = e.target.value;
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this[name] = newValue;
-  }
-
-  get inputHTML() {
-    if (this.disabled != null) {
-      return html`
-        <input disabled type="text" value="${this.value}" @input="${this.onInput}" @keyup="${this.onKeyup}">
-      `;
-    } else if (this.readonly != null) {
-      return html`
-        <input readonly type="text" value="${this.value}" @input="${this.onInput}" @keyup="${this.onKeyup}">
-      `;
-    } else {
-      return html`
-        <input type="text" value="${this.value}" @input="${this.onInput}" @keyup="${this.onKeyup}">
-      `;
+    if (this.dir != null && this.dir != '') {
+      inputElement.setAttribute('dir', this.dir);
     }
-  }
-
-  render () {
-    return html`
-      <div class="container">
-        <div class="slot-container"><slot></slot></div>
-        ${this.inputHTML}
-      </div>
-    `;
-  }
-
-  checkValidity() {
-    return this.validity.valid;
-  }
-
-  _noValidation() {
-    return this.required == null && this.pattern == null;
-  }
-
-  _exists(val) {
-    if (this.required == null) return true;
-    return val != null && val.trim() != '';
-  }
-
-  _matches(val) {
-    if (this.pattern == null) return true;
-    return (new RegExp(this.pattern)).test(val);
+    if (this.disabled != null) {
+      inputElement.setAttribute('disabled', '');
+    }
+    if (this.readonly != null) {
+      inputElement.setAttribute('readonly', '');
+    }
+    if (this.maxlength != null && this.maxlength != '') {
+      inputElement.setAttribute('maxlength', this.maxlength);
+    }
+    if (this.minlength != null && this.minlength != '') {
+      inputElement.setAttribute('minlength', this.minlength);
+    }
   }
 }
 
