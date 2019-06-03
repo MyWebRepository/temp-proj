@@ -28,9 +28,10 @@ class UsrTextbox extends LitElement {
           return newVal == oldVal; 
         } 
       },
-      readonly: { type: Boolean },
-      disabled: { type: Boolean },
-      required: { type: Boolean },
+      readonly: { type: String },
+      disabled: { type: String },
+      required: { type: String },
+      pattern: { type: String },
       minlength: { type: Number },
       maxlength: { type: Number }
     };
@@ -42,14 +43,21 @@ class UsrTextbox extends LitElement {
     this.readonly = null;
     this.disabled = null;
     this.required = null;
-    
-    this.updateComplete.then(() => {
-      let classes = ['usr-untouched', 'usr-pristine'];
+    this.pattern = null;
+    this._valid = true;
 
+    this.updateComplete.then(() => {
+      if (this.required == null && this.pattern == null) return;
+
+      let classes = ['usr-untouched', 'usr-pristine'];
       if (this.value != null && this.value.trim() != '') {
         classes.push('usr-valid');
+        this._valid = true;
       } else {
         classes.push('usr-invalid');
+        this._valid = false;
+        let invalidEvent = new Event('invalid');
+        this.dispatchEvent(invalidEvent);
       }
 
       this.shadowRoot.host.classList.add(...classes);
@@ -57,6 +65,8 @@ class UsrTextbox extends LitElement {
   }
 
   onInput(e) {
+    if (this.required == null && this.pattern == null) return;
+
     this.value = e.target.value;
     let classList = this.shadowRoot.host.classList;
 
@@ -69,10 +79,14 @@ class UsrTextbox extends LitElement {
     if (this.value != null && this.value.trim() != '') {
       if (classList.contains('usr-invalid')) {
         classList.replace('usr-invalid', 'usr-valid');
+        this._valid = true;
       }
     } else {
       if (classList.contains('usr-valid')) {
         classList.replace('usr-valid', 'usr-invalid');
+        this._valid = false;
+        let invalidEvent = new Event('invalid');
+        this.dispatchEvent(invalidEvent);
       }
     }
   }
@@ -111,6 +125,10 @@ class UsrTextbox extends LitElement {
         ${this.inputHTML}
       </div>
     `;
+  }
+
+  checkValidity() {
+    return this._valid;
   }
 }
 
