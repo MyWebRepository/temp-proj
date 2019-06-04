@@ -25,11 +25,9 @@ export class UsrTextbox extends LitElement {
       }`,
       css`:host(.usr-slot-before) .slot-container {
         order: 1;
-        padding: 0 0 0 0.2em; 
       }`,
       css`:host(.usr-slot-after) .slot-container {
         order: 2;
-        padding: 0 0.2em 0 0; 
       }`,
       css`:host(.usr-slot-before) input {
         order: 2;
@@ -57,6 +55,7 @@ export class UsrTextbox extends LitElement {
       }`,
       css`.slot-container { 
         align-self: center; 
+        padding: 0 0.2em 0 0.2em; 
       }`
     ];
   }
@@ -93,17 +92,16 @@ export class UsrTextbox extends LitElement {
     this.maxlength = null;
     this.minlength = null;
 
-    // Non-observable
+    // Non-observables
     this.validity = { 
       requiredError: false, 
       patternMismatch: false, 
       valid: true 
     };
-
-    this.validEvent = new CustomEvent('my-event', { 
-      detail: { message: 'valid' },
-      bubbles: true, 
-      composed: true 
+    this.validationEvent = new CustomEvent('validation', { 
+      detail: { message: null },
+      bubbles: false, 
+      composed: false 
     });
 
     this.updateComplete.then(() => {
@@ -132,12 +130,17 @@ export class UsrTextbox extends LitElement {
     this[name] = newValue;
   }
 
+  firstUpdated() {
+    console.log("firstUpdated");
+  }
+
   render () {
     console.log("render");
     return html`
       <div class="container">
         <div class="slot-container"><slot></slot></div>
-        <input type="text" value="${this.value}" 
+        <input type="text" 
+          value="${this.value}" 
           @input="${this.onInput}" 
           @focus="${this.onFocus}" 
           @blur="${this.onBlur}">
@@ -149,6 +152,13 @@ export class UsrTextbox extends LitElement {
     return this.validity.valid;
   }
 
+  set onValidation(fun) {
+    if (fun && typeof(fun) == 'function') {
+      this.addEventListener('validation', fun);
+      this.validationEvent.detail.message = this.validity.valid ? 'valid': 'invalid';
+      this.dispatchEvent(this.validationEvent);
+    }
+  }
   _noValidation() {
     return this.required == null && this.pattern == null;
   }
@@ -173,13 +183,15 @@ export class UsrTextbox extends LitElement {
     if (exists && matches) {
       classes.push('usr-valid');
       this.validity.valid = true;
-      
-      this.dispatchEvent(this.validEvent);
+      this.validationEvent.detail.message = 'valid';
+      this.dispatchEvent(this.validationEvent);
     } else {
       classes.push('usr-invalid');
       this.validity.valid = false;
       this.validity.requiredError = !exists;
       this.validity.patternMismatch = !matches;
+      this.validationEvent.detail.message = 'invalid';
+      this.dispatchEvent(this.validationEvent);
       let invalidEvent = new Event('invalid');
       this.dispatchEvent(invalidEvent);
     }
@@ -206,8 +218,8 @@ export class UsrTextbox extends LitElement {
         this.validity.valid = true;
         this.validity.requiredError = true;
         this.validity.patternMismatch = true;
-        
-        this.dispatchEvent(this.validEvent);
+        this.validationEvent.detail.message = 'valid';
+        this.dispatchEvent(this.validationEvent);
       }
     } else {
       if (classList.contains('usr-valid')) {
@@ -215,6 +227,8 @@ export class UsrTextbox extends LitElement {
         this.validity.valid = false;
         this.validity.requiredError = !exists;
         this.validity.patternMismatch = !matches;
+        this.validationEvent.detail.message = 'invalid';
+        this.dispatchEvent(this.validationEvent);
         let invalidEvent = new Event('invalid');
         this.dispatchEvent(invalidEvent);
       }

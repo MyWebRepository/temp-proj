@@ -10,7 +10,7 @@
       usr-textbox, usr-textbox-integer {
         --usr-icon-font-size: 16px;
         --usr-text-font-size: 16px;
-        --usr-text-align: right;
+        --usr-text-align: left;
         --usr-highlight-color: lightblue;
         width: 200px;
       }
@@ -25,7 +25,7 @@
 
     <script type="module" src="../src/usr-textbox.js"></script>
     <script type="module" src="../src/usr-textbox-integer.js"></script>
-
+    
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
@@ -36,7 +36,7 @@
         <!--<usr-textbox-integer class="usr-slot-after">
             <span style="visibility:hidden">Year</span>
         </usr-textbox-integer>--> 
-        <usr-textbox class="usr-slot-after" value="asf" required onmy-event="alert('valid')">
+        <usr-textbox class="usr-slot-before" value="asf" required>
           <span style="visibility:hidden">$</span>
         </usr-textbox>
         <!--<usr-textbox value="12345" readonly="true">
@@ -54,4 +54,27 @@
     </div>-->
     <!--<input id="aa" type="text" value="qwrqwtwq">-->
   </body>
+  <script>
+      /*const observer = new MutationObserver(mutation => {
+        console.log('DOM mutation detected');
+      });
+      observer.observe(document.body, {
+        childList: true,
+        attributes: true,
+        subtree: true,
+        characterData: true
+      });*/
+
+      document.onreadystatechange = () => {
+        if (document.readyState === 'complete') {
+          function foo() {
+            document.querySelector('usr-textbox').onValidation = function(e) {
+              let m = e.detail.message;
+              alert(m);
+            }
+          }
+          foo();
+        }
+      };
+    </script>
 </html>
