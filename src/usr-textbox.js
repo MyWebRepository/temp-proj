@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
 
 /**
  * `usr-textbox`
@@ -11,11 +11,33 @@ import { LitElement, html, css } from 'lit-element';
 class UsrTextbox extends LitElement {
   static get styles() {
     return [ 
-      css`:host { display: inline-block; border: solid 1px gray; padding: 2px 2px 2px 2px; }`,
-      css`::slotted(span) { visibility: visible !important; font-size: var(--usr-icon-font-size, 14px) }`,
-      css`input { box-sizing: border-box; width: 100%; padding: 1px 1px 1px 0px; border-style: none; outline: 0px; font-size: var(--usr-text-font-size, 14px) }`,
-      css`.container { display: flex; flex-direction: row; overflow: hidden; }`,
-      css`.slot-container { align-self: center; padding: 0 0 0 0.2em; }`
+      css`:host { 
+        display: inline-block; 
+        border: solid 1px gray; 
+        padding: 2px 2px 2px 2px; 
+      }`,
+      css`::slotted(span) { 
+        visibility: visible !important; 
+        font-size: var(--usr-icon-font-size, 14px);
+      }`,
+      css`input { 
+        box-sizing: border-box; 
+        width: 100%; 
+        padding: 1px 1px 1px 0px; 
+        border-style: none; 
+        outline: 0px; 
+        font-size: var(--usr-text-font-size, 14px); 
+        text-align: var(--usr-text-align, left);
+      }`,
+      css`.container { 
+        display: flex; 
+        flex-direction: row; 
+        overflow: hidden; 
+      }`,
+      css`.slot-container { 
+        align-self: center; 
+        padding: 0 0 0 0.2em; 
+      }`
     ];
   }
 
@@ -52,7 +74,11 @@ class UsrTextbox extends LitElement {
     this.minlength = null;
 
     // Non-observable
-    this.validity = { requiredError: false, patternMismatch: false, valid: true };
+    this.validity = { 
+      requiredError: false, 
+      patternMismatch: false, 
+      valid: true 
+    };
 
     this.updateComplete.then(() => {
       console.log("updatecomplete");
@@ -85,7 +111,7 @@ class UsrTextbox extends LitElement {
     return html`
       <div class="container">
         <div class="slot-container"><slot></slot></div>
-        <input type="text" value="${this.value}" @input="${this.onInput}" @focus="${this.onFocus}">
+        <input type="text" value="${this.value}" @input="${this.onInput}" @focus="${this.onFocus}" @blur="${this.onBlur}">
       </div>
     `;
   }

@@ -4,5 +4,11 @@
     "rules": [
       "polymer-3"
     ]
-  }
+  },
+  "builds": [
+    {
+      "name": "bundled",
+      "bundle": true
+    }
+  ]
 }
