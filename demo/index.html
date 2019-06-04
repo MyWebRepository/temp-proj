@@ -8,10 +8,11 @@
 
     <style>
       usr-textbox {
-        --usr-icon-font-size: 14px;
-        --usr-text-font-size: 14px;
+        --usr-icon-font-size: 16px;
+        --usr-text-font-size: 16px;
         /*--usr-text-align: right;*/
-        width: 300px;
+        --usr-highlight-color: lightblue;
+        width: 200px;
       }
     </style>
 
@@ -31,7 +32,7 @@
   </head>
   <body>
     <div>
-        <usr-textbox value="abc">
+        <usr-textbox value="" maxlength="15">
           <span style="visibility:hidden">$</span>
         </usr-textbox>
         <!--<usr-textbox value="12345" readonly="true">

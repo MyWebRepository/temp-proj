@@ -16,6 +16,13 @@ class UsrTextbox extends LitElement {
         border: solid 1px gray; 
         padding: 2px 2px 2px 2px; 
       }`,
+      css`:host([disabled]), :host([readonly]),
+        :host([disabled]) *, :host([readonly]) * {
+        background-color: lightgray;
+      }`,
+      css`:host(.usr-focus) {
+        outline: 2px solid var(--usr-highlight-color, lightblue);
+      }`,
       css`::slotted(span) { 
         visibility: visible !important; 
         font-size: var(--usr-icon-font-size, 14px);
@@ -95,11 +102,11 @@ class UsrTextbox extends LitElement {
   }
 
   onFocus(e) {
-    //this.value = e.target.value;
+    this.shadowRoot.host.classList.add('usr-focus');
   }
 
   onBlur(e) {
-    //this.value = e.target.value;
+    this.shadowRoot.host.classList.remove('usr-focus');
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -111,7 +118,10 @@ class UsrTextbox extends LitElement {
     return html`
       <div class="container">
         <div class="slot-container"><slot></slot></div>
-        <input type="text" value="${this.value}" @input="${this.onInput}" @focus="${this.onFocus}" @blur="${this.onBlur}">
+        <input type="text" value="${this.value}" 
+          @input="${this.onInput}" 
+          @focus="${this.onFocus}" 
+          @blur="${this.onBlur}">
       </div>
     `;
   }
