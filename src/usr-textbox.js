@@ -8,7 +8,7 @@ import { css, html, LitElement } from 'lit-element';
  * @polymer
  * @demo demo/index.html
  */
-class UsrTextbox extends LitElement {
+export class UsrTextbox extends LitElement {
   static get styles() {
     return [ 
       css`:host { 
@@ -22,6 +22,18 @@ class UsrTextbox extends LitElement {
       }`,
       css`:host(.usr-focus) {
         outline: 2px solid var(--usr-highlight-color, lightblue);
+      }`,
+      css`:host(.usr-slot-before) .slot-container {
+        order: 1;
+      }`,
+      css`:host(.usr-slot-after) .slot-container {
+        order: 2;
+      }`,
+      css`:host(.usr-slot-before) input {
+        order: 2;
+      }`,
+      css`:host(.usr-slot-after) input {
+        order: 1;
       }`,
       css`::slotted(span) { 
         visibility: visible !important; 

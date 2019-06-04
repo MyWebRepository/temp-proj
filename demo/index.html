@@ -7,10 +7,10 @@
     <title>usr-textbox demo</title>
 
     <style>
-      usr-textbox {
+      usr-textbox, usr-textbox-integer {
         --usr-icon-font-size: 16px;
         --usr-text-font-size: 16px;
-        /*--usr-text-align: right;*/
+        --usr-text-align: right;
         --usr-highlight-color: lightblue;
         width: 200px;
       }
@@ -24,6 +24,7 @@
     </script>
 
     <script type="module" src="../src/usr-textbox.js"></script>
+    <script type="module" src="../src/usr-textbox-integer.js"></script>
 
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -32,7 +33,10 @@
   </head>
   <body>
     <div>
-        <usr-textbox value="" maxlength="15">
+        <usr-textbox-integer>
+            <span style="visibility:hidden">Year</span>
+        </usr-textbox-integer>
+        <usr-textbox class="usr-slot-after" value="" maxlength="115">
           <span style="visibility:hidden">$</span>
         </usr-textbox>
         <!--<usr-textbox value="12345" readonly="true">
