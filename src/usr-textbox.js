@@ -25,9 +25,11 @@ export class UsrTextbox extends LitElement {
       }`,
       css`:host(.usr-slot-before) .slot-container {
         order: 1;
+        padding: 0 0 0 0.2em; 
       }`,
       css`:host(.usr-slot-after) .slot-container {
         order: 2;
+        padding: 0 0.2em 0 0; 
       }`,
       css`:host(.usr-slot-before) input {
         order: 2;
@@ -55,7 +57,6 @@ export class UsrTextbox extends LitElement {
       }`,
       css`.slot-container { 
         align-self: center; 
-        padding: 0 0 0 0.2em; 
       }`
     ];
   }
@@ -98,6 +99,12 @@ export class UsrTextbox extends LitElement {
       patternMismatch: false, 
       valid: true 
     };
+
+    this.validEvent = new CustomEvent('my-event', { 
+      detail: { message: 'valid' },
+      bubbles: true, 
+      composed: true 
+    });
 
     this.updateComplete.then(() => {
       console.log("updatecomplete");
@@ -166,6 +173,8 @@ export class UsrTextbox extends LitElement {
     if (exists && matches) {
       classes.push('usr-valid');
       this.validity.valid = true;
+      
+      this.dispatchEvent(this.validEvent);
     } else {
       classes.push('usr-invalid');
       this.validity.valid = false;
@@ -197,6 +206,8 @@ export class UsrTextbox extends LitElement {
         this.validity.valid = true;
         this.validity.requiredError = true;
         this.validity.patternMismatch = true;
+        
+        this.dispatchEvent(this.validEvent);
       }
     } else {
       if (classList.contains('usr-valid')) {
