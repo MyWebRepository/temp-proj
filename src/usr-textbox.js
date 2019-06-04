@@ -149,14 +149,21 @@ export class UsrTextbox extends LitElement {
   }
 
   checkValidity() {
-    return this.validity.valid;
+    this.validationEvent.detail.message = this.validity.valid ? 'valid': 'invalid';
+    this.dispatchEvent(this.validationEvent);
+  }
+
+  addEventListener(type = 'validation', fun) {
+    if (type && fun && typeof(fun) == 'function') {
+      super.addEventListener(type, fun);
+      this.checkValidity();
+    }
   }
 
   set onValidation(fun) {
     if (fun && typeof(fun) == 'function') {
       this.addEventListener('validation', fun);
-      this.validationEvent.detail.message = this.validity.valid ? 'valid': 'invalid';
-      this.dispatchEvent(this.validationEvent);
+      this.checkValidity();
     }
   }
   _noValidation() {

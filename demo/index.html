@@ -68,10 +68,15 @@
       document.onreadystatechange = () => {
         if (document.readyState === 'complete') {
           function foo() {
-            document.querySelector('usr-textbox').onValidation = function(e) {
+            /*document.querySelector('usr-textbox').onValidation = function(e) {
               let m = e.detail.message;
               alert(m);
-            }
+            }*/
+
+            document.querySelector('usr-textbox').addEventListener('validation', function(e) {
+              let m = e.detail.message;
+              alert(m);
+            });
           }
           foo();
         }
