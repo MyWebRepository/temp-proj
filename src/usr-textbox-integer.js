@@ -3,26 +3,45 @@ import { UsrTextbox} from './usr-textbox';
 export class UsrTextboxInteger extends UsrTextbox {
 	constructor() {
 		super();
+		this.cursorPosition = 0;
 	}
 
-	onInput(e) {
-		let value = e.target.value;
-		e.target.value = this._removeNonDigit(value);
+	onInput(event) {
+		this.cursorPosition = this._getCursorPosition(event);
 
-		super.onInput(e);
+		let value = event.target.value;
+		this.value = event.target.value = this._removeNonDigit(value);
+
+		super.onInput(event);
+
+		if (value != this.value) {
+			let input = this.shadowRoot.querySelector('input');
+			this._setCursorPosition(input, this.cursorPosition - 1);
+		}
 	}
 
-	//render() {
-		//super.render();
+	updated(changedProperties) {
+		console.log('updated');
+	}
+	
+	_getCursorPosition(event) {
+		if (event && event.target) 
+			return event.target.selectionStart;
+		else 
+			return 0; 
+	}
+
+	_setCursorPosition(element, positon) {
+		element.setSelectionRange(positon, positon);
+	}
+
+	//set value(val) {
+	//	super.value = val;
 	//}
 
-	set value(val) {
-		super.value = val;
-	}
-
-	get value() {
-		return super.value;
-	}
+	//get value() {
+	//	return super.value;
+	//}
 
 	_removeNonDigit(val) {
 		if (val) {
@@ -32,10 +51,8 @@ export class UsrTextboxInteger extends UsrTextbox {
 					result += c;
 				}
 			}
-
 			return result;
 		}
-
 		return val;
 	}
 
