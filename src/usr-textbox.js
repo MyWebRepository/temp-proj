@@ -94,8 +94,11 @@ export class UsrTextbox extends LitElement {
 
     // Non-observables
     this.validity = { 
-      requiredError: false, 
-      patternMismatch: false, 
+      errors: {
+        required: false,
+        minlength: false, 
+        pattern: false
+      },
       valid: true 
     };
     this.validationEvent = new CustomEvent('validation', { 
@@ -180,14 +183,20 @@ export class UsrTextbox extends LitElement {
     return (new RegExp(this.pattern)).test(val);
   }
 
+  _longEnough(val) {
+    if (this.minlength == null) return true;
+    return val.length >= this.minlength;
+  }
+
   _setClasses() {
     if (this._noValidation()) return;
 
     let exists = this._exists(this.value);
     let matches = this._matches(this.value);
+    let longEnough = this._longEnough(this.value);
     let classes = ['usr-untouched', 'usr-pristine'];
 
-    if (exists && matches) {
+    if (exists && matches && longEnough) {
       classes.push('usr-valid');
       this.validity.valid = true;
       this.validationEvent.detail.message = 'valid';
@@ -195,8 +204,9 @@ export class UsrTextbox extends LitElement {
     } else {
       classes.push('usr-invalid');
       this.validity.valid = false;
-      this.validity.requiredError = !exists;
-      this.validity.patternMismatch = !matches;
+      this.validity.errors.required = !exists;
+      this.validity.errors.pattern = !matches;
+      this.validity.errors.minlength = !longEnough;
       this.validationEvent.detail.message = 'invalid';
       this.dispatchEvent(this.validationEvent);
       let invalidEvent = new Event('invalid');
@@ -209,6 +219,7 @@ export class UsrTextbox extends LitElement {
   _updateClasses(val) {
     let exists = this._exists(val);
     let matches = this._matches(val);
+    let longEnough = this._longEnough(this.value);
     let classList = this.shadowRoot.host.classList;
 
     if (classList.contains('usr-untouched')) {
@@ -219,12 +230,13 @@ export class UsrTextbox extends LitElement {
       classList.replace('usr-pristine', 'usr-dirty');
     }
 
-    if (exists && matches) {
+    if (exists && matches && longEnough) {
       if (classList.contains('usr-invalid')) {
         classList.replace('usr-invalid', 'usr-valid');
         this.validity.valid = true;
-        this.validity.requiredError = true;
-        this.validity.patternMismatch = true;
+        this.validity.errors.required = false;
+        this.validity.errors.pattern = false;
+        this.validity.errors.minlength = false;
         this.validationEvent.detail.message = 'valid';
         this.dispatchEvent(this.validationEvent);
       }
@@ -232,8 +244,9 @@ export class UsrTextbox extends LitElement {
       if (classList.contains('usr-valid')) {
         classList.replace('usr-valid', 'usr-invalid');
         this.validity.valid = false;
-        this.validity.requiredError = !exists;
-        this.validity.patternMismatch = !matches;
+        this.validity.erros.required = !exists;
+        this.validity.erros.pattern = !matches;
+        this.validity.errors.minlength = !longEnough;
         this.validationEvent.detail.message = 'invalid';
         this.dispatchEvent(this.validationEvent);
         let invalidEvent = new Event('invalid');
