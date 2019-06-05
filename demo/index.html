@@ -24,7 +24,7 @@
       //import '@polymer/iron-demo-helpers/demo-snippet';
     </script>
 
-    <script type="module" src="../src/usr-textbox.js"></script>
+    <!--<script type="module" src="../src/usr-textbox.js"></script>-->
     <script type="module" src="../src/usr-textbox-integer.js"></script>
     
     <!--custom-style>
@@ -34,16 +34,16 @@
   </head>
   <body>
     <div>
-        <!--<usr-textbox-integer class="usr-slot-after">
+        <usr-textbox-integer class="usr-slot-before">
             <span style="visibility:hidden">Year</span>
-        </usr-textbox-integer>--> 
-        <usr-textbox class="usr-slot-before" value="1234.32" required>
+        </usr-textbox-integer>
+        <!--<usr-textbox class="usr-slot-before" value="1234.32" required>
           <span style="visibility:hidden">$</span>
         </usr-textbox>
         <usr-textbox value="allen.bird@google.com">
             <span style="visibility:hidden; position: relative; top: 2px" class="glyphicon glyphicon-envelope"></span>
         </usr-textbox>
-        <!--<usr-textbox value="12345">
+        <usr-textbox value="12345">
           <span style="visibility:hidden">$$$</span>
         </usr-textbox>
         <usr-textbox value="12345">
@@ -79,7 +79,7 @@
               //alert(m);
             });
           }
-          foo();
+          //foo();
         }
       };
     </script>

@@ -141,7 +141,9 @@ export class UsrTextbox extends LitElement {
     console.log("render");
     return html`
       <div class="container">
-        <div class="slot-container"><slot></slot></div>
+        <div class="slot-container">
+          <slot></slot>
+        </div>
         <input type="text" 
           value="${this.value}" 
           @input="${this.onInput}" 
@@ -169,8 +171,9 @@ export class UsrTextbox extends LitElement {
       this.checkValidity();
     }
   }
+
   _noValidation() {
-    return this.required == null && this.pattern == null;
+    return this.required == null && this.pattern == null && this.minlength == null;
   }
 
   _exists(val) {
@@ -277,4 +280,4 @@ export class UsrTextbox extends LitElement {
   }
 }
 
-window.customElements.define('usr-textbox', UsrTextbox);
+//window.customElements.define('usr-textbox', UsrTextbox);
