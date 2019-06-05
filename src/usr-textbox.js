@@ -21,7 +21,7 @@ export class UsrTextbox extends LitElement {
         background-color: lightgray;
       }`,
       css`:host(.usr-focus) {
-        outline: 2px solid var(--usr-highlight-color, lightblue);
+        outline: 2px solid var(--usr-outline-color, lightblue);
       }`,
       css`:host(.usr-slot-before) .slot-container {
         order: 1;
