@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>usr-textbox demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <style>
       usr-textbox, usr-textbox-integer {
-        --usr-icon-font-size: 16px;
+        --usr-icon-font-size: 14px;
         --usr-text-font-size: 16px;
         --usr-text-align: left;
         --usr-highlight-color: lightblue;
@@ -36,13 +37,13 @@
         <!--<usr-textbox-integer class="usr-slot-after">
             <span style="visibility:hidden">Year</span>
         </usr-textbox-integer>--> 
-        <usr-textbox class="usr-slot-before" value="asf" required>
+        <usr-textbox class="usr-slot-before" value="1234.32" required>
           <span style="visibility:hidden">$</span>
         </usr-textbox>
-        <!--<usr-textbox value="12345" readonly="true">
-          <span style="visibility:hidden">$$</span>
+        <usr-textbox value="allen.bird@google.com">
+            <span style="visibility:hidden; position: relative; top: 2px" class="glyphicon glyphicon-envelope"></span>
         </usr-textbox>
-        <usr-textbox value="12345">
+        <!--<usr-textbox value="12345">
           <span style="visibility:hidden">$$$</span>
         </usr-textbox>
         <usr-textbox value="12345">
@@ -75,7 +76,7 @@
 
             document.querySelector('usr-textbox').addEventListener('validation', function(e) {
               let m = e.detail.message;
-              alert(m);
+              //alert(m);
             });
           }
           foo();
