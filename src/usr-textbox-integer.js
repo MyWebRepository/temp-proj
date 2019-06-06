@@ -3,6 +3,7 @@ import { UsrTextbox} from './usr-textbox';
 export class UsrTextboxInteger extends UsrTextbox {
 	constructor() {
 		super();
+		this._value = null;
 	}
 
 	onInput(event) {
@@ -22,7 +23,17 @@ export class UsrTextboxInteger extends UsrTextbox {
 	updated(changedProperties) {
 		console.log('updated');
 	}
-	
+
+	set value(val) {
+		let oldVal = this._value;
+		this._value = this._removeNonDigit(val);
+		this.requestUpdate('value', oldVal);
+	}
+
+	get value() {
+		return this._value;
+	}
+
 	_getCursorPosition(event) {
 		if (event && event.target) 
 			return event.target.selectionStart;
@@ -34,19 +45,15 @@ export class UsrTextboxInteger extends UsrTextbox {
 		element.setSelectionRange(positon, positon);
 	}
 
-	//set value(val) {
-	//	super.value = val;
-	//}
-
-	//get value() {
-	//	return super.value;
-	//}
-
 	_removeNonDigit(val) {
 		if (val) {
+			const digits = '0123456789';
 			let result = '';
-			for (let c of val) {
-				if ('0123456789'.includes(c)) {
+			for (let i = 0; i < val.length; i++) {
+				let c = val[i];
+				if (i == 0 && (c == '+' || c == '-')) {
+					result += c;
+				} else if (digits.includes(c)) {
 					result += c;
 				}
 			}
