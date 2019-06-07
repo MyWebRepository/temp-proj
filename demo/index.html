@@ -25,9 +25,10 @@
       //import '@polymer/iron-demo-helpers/demo-snippet';
     </script>
 
-    <!--<script type="module" src="../src/usr-textbox.js"></script>-->
-    <script type="module" src="../src/usr-textbox-integer.js"></script>
-    
+    <!--<script type="module" src="../src/usr-textbox.js"></script>
+    <script type="module" src="../src/usr-textbox-integer.js"></script>-->
+    <script type="module" src="../src/usr-textbox-decimal.js"></script>
+
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
@@ -35,10 +36,13 @@
   </head>
   <body>
     <div>
-        <usr-textbox-integer class="usr-slot-before" value="123">
+        <usr-textbox-decimal class="usr-slot-before" value="123.34" decimalSeparator="." thousandSeparator=",">
+            <span style="visibility:hidden">$</span>
+        </usr-textbox-decimal>
+        <!--<usr-textbox-integer class="usr-slot-before" value="123">
             <span style="visibility:hidden">Year</span>
         </usr-textbox-integer>
-        <!--<usr-textbox class="usr-slot-before" value="1234.32" required>
+        <usr-textbox class="usr-slot-before" value="1234.32" required>
           <span style="visibility:hidden">$</span>
         </usr-textbox>
         <usr-textbox value="allen.bird@google.com">

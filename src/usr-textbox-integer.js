@@ -8,7 +8,6 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 	onInput(event) {
 		let cursorPosition = this._getCursorPosition(event);
-
 		let value = event.target.value;
 		this.value = event.target.value = this._removeNonDigit(value);
 
