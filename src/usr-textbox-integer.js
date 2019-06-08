@@ -13,10 +13,17 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 		super.onInput(event);
 
-		if (value != this.value) {
-			let input = this.shadowRoot.querySelector('input');
-			this._setCursorPosition(input, cursorPosition - 1);
-		}
+		let offset = (() => {
+			if (value < this.value)
+				return 1;
+			else if (value > this.value)
+				return -1;
+			else
+				return 0;
+		})();
+
+		const input = this.shadowRoot.querySelector('input');
+		this._setCursorPosition(input, cursorPosition + offset);
 	}
 
 	updated(changedProperties) {

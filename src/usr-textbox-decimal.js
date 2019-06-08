@@ -36,7 +36,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		
 		this.decimalSeparatorIndexInOldValue = -1;
   }
-/*
+
 	onFocus(event) {
 		super.onFocus(event);
 		this.value = this._removeThousandSeparators(this.value);
@@ -46,17 +46,9 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		this.value = this._addThousandSeparators(this.value);
     super.onBlur(event);
 	}
-*/
+
 	attributeChangedCallback(name, oldValue, newValue) {
 		this[name] = newValue;
-
-		if (name == 'value') {
-			if (oldValue) {
-				this.decimalSeparatorIndexInOldValue = oldValue.indexOf(this.decimalseparator);
-			} else {
-				this.decimalSeparatorIndexInOldValue = -1;
-			} 
-		}
 	}
 
 	_addThousandSeparators(val) {
@@ -100,19 +92,24 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
 				if (c == this.decimalseparator && 
-					((this.decimalSeparatorIndexInOldValue == decimalSeparatorIndexInNewValue && 
+					(this.decimalSeparatorIndexInOldValue == -1 ||
+					(this.decimalSeparatorIndexInOldValue == decimalSeparatorIndexInNewValue && 
 						this.decimalSeparatorIndexInOldValue == i) ||
 					(this.decimalSeparatorIndexInOldValue + 1 == decimalSeparatorIndexInNewValue && 
 						this.decimalSeparatorIndexInOldValue + 1 == i) ||
+					(this.decimalSeparatorIndexInOldValue - 1 == decimalSeparatorIndexInNewValue && 
+						this.decimalSeparatorIndexInOldValue - 1 == i) ||
 					(this.decimalSeparatorIndexInOldValue > decimalSeparatorIndexInNewValue && 
 						this.decimalSeparatorIndexInOldValue + 1 == i))) {
-					result += c;
+						this.decimalSeparatorIndexInOldValue = i;
+						result += c;
 				} else if (i == 0 && (c == '+' || c == '-')) {
 					result += c;
 				} else if (digits.includes(c)) {
 					result += c;
 				}
 			}
+			this.decimalSeparatorIndexInOldValue = result.indexOf(this.decimalseparator);
 			return result;
 		}
 		return val;
