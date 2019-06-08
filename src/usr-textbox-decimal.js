@@ -39,12 +39,18 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 
 	onFocus(event) {
 		super.onFocus(event);
-		this.value = this._removeThousandSeparators(this.value);
+
+		let value = event.target.value;
+		this.value = this._removeThousandSeparators(value);
+		this.requestUpdate('value', value);
   }
 
   onBlur(event) {
-		this.value = this._addThousandSeparators(this.value);
-    super.onBlur(event);
+		super.onBlur(event);
+
+		let value = event.target.value;
+		this.value = this._addThousandSeparators(value);
+		this.requestUpdate('value', value);
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -62,7 +68,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 			}
 
 			let result = '';
-			let indexOfDecimalSeparator = val.indexOf;
+			let indexOfDecimalSeparator = val.indexOf(this.decimalseparator);
 			let hasSign = val.startsWith('+') || val.startsWith('-');
 			let indexToStop = hasSign ? 3 : 2;
 			for (let i = val.length - 1; i > indexToStop; i--) {
@@ -73,7 +79,9 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 					result = c + result;
 				}
 			}
+			return result;
 		}
+		return val;
 	}
 
 	_removeThousandSeparators(val) {
