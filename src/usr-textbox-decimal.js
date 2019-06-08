@@ -1,22 +1,26 @@
-import { UsrTextboxInteger} from './usr-textbox-integer';
+import { UsrTextboxInteger } from './usr-textbox-integer';
 
 export class UsrTextboxDecimal extends UsrTextboxInteger {
 	static get properties() {
 		return {
-			decimalLength: { 
+			...super.properties,
+			decimallength: { 
 				type: Number,
+				reflect: true,
 				hasChanged: (newVal, oldVal) => {
           return newVal != oldVal; 
         } 
 			},
-			decimalSeparator: { 
+			decimalseparator: { 
 				type: String,
+				reflect: true,
 				hasChanged: (newVal, oldVal) => {
           return newVal != oldVal; 
 				} 
 			},
-			thousandSeparator: { 
+			thousandseparator: { 
 				type: String,
+				reflect: true,
 				hasChanged: (newVal, oldVal) => {
           return newVal != oldVal; 
 				} 
@@ -26,11 +30,13 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 
 	constructor() {
 		super();
-		this.decimalLength = null;
-		this.decimalSeparator = null;
-		this.thousandSeparator = null;
-  }
+		this.decimallength = null;
+		this.decimalseparator = null;
+		this.thousandseparator = null;
 		
+		this.decimalSeparatorIndexInOldValue = -1;
+  }
+/*
 	onFocus(event) {
 		super.onFocus(event);
 		this.value = this._removeThousandSeparators(this.value);
@@ -40,18 +46,26 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		this.value = this._addThousandSeparators(this.value);
     super.onBlur(event);
 	}
-	
+*/
 	attributeChangedCallback(name, oldValue, newValue) {
-    this[name] = newValue;
+		this[name] = newValue;
+
+		if (name == 'value') {
+			if (oldValue) {
+				this.decimalSeparatorIndexInOldValue = oldValue.indexOf(this.decimalseparator);
+			} else {
+				this.decimalSeparatorIndexInOldValue = -1;
+			} 
+		}
 	}
-	
+
 	_addThousandSeparators(val) {
 		if (val) {
 			if (val.endsWith('.')) {
-				if (this.decimalLength == null) {
+				if (this.decimallength == null) {
 					val = val + '0';
 				} else {
-					val = val + '0'.repeat(parseInt(this.decimalLength));
+					val = val + '0'.repeat(parseInt(this.decimallength));
 				}
 			}
 
@@ -62,7 +76,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 			for (let i = val.length - 1; i > indexToStop; i--) {
 				let c = val[i];
 				if ((indexOfDecimalSeparator - i + 1) % 3 == 1) {
-					result = this.thousandSeparator + c + result;
+					result = this.thousandseparator + c + result;
 				} else {
 					result = c + result;
 				}
@@ -72,22 +86,27 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 
 	_removeThousandSeparators(val) {
 		if (val) {
-			return val.split(this.thousandSeparator).join('');
+			return val.split(this.thousandseparator).join('');
 		} else {
 			return val;
 		}
 	}
 
 	_removeNonDigit(val) {
-		if (val) {
+		if (val && this.decimalseparator != null && this.decimalseparator != undefined) {
 			const digits = '0123456789';
 			let result = '';
-			let hasDecimalSeparator = false;
+			let decimalSeparatorIndexInNewValue = val.indexOf(this.decimalseparator);
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
-				if (!hasDecimalSeparator && c == this.decimalSeparator) {
+				if (c == this.decimalseparator && 
+					((this.decimalSeparatorIndexInOldValue == decimalSeparatorIndexInNewValue && 
+						this.decimalSeparatorIndexInOldValue == i) ||
+					(this.decimalSeparatorIndexInOldValue + 1 == decimalSeparatorIndexInNewValue && 
+						this.decimalSeparatorIndexInOldValue + 1 == i) ||
+					(this.decimalSeparatorIndexInOldValue > decimalSeparatorIndexInNewValue && 
+						this.decimalSeparatorIndexInOldValue + 1 == i))) {
 					result += c;
-					hasDecimalSeparator = true;
 				} else if (i == 0 && (c == '+' || c == '-')) {
 					result += c;
 				} else if (digits.includes(c)) {
