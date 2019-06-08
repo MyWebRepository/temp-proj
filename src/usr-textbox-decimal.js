@@ -67,19 +67,20 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 				}
 			}
 
-			let result = '';
+      let result = '';
 			let indexOfDecimalSeparator = val.indexOf(this.decimalseparator);
 			let hasSign = val.startsWith('+') || val.startsWith('-');
-			let indexToStop = hasSign ? 3 : 2;
-			for (let i = val.length - 1; i > indexToStop; i--) {
+			let indexToStop = hasSign ? 1 : 0;
+			for (let i = val.length - 1; i >= 0; i--) {
 				let c = val[i];
-				if ((indexOfDecimalSeparator - i + 1) % 3 == 1) {
+				if (indexOfDecimalSeparator > i && indexToStop < i && 
+					(indexOfDecimalSeparator - i + 1) % 3 == 1) {
 					result = this.thousandseparator + c + result;
 				} else {
 					result = c + result;
 				}
-			}
-			return result;
+      }
+      return result;
 		}
 		return val;
 	}
