@@ -1,4 +1,4 @@
-import { UsrTextbox} from './usr-textbox';
+import { UsrTextbox } from './usr-textbox';
 
 export class UsrTextboxPassword extends UsrTextbox {
 	constructor() {
