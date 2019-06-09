@@ -36,7 +36,8 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		this.decimalseparator = null;
 		this.thousandseparator = null;
     
-    // Non-observable
+    // Non-observables
+    this.actionFromInput = false;
 		this.decimalSeparatorIndexInOldValue = -1;
   }
 
@@ -53,9 +54,17 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
   updated(changedProperties) {
 		console.log('updated');
     console.log(this.value + ' 3');
-    this.shadowRoot.querySelector('input').value = this.value;
+    if (!this.actionFromInput) {
+      this.actionFromInput = false;
+      this.shadowRoot.querySelector('input').value = this.value;
+    }
   }
   
+  onInput(event) {
+    this.actionFromInput = true;
+    super.onInput(event);
+  }
+
 	onFocus(event) {
 		super.onFocus(event);
 
@@ -67,6 +76,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
   onBlur(event) {
 		super.onBlur(event);
 
+    this.actionFromInput = false;
 		let value = event.target.value;
 		this.value = this._addThousandSeparators(value);
 		this.requestUpdate('value', value);
