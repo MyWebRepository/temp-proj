@@ -42,7 +42,10 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
   }
 
 	attributeChangedCallback(name, oldValue, newValue) {
-		this[name] = newValue;
+    if (name == 'decimallength') 
+      this[name] = newValue ? parseInt(newValue) : 0;
+    else 
+      this[name] = newValue;
 	}
 
   firstUpdated() {
@@ -88,13 +91,21 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 
 	_addThousandSeparators(val) {
 		if (val) {
+      if (val.indexOf(this.decimalseparator) == -1) {
+        val += this.decimalseparator;
+      }
 			if (val.endsWith('.')) {
-				if (this.decimallength == null) {
+				if (this.decimallength == 0) {
 					val = val + '0';
 				} else {
-					val = val + '0'.repeat(parseInt(this.decimallength));
+					val = val + '0'.repeat(this.decimallength);
 				}
-			}
+      }
+      if (val.endsWith(this.decimalseparator + '0')) {
+        val += '0';
+      }
+
+      val = this._round(val);
 
       let result = '';
 			let indexOfDecimalSeparator = val.indexOf(this.decimalseparator);
@@ -113,6 +124,10 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		}
 		return val;
 	}
+
+  _round(val) {
+    return String(parseFloat(val).toFixed(this.decimallength));
+  }
 
 	_removeThousandSeparators(val) {
 		if (val) {
