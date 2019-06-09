@@ -106,6 +106,7 @@ export class UsrTextbox extends LitElement {
       bubbles: false, 
       composed: false 
     });
+    this.inputType = 'text';
 
     this.updateComplete.then(() => {
       console.log("updatecomplete");
@@ -145,7 +146,8 @@ export class UsrTextbox extends LitElement {
         <div class="slot-container">
           <slot></slot>
         </div>
-        <input type="text"
+        <input 
+          type="${this.inputType}"
           value="${this.value}"
           @input="${this.onInput}"
           @focus="${this.onFocus}"

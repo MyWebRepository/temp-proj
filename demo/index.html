@@ -26,8 +26,9 @@
     </script>
 
     <!--<script type="module" src="../src/usr-textbox.js"></script>
-    <script type="module" src="../src/usr-textbox-integer.js"></script>-->
-    <script type="module" src="../src/usr-textbox-decimal.js"></script>
+    <script type="module" src="../src/usr-textbox-integer.js"></script>
+    <script type="module" src="../src/usr-textbox-decimal.js"></script>-->
+    <script type="module" src="../src/usr-textbox-password.js"></script>
 
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -36,10 +37,13 @@
   </head>
   <body>
     <div>
-        <usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
+        <usr-textbox-password class="usr-slot-before">
+            <span style="visibility:hidden; position: relative; top: 2px" class="glyphicon glyphicon-envelope"></span>
+        </usr-textbox-password>
+        <!--<usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
             <span style="visibility:hidden">$</span>
         </usr-textbox-decimal>
-        <!--<usr-textbox-integer class="usr-slot-before" value="123">
+        <usr-textbox-integer class="usr-slot-before" value="123">
             <span style="visibility:hidden">Year</span>
         </usr-textbox-integer>
         <usr-textbox class="usr-slot-before" value="1234.32" required>
