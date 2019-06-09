@@ -29,14 +29,34 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 	}
 
 	constructor() {
-		super();
+    super();
+    
+    // Observables
 		this.decimallength = null;
 		this.decimalseparator = null;
 		this.thousandseparator = null;
-		
+    
+    // Non-observable
 		this.decimalSeparatorIndexInOldValue = -1;
   }
 
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		this[name] = newValue;
+	}
+
+  firstUpdated() {
+    console.log("firstUpdated 3");
+    let value = this.value;
+    this.value = this._addThousandSeparators(value);
+  }
+
+  updated(changedProperties) {
+		console.log('updated');
+    console.log(this.value + ' 3');
+    this.shadowRoot.querySelector('input').value = this.value;
+  }
+  
 	onFocus(event) {
 		super.onFocus(event);
 
@@ -51,17 +71,11 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		let value = event.target.value;
 		this.value = this._addThousandSeparators(value);
 		this.requestUpdate('value', value);
-	}
+  }
 
-	attributeChangedCallback(name, oldValue, newValue) {
-		this[name] = newValue;
-	}
-
-  updated(changedProperties) {
-		console.log('updated');
-    console.log(this.value + ' 3');
-    this.shadowRoot.querySelector('input').value = this.value;
-	}
+  get rawValue() {
+    return this._removeThousandSeparators(this.value);
+  }
 
 	_addThousandSeparators(val) {
 		if (val) {
