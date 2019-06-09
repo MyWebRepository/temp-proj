@@ -28,6 +28,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 	updated(changedProperties) {
 		console.log('updated');
+		console.log(this.value + ' 2');
 	}
 
 	set value(val) {

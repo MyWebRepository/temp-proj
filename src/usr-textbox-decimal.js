@@ -57,6 +57,12 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		this[name] = newValue;
 	}
 
+  updated(changedProperties) {
+		console.log('updated');
+    console.log(this.value + ' 3');
+    this.shadowRoot.querySelector('input').value = this.value;
+	}
+
 	_addThousandSeparators(val) {
 		if (val) {
 			if (val.endsWith('.')) {

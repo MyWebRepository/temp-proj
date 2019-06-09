@@ -139,7 +139,7 @@ export class UsrTextbox extends LitElement {
 
   render () {
     console.log("render");
-    console.log(this.value);
+    console.log(this.value + ' 1');
     return html`
       <div class="container">
         <div class="slot-container">
