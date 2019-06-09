@@ -40,7 +40,6 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 		this.decimalSeparatorIndexInOldValue = -1;
   }
 
-
 	attributeChangedCallback(name, oldValue, newValue) {
 		this[name] = newValue;
 	}
@@ -74,7 +73,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
   }
 
   get rawValue() {
-    return this._removeThousandSeparators(this.value);
+    return parseFloat(this._removeThousandSeparators(this.value));
   }
 
 	_addThousandSeparators(val) {
