@@ -4,6 +4,10 @@ export class UsrTextboxPassword extends UsrTextbox {
 	constructor() {
     super();
     this.inputType = 'password';
+  }
+  
+  _matches(val) { 
+    return true;
 	}
 }
 

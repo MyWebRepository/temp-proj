@@ -1,6 +1,6 @@
-import { UsrTextbox } from './usr-textbox';
+import { UsrTextboxInteger } from './usr-textbox-integer';
 
-export class UsrTextboxTelephone extends UsrTextbox {
+export class UsrTextboxTelephone extends UsrTextboxInteger {
   static get properties() {
     return {
       ...super.properties,
@@ -10,7 +10,7 @@ export class UsrTextboxTelephone extends UsrTextbox {
 
 	constructor() {
     super();
-    this.format = '(###) ###-####';
+    this.format = ''; // '(###) ###-####';
   }
   
   attributeChangedCallback(name, oldValue, newValue) {
@@ -24,6 +24,22 @@ export class UsrTextboxTelephone extends UsrTextbox {
     }
   }
 
+  _extractDelimiters(val) {
+    if (val) {
+      let result = '';
+      for (let c of val) {
+        if (c != '#' && !result.includes(c)) {
+          result += c;
+        }
+      }
+    }
+
+    return val;
+  }
+
+  _matches(val) { 
+    return true;
+	}
 }
 
 window.customElements.define('usr-textbox-telephone', UsrTextboxTelephone);

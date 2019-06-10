@@ -4,6 +4,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 	constructor() {
 		super();
 		this._value = null;
+		this._digits = '0123456789';
 	}
 
 	onInput(event) {
@@ -54,13 +55,12 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 	_removeNonDigit(val) {
 		if (val) {
-			const digits = '0123456789';
 			let result = '';
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
 				if (i == 0 && (c == '+' || c == '-')) {
 					result += c;
-				} else if (digits.includes(c)) {
+				} else if (this._digits.includes(c)) {
 					result += c;
 				}
 			}
