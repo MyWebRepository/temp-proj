@@ -13,7 +13,7 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
 
     // Observables
     this.value = null; 
-    this.format = null; // '(###) ###-####';
+    this.format = null;
 
     // Non-observable
     this.actionFromInput = false;
@@ -21,10 +21,6 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
   
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
-
-    //if (name = 'value' && newValue == null) {
-    //  this[name] = '';
-    //}
   }
 
   firstUpdated() {
@@ -77,7 +73,7 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
         let c = this.format[i];
         if (c != '#') {
           result += c;
-        } else if (i < val.length) {
+        } else if (index < val.length) {
           result += val[index];
           index++;
         }
@@ -95,7 +91,7 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
 
       for (let c of val) {
         if (this._digits.includes(c)) {
-          reuslt += c;
+          result += c;
         }
       }
 
@@ -120,7 +116,7 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
             return false;
         }
       }
-      
+
       return true;
     }
   }
