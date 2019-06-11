@@ -56,16 +56,20 @@ export class UsrTextboxInteger extends UsrTextbox {
 	_removeNonDigit(val) {
 		if (val) {
 			let result = '';
+
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
+
 				if (i == 0 && (c == '+' || c == '-')) {
 					result += c;
 				} else if (this._digits.includes(c)) {
 					result += c;
 				}
 			}
+
 			return result;
 		}
+		
 		return val;
 	}
 

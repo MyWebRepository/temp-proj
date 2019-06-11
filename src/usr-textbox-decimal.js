@@ -111,17 +111,21 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 			let indexOfDecimalSeparator = val.indexOf(this.decimalseparator);
 			let hasSign = val.startsWith('+') || val.startsWith('-');
 			let indexToStop = hasSign ? 1 : 0;
+
 			for (let i = val.length - 1; i >= 0; i--) {
 				let c = val[i];
+				
 				if (indexOfDecimalSeparator > i && indexToStop < i && 
 					(indexOfDecimalSeparator - i + 1) % 3 == 1) {
 					result = this.thousandseparator + c + result;
 				} else {
 					result = c + result;
 				}
-      }
+			}
+			
       return result;
 		}
+
 		return val;
 	}
 
@@ -142,8 +146,10 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 			const digits = '0123456789';
 			let result = '';
 			let decimalSeparatorIndexInNewValue = val.indexOf(this.decimalseparator);
+			
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
+
 				if (c == this.decimalseparator && 
 					(this.decimalSeparatorIndexInOldValue == -1 ||
 					(this.decimalSeparatorIndexInOldValue == decimalSeparatorIndexInNewValue && 
@@ -163,8 +169,10 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 				}
 			}
 			this.decimalSeparatorIndexInOldValue = result.indexOf(this.decimalseparator);
+			
 			return result;
 		}
+
 		return val;
 	}
 }

@@ -27,9 +27,9 @@
 
     <!--<script type="module" src="../src/usr-textbox.js"></script>
     <script type="module" src="../src/usr-textbox-integer.js"></script>
-    <script type="module" src="../src/usr-textbox-decimal.js"></script>-->
-    <script type="module" src="../src/usr-textbox-password.js"></script>
-
+    <script type="module" src="../src/usr-textbox-decimal.js"></script>
+    <script type="module" src="../src/usr-textbox-password.js"></script>-->
+    <script type="module" src="../src/usr-textbox-telephone.js"></script>
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
@@ -37,10 +37,13 @@
   </head>
   <body>
     <div>
-        <usr-textbox-password class="usr-slot-before">
+        <usr-textbox-telephone class="usr-slot-before" value="1111111111" format="(###) ###-####">
+          <span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-phone"></span>
+        </usr-textbox-telephone>
+        <!--<usr-textbox-password class="usr-slot-before">
             <span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-lock"></span>
         </usr-textbox-password>
-        <!--<usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
+        <usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
             <span style="visibility:hidden">$</span>
         </usr-textbox-decimal>
         <usr-textbox-integer class="usr-slot-before" value="123">
