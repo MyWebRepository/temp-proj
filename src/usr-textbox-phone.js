@@ -21,12 +21,6 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
-    /*if (name == 'value') {
-      let val = this._removeDelimiters(newValue);
-      this[name] = this._addDelimiters(val);
-    } else {
-      this[name] = newValue;
-    }*/
   }
 
   firstUpdated() {

@@ -294,4 +294,4 @@ export class UsrTextbox extends LitElement {
   }
 }
 
-//window.customElements.define('usr-textbox', UsrTextbox);
+window.customElements.define('usr-textbox', UsrTextbox);
