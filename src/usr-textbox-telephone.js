@@ -26,6 +26,7 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
   firstUpdated() {
     console.log("firstUpdated 3");
     let value = this.value;
+    value = this._removeDelimiters(value);
     this.value = this._addDelimiters(value);
   }
 
@@ -101,24 +102,23 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
     return '';
   }
 
+  _noValidation() {
+    return this.required == null && this.format == null && this.minlength == null;
+  }
+
   _matches(val) { 
     if (this.format == null && this.format == '') return true;
-    return _matchesFormat(val);
+    return this._matchesFormat(val);
   }
   
   _matchesFormat(val) {
-    if (this.format.length != val.length) {
-      return true;
-    } else {
-      for (let i = 0; i < this.format.length; i++) {
-        if (!(this.format[i] == val[i] || 
-          (this.format[i] == '#' && !isNaN(parseInt(val[i]))))) {
-            return false;
-        }
-      }
+    if (!val) {
+      return false;
+    } 
 
-      return true;
-    }
+    val = this._removeDelimiters(val);
+    let length = this.format.split('').filter(i => i == '#').length;
+    return  length == val.length;
   }
 }
 

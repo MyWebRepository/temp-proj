@@ -180,17 +180,17 @@ export class UsrTextbox extends LitElement {
   }
 
   _exists(val) {
-    if (this.required == null) return true;
+    if (this.required == null || this.required == '') return true;
     return val != null && val.trim() != '';
   }
 
   _matches(val) {
-    if (this.pattern == null) return true;
+    if (this.pattern == null || this.pattern == '') return true;
     return (new RegExp(this.pattern)).test(val);
   }
 
   _longEnough(val) {
-    if (this.minlength == null) return true;
+    if (this.minlength == null || this.minlength == '') return true;
     return val.length >= this.minlength;
   }
 
@@ -250,8 +250,8 @@ export class UsrTextbox extends LitElement {
       if (classList.contains('usr-valid')) {
         classList.replace('usr-valid', 'usr-invalid');
         this.validity.valid = false;
-        this.validity.erros.required = !exists;
-        this.validity.erros.pattern = !matches;
+        this.validity.errors.required = !exists;
+        this.validity.errors.pattern = !matches;
         this.validity.errors.minlength = !longEnough;
         this.validationEvent.detail.message = 'invalid';
         this.dispatchEvent(this.validationEvent);
