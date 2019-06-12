@@ -21,18 +21,21 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
+    /*if (name == 'value') {
+      let val = this._removeDelimiters(newValue);
+      this[name] = this._addDelimiters(val);
+    } else {
+      this[name] = newValue;
+    }*/
   }
 
   firstUpdated() {
-    console.log("firstUpdated 3");
     let value = this.value;
     value = this._removeDelimiters(value);
     this.value = this._addDelimiters(value);
   }
 
   updated(changedProperties) {
-		console.log('updated');
-    console.log(this.value + ' 3');
     if (!this.actionFromInput) {
       this.actionFromInput = false;
       this.shadowRoot.querySelector('input').value = this.value;
@@ -61,6 +64,20 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 		this.requestUpdate('value', value);
   }
 
+/*
+  set value(val) {
+		let oldVal = this._value;
+    //val = this._removeDelimiters(val);
+    //this._value = this._addDelimiters(val);
+
+    //this._value = val;
+    this.requestUpdate('value', oldVal);
+	}
+
+	get value() {
+		return this._value;
+  }
+*/
   get rawValue() {
     return this._removeDelimiters(this.value);
   }

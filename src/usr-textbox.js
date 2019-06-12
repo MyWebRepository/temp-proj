@@ -130,6 +130,14 @@ export class UsrTextbox extends LitElement {
     this.shadowRoot.host.classList.remove('usr-focus');
   }
 
+  focus() {
+    this.shadowRoot.querySelector('input').focus();
+  }
+
+  blur() {
+    this.shadowRoot.querySelector('input').blur();
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
   }
