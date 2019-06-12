@@ -75,7 +75,8 @@ export class UsrTextbox extends LitElement {
       required: { type: String },
       pattern: { type: String },
       minlength: { type: Number },
-      maxlength: { type: Number }
+      maxlength: { type: Number },
+      placeholder: { type: String }
     };
   }
 
@@ -91,6 +92,7 @@ export class UsrTextbox extends LitElement {
     this.pattern = null;
     this.maxlength = null;
     this.minlength = null;
+    this.placeholder = '';
 
     // Non-observables
     this.validity = {
@@ -156,6 +158,7 @@ export class UsrTextbox extends LitElement {
         </div>
         <input 
           type="${this.inputType}"
+          placeholder="${this.placeholder}"
           value="${this.value}"
           @input="${this.onInput}"
           @focus="${this.onFocus}"
