@@ -10,7 +10,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 	onInput(event) {
 		let cursorPosition = this._getCursorPosition(event);
 		let value = event.target.value;
-		this.value = event.target.value = this._removeNonDigit(value);
+		this.value = event.target.value = this._removeNonDigits(value);
 
 		super.onInput(event);
 
@@ -34,7 +34,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 	set value(val) {
 		let oldVal = this._value;
-		this._value = this._removeNonDigit(val);
+		this._value = this._removeNonDigits(val);
 		this.requestUpdate('value', oldVal);
 	}
 
@@ -53,7 +53,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 		element.setSelectionRange(positon, positon);
 	}
 
-	_removeNonDigit(val) {
+	_removeNonDigits(val) {
 		if (val) {
 			let result = '';
 
