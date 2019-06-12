@@ -1,6 +1,6 @@
 import { UsrTextboxInteger } from './usr-textbox-integer';
 
-export class UsrTextboxTelephone extends UsrTextboxInteger {
+export class UsrTextboxPhone extends UsrTextboxInteger {
   static get properties() {
     return {
       ...super.properties,
@@ -122,4 +122,4 @@ export class UsrTextboxTelephone extends UsrTextboxInteger {
   }
 }
 
-window.customElements.define('usr-textbox-telephone', UsrTextboxTelephone);
+window.customElements.define('usr-textbox-phone', UsrTextboxPhone);
