@@ -186,6 +186,12 @@ export class UsrTextbox extends LitElement {
     }
   }
 
+  set eventTrigger(name) {
+    this[name] = (name) => {
+      this.shadowRoot.querySelector('input')[name]();
+    };
+  }
+  
   _noValidation() {
     return this.required == null && this.pattern == null && this.minlength == null;
   }
