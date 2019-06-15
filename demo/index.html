@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <style>
-      usr-textbox, usr-textbox-integer {
+      usr-textbox, usr-textbox-integer, usr-picker-time {
         --usr-icon-color: blue;
         --usr-icon-font-size: 20px;
         --usr-text-font-size: 20px;
@@ -28,8 +28,10 @@
     <!--<script type="module" src="../src/usr-textbox.js"></script>
     <script type="module" src="../src/usr-textbox-integer.js"></script>
     <script type="module" src="../src/usr-textbox-decimal.js"></script>
-    <script type="module" src="../src/usr-textbox-password.js"></script>-->
-    <script type="module" src="../src/usr-textbox-phone.js"></script>
+    <script type="module" src="../src/usr-textbox-password.js"></script>
+    <script type="module" src="../src/usr-textbox-phone.js"></script>-->
+    <script type="module" src="../src/usr-picker-time.js">
+    </script>
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
@@ -37,10 +39,13 @@
   </head>
   <body>
     <div>
-        <usr-textbox-phone class="usr-slot-before" placeholder="Phone number" value="1111111111" format="(###) ###-####">
+        <usr-picker-time class="width:200px;" value="">
+          <span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-phone"></span>
+        </usr-picker-time>
+        <!--<usr-textbox-phone class="usr-slot-before" placeholder="Phone number" value="1111111111" format="(###) ###-####">
           <span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-phone"></span>
         </usr-textbox-phone>
-        <!--<usr-textbox-password class="usr-slot-before">
+        <usr-textbox-password class="usr-slot-before">
             <span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-lock"></span>
         </usr-textbox-password>
         <usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
