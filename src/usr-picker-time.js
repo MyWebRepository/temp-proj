@@ -57,7 +57,7 @@ export class UsrPickerTime extends LitElement {
       }`,
       css`.time-container span {
         align-self: center;
-        margin-left: 0.2em;
+        margin-left: 0.18em;
         margin-right: 0.3em;
       }`
     ];
@@ -68,19 +68,31 @@ export class UsrPickerTime extends LitElement {
       value: { type: String },
       hour: { type: String },
       minute: { type: String },
-      second: { type: String }
+      second: { type: String },
+      readonly: { type: String },
+      disabled: { type: String },
     }
   }
   
   constructor() {
     super();
 
-    this.value = null;
     this.hour = '00';
     this.minute = '00';
     this.second = '00';
+    this.value = null;
+    this.readonly = null;
+    this.disabled = null;
+
+    this.updateComplete.then(() => {
+      this._setAttributes();
+    });
   }
   
+  attributeChangedCallback(name, oldValue, newValue) {
+    this[name] = newValue;
+  }
+
   render () {
     return html`
       <div class="container">
@@ -88,14 +100,47 @@ export class UsrPickerTime extends LitElement {
           <slot></slot>
         </div>
         <div class="time-container"> 
-          <input type="text" value="${this.hour}" minlength="2" maxlength="2">
+          <input id="hour" type="text" value="${this.hour}" minlength="2" maxlength="2">
           <span>:</span>
-          <input type="text" value="${this.minute}" minlength="2" maxlength="2">
+          <input id="minute" type="text" value="${this.minute}" minlength="2" maxlength="2">
+          <span>:</span>
+          <input id="second" type="text" value="${this.second}" minlength="2" maxlength="2">
           <span>&nbsp;</span>
-          <input type="text" value="${this.second}" minlength="2" maxlength="2">
+          <select id="type">
+            <option value='--'>--</option>
+            <option value='AM'>AM</option>
+            <option value='PM'>PM</option>
+          </select>
         </div>
       </div>
     `;
+  }
+
+  _setClasses() {
+  
+  }
+  
+  _setAttributes() {
+    if (this.disabled == '' || this.readonly == '') {
+      let hourInput = this.shadowRoot.querySelector('#hour');
+      let minuteInput = this.shadowRoot.querySelector('#minute');
+      let secondInput = this.shadowRoot.querySelector('#second');
+      let typeDDL = this.shadowRoot.querySelector('#type');
+
+      if (this.disabled == '') {
+        hourInput.setAttribute('disabled', '');
+        minuteInput.setAttribute('disabled', '');
+        secondInput.setAttribute('disabled', '');
+        typeDDL.setAttribute('disabled', '');
+      }
+
+      if (this.readonly == '') {
+        hourInput.setAttribute('readonly', '');
+        minuteInput.setAttribute('readonly', '');
+        secondInput.setAttribute('readonly', '');
+        typeDDL.setAttribute('readonly', '');
+      }
+    }
   }
 }
 
