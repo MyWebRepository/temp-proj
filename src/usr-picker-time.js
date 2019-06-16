@@ -41,11 +41,17 @@ export class UsrPickerTime extends LitElement {
         font-size: var(--usr-text-font-size, 14px);
         text-align: var(--usr-text-align, left);
       }`,
+      css`select {
+        padding: 1px 1px 1px 0px;
+        border-style: none;
+        outline: 0px;
+        font-size: var(--usr-text-font-size, 14px);
+        text-align: var(--usr-text-align, left);
+      }`,
       css`.container {
         display: flex;
         flex-direction: row;
         overflow: hidden;
-        border: solid 1px black; 
       }`,
       css`.slot-container {
         align-self: center;
@@ -66,9 +72,9 @@ export class UsrPickerTime extends LitElement {
   static get properties() {
     return {
       value: { type: String },
-      hour: { type: String },
+      /*hour: { type: String },
       minute: { type: String },
-      second: { type: String },
+      second: { type: String },*/
       readonly: { type: String },
       disabled: { type: String },
     }
@@ -80,6 +86,7 @@ export class UsrPickerTime extends LitElement {
     this.hour = '00';
     this.minute = '00';
     this.second = '00';
+    this.system = '--';
     this.value = null;
     this.readonly = null;
     this.disabled = null;
@@ -91,6 +98,16 @@ export class UsrPickerTime extends LitElement {
   
   attributeChangedCallback(name, oldValue, newValue) {
     this[name] = newValue;
+    
+    if (name == 'value') {
+      let val = newValue;
+      let [hour, minute, second, system] = val.replace(/ /g, ':').split(':');
+      
+      this.system = this._systemValid(system) ? system : '--';
+      this.hour = this._hourValid(system, hour) ? hour : '00';
+      this.minute = this._minuteValid(system, minute) ? minute : '00';
+      this.second = this._secondValid(system, second) ? second : '00';
+    }
   }
 
   render () {
@@ -106,7 +123,7 @@ export class UsrPickerTime extends LitElement {
           <span>:</span>
           <input id="second" type="text" value="${this.second}" minlength="2" maxlength="2">
           <span>&nbsp;</span>
-          <select id="type">
+          <select id="system">
             <option value='--'>--</option>
             <option value='AM'>AM</option>
             <option value='PM'>PM</option>
@@ -131,15 +148,59 @@ export class UsrPickerTime extends LitElement {
         hourInput.setAttribute('disabled', '');
         minuteInput.setAttribute('disabled', '');
         secondInput.setAttribute('disabled', '');
-        typeDDL.setAttribute('disabled', '');
+        systemDDL.setAttribute('disabled', '');
       }
 
       if (this.readonly == '') {
         hourInput.setAttribute('readonly', '');
         minuteInput.setAttribute('readonly', '');
         secondInput.setAttribute('readonly', '');
-        typeDDL.setAttribute('readonly', '');
+        systemDDL.setAttribute('readonly', '');
       }
+    }
+  }
+
+  _systemValid(system) {
+    return (['--', 'AM', 'am', 'PM', 'pm'].includes(system)) ;
+  }
+
+  _hourValid(system, hour) {
+    if (!this._systemValid(system)) {
+      return false;
+    }
+
+    if (!isNaN(hour)) {
+      if (system == '--') {
+        return parseInt(hour) >= 0 && parseInt(hour) <= 23;
+      } else {
+        return parseInt(hour) >= 0 && parseInt(hour) <= 11;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  _minuteValid(system, minute) {
+    if (!this._systemValid(system)) {
+      return false;
+    }
+
+    if (!isNaN(minute)) {
+        return parseInt(minute) >= 0 && parseInt(minute) <= 59;
+    } else {
+      return false;
+    }
+  }
+
+  _secondValid(system, second) {
+    if (!this._systemValid(system)) {
+      return false;
+    }
+
+    if (!isNaN(second)) {
+        return parseInt(second) >= 0 && parseInt(second) <= 59;
+    } else {
+      return false;
     }
   }
 }
