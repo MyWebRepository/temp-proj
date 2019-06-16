@@ -107,6 +107,11 @@ export class UsrPickerTime extends LitElement {
       this.hour = this._hourValid(system, hour) ? hour : '00';
       this.minute = this._minuteValid(system, minute) ? minute : '00';
       this.second = this._secondValid(system, second) ? second : '00';
+
+      if (!this._systemValid(system) || !this._hourValid(system, hour) || 
+        !this._minuteValid(system, minute) || !this._secondValid(system, second)) {
+        console.error('Time input is not in correct format.');
+      }
     }
   }
 
@@ -117,13 +122,13 @@ export class UsrPickerTime extends LitElement {
           <slot></slot>
         </div>
         <div class="time-container"> 
-          <input id="hour" type="text" value="${this.hour}" minlength="2" maxlength="2">
+          <input id="hour" type="text" value="${this.hour}" @input="${onHourInput}" minlength="2" maxlength="2">
           <span>:</span>
-          <input id="minute" type="text" value="${this.minute}" minlength="2" maxlength="2">
+          <input id="minute" type="text" value="${this.minute}" @input="${onMinuteInput}" minlength="2" maxlength="2">
           <span>:</span>
-          <input id="second" type="text" value="${this.second}" minlength="2" maxlength="2">
+          <input id="second" type="text" value="${this.second}" @input="${onSecondInput}" minlength="2" maxlength="2">
           <span>&nbsp;</span>
-          <select id="system">
+          <select id="system" @change="${this.onChange}">
             <option value='--'>--</option>
             <option value='AM'>AM</option>
             <option value='PM'>PM</option>
@@ -131,6 +136,31 @@ export class UsrPickerTime extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  onChange(event) {
+    let oldSystem = this.system;
+    this.system = event.target.value;
+
+    if (oldSystem == '--') {
+      let hour = parseInt(this.hour);
+      if (hour >= 12) {
+        this.hour = `0${String(hour - 12)}`;
+        this.requestUpdate();
+      }
+    }
+  }
+
+  onHourInput(event) {
+
+  }
+
+  onMinuteInput(event) {
+
+  }
+
+  onSecondInput() {
+
   }
 
   _setClasses() {
@@ -142,7 +172,7 @@ export class UsrPickerTime extends LitElement {
       let hourInput = this.shadowRoot.querySelector('#hour');
       let minuteInput = this.shadowRoot.querySelector('#minute');
       let secondInput = this.shadowRoot.querySelector('#second');
-      let typeDDL = this.shadowRoot.querySelector('#type');
+      let systemDDL = this.shadowRoot.querySelector('#type');
 
       if (this.disabled == '') {
         hourInput.setAttribute('disabled', '');
