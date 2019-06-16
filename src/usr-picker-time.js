@@ -83,13 +83,17 @@ export class UsrPickerTime extends LitElement {
   constructor() {
     super();
 
+    // Observales
+    this.value = null;
+    this.readonly = null;
+    this.disabled = null;
+
+    // Non-observables
     this.hour = '00';
     this.minute = '00';
     this.second = '00';
     this.system = '--';
-    this.value = null;
-    this.readonly = null;
-    this.disabled = null;
+    this.inputId = 'hour';
 
     this.updateComplete.then(() => {
       this._setAttributes();
@@ -122,11 +126,11 @@ export class UsrPickerTime extends LitElement {
           <slot></slot>
         </div>
         <div class="time-container"> 
-          <input id="hour" type="text" value="${this.hour}" @input="${onHourInput}" minlength="2" maxlength="2">
+          <input id="hour" type="text" value="${this.hour}" @input="${this.onInput}" minlength="2" maxlength="2">
           <span>:</span>
-          <input id="minute" type="text" value="${this.minute}" @input="${onMinuteInput}" minlength="2" maxlength="2">
+          <input id="minute" type="text" value="${this.minute}" @input="${this.onInput}" minlength="2" maxlength="2">
           <span>:</span>
-          <input id="second" type="text" value="${this.second}" @input="${onSecondInput}" minlength="2" maxlength="2">
+          <input id="second" type="text" value="${this.second}" @input="${this.onInput}" minlength="2" maxlength="2">
           <span>&nbsp;</span>
           <select id="system" @change="${this.onChange}">
             <option value='--'>--</option>
@@ -144,23 +148,63 @@ export class UsrPickerTime extends LitElement {
 
     if (oldSystem == '--') {
       let hour = parseInt(this.hour);
-      if (hour >= 12) {
+
+      if (hour >= 12 && hour < 22) {
         this.hour = `0${String(hour - 12)}`;
+        this.requestUpdate();
+      }
+      if (hour >= 22) {
+        this.hour = String(hour - 12);
         this.requestUpdate();
       }
     }
   }
 
-  onHourInput(event) {
-
+  onFocus(event) {
+    this.inputId = event.target.id;
   }
 
-  onMinuteInput(event) {
-
+  onBlur() {
+    this.inputId = event.target.id;
   }
 
-  onSecondInput() {
+  onInput(event) {
+    this.inputId = event.target.id;
+    let val = event.target.value;
+    let start = event.target.selectionStart;
 
+    switch(this.inputId) {
+      case 'hour':
+        if (!isNaN(val)) { 
+          if (this.system == '--') {
+            if (parseInt(val) >= 0 && parseInt(val) <= 23) {
+              event.target.value = val;
+              this.hour = val;
+            } else {
+              event.target.value = this.hour;
+            } 
+          }
+
+          if (this.system != '--') {
+            if (parseInt(val) >= 0 && parseInt(val) <= 11) {
+              event.target.value = val;
+              this.hour = val;
+            } else {
+              event.target.value = this.hour;
+            }
+          }
+        } else {
+          event.target.value = this.hour;
+        }
+        break;
+      case 'minute':
+      case 'second':
+
+    }
+
+    if (isNaN(val)) {
+      
+    }
   }
 
   _setClasses() {
@@ -216,7 +260,7 @@ export class UsrPickerTime extends LitElement {
     }
 
     if (!isNaN(minute)) {
-        return parseInt(minute) >= 0 && parseInt(minute) <= 59;
+      return parseInt(minute) >= 0 && parseInt(minute) <= 59;
     } else {
       return false;
     }
