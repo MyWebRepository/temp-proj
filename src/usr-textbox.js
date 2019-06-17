@@ -74,9 +74,22 @@ export class UsrTextbox extends LitElement {
       disabled: { type: String },
       required: { type: String },
       pattern: { type: String },
-      minlength: { type: Number },
-      maxlength: { type: Number },
-      placeholder: { type: String }
+      placeholder: { 
+        type: String,
+        reflect: true
+      },
+      minlength: { type: {
+          fromAttribute: attr => parseInt(attr),
+          toAttribute: prop => String(prop)
+        },
+        reflect: true
+      },
+      maxlength: { type: {
+          fromAttribute: attr => parseInt(attr),
+          toAttribute: prop => String(prop)
+        },
+        reflect: true
+      }
     };
   }
 
