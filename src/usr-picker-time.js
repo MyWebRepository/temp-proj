@@ -126,11 +126,35 @@ export class UsrPickerTime extends LitElement {
           <slot></slot>
         </div>
         <div class="time-container"> 
-          <input id="hour" type="text" value="${this.hour}" @input="${this.onInput}" minlength="2" maxlength="2">
+          <input 
+            id="hour" 
+            type="text" 
+            minlength="2" 
+            maxlength="2"
+            value="${this.hour}" 
+            @input="${this.onInput}" 
+            @focus="${this.onFocus}" 
+            @blur="${this.onBlur}">
           <span>:</span>
-          <input id="minute" type="text" value="${this.minute}" @input="${this.onInput}" minlength="2" maxlength="2">
+          <input 
+            id="minute" 
+            type="text" 
+            minlength="2" 
+            maxlength="2"
+            value="${this.minute}" 
+            @input="${this.onInput}" 
+            @focus="${this.onFocus}" 
+            @blur="${this.onBlur}">
           <span>:</span>
-          <input id="second" type="text" value="${this.second}" @input="${this.onInput}" minlength="2" maxlength="2">
+          <input 
+            id="second" 
+            type="text" 
+            minlength="2" 
+            maxlength="2"
+            value="${this.second}" 
+            @input="${this.onInput}" 
+            @focus="${this.onFocus}" 
+            @blur="${this.onBlur}">
           <span>&nbsp;</span>
           <select id="system" @change="${this.onChange}">
             <option value='--'>--</option>
@@ -149,11 +173,11 @@ export class UsrPickerTime extends LitElement {
     if (prevSystem == '--') {
       let hour = parseInt(this.hour);
 
-      if (hour >= 12 && hour < 22) {
+      if (hour >= 12 && hour < 24) {
         this.hour = `0${String(hour - 12)}`;
         this.requestUpdate();
       }
-      if (hour >= 22) {
+      if (hour >= 24) {
         this.hour = String(hour - 12);
         this.requestUpdate();
       }
@@ -162,10 +186,12 @@ export class UsrPickerTime extends LitElement {
 
   onFocus(event) {
     this.inputId = event.target.id;
+    event.target.style.backgroundColor = 'lightblue';
   }
 
-  onBlur() {
+  onBlur(event) {
     this.inputId = event.target.id;
+    event.target.style.backgroundColor = '';
   }
 
   onInput(event) {
