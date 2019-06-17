@@ -143,10 +143,10 @@ export class UsrPickerTime extends LitElement {
   }
 
   onChange(event) {
-    let oldSystem = this.system;
+    let prevSystem = this.system;
     this.system = event.target.value;
 
-    if (oldSystem == '--') {
+    if (prevSystem == '--') {
       let hour = parseInt(this.hour);
 
       if (hour >= 12 && hour < 22) {
@@ -170,41 +170,25 @@ export class UsrPickerTime extends LitElement {
 
   onInput(event) {
     this.inputId = event.target.id;
-    let val = event.target.value;
-    let start = event.target.selectionStart;
-
+    
     switch(this.inputId) {
       case 'hour':
-        if (!isNaN(val)) { 
-          if (this.system == '--') {
-            if (parseInt(val) >= 0 && parseInt(val) <= 23) {
-              event.target.value = val;
-              this.hour = val;
-            } else {
-              event.target.value = this.hour;
-            } 
-          }
-
-          if (this.system != '--') {
-            if (parseInt(val) >= 0 && parseInt(val) <= 11) {
-              event.target.value = val;
-              this.hour = val;
-            } else {
-              event.target.value = this.hour;
-            }
-          }
-        } else {
-          event.target.value = this.hour;
-        }
+        this._maskHour(event);
         break;
       case 'minute':
+        this._maskMinute(event);
+        break;
       case 'second':
-
+        this._maskSecond(event);
     }
+  }
 
-    if (isNaN(val)) {
-      
-    }
+  set value(val) {
+    this._value = val;
+  }
+
+  get value() {
+    return this._value;
   }
 
   _setClasses() {
@@ -260,7 +244,7 @@ export class UsrPickerTime extends LitElement {
     }
 
     if (!isNaN(minute)) {
-      return parseInt(minute) >= 0 && parseInt(minute) <= 59;
+      return parseInt(minute) >= 0 && parseInt(minute) < 60;
     } else {
       return false;
     }
@@ -272,9 +256,80 @@ export class UsrPickerTime extends LitElement {
     }
 
     if (!isNaN(second)) {
-        return parseInt(second) >= 0 && parseInt(second) <= 59;
+        return parseInt(second) >= 0 && parseInt(second) < 60;
     } else {
       return false;
+    }
+  }
+
+  _maskHour(event) {
+    const { value: val, selectionStart: start } = event.target;
+
+    if (val == '' || val == this.hour) {
+      this.hour = val;
+    }
+
+    if (val != '' && !isNaN(val)) { 
+      if (this.system == '--') {
+        if (parseInt(val) >= 0 && parseInt(val) < 24) {
+          this.hour = val;
+        } else {
+          event.target.value = this.hour;
+          event.target.setSelectionRange(start, start);
+        } 
+      }
+
+      if (this.system != '--') {
+        if (parseInt(val) >= 0 && parseInt(val) < 12) {
+          this.hour = val;
+        } else {
+          event.target.value = this.hour;
+          event.target.setSelectionRange(start, start);
+        }
+      }
+    } else {
+      event.target.value = this.hour;
+      event.target.setSelectionRange(start, start);
+    }
+  }
+
+  _maskMinute(event) {
+    const { value: val, selectionStart: start } = event.target;
+
+    if (val == '' || val == this.minute) {
+      this.minute = val;
+    }
+
+    if (val != '' && !isNaN(val)) { 
+      if (parseInt(val) >= 0 && parseInt(val) < 60) {
+        this.minute = val;
+      } else {
+        event.target.value = this.minute;
+        event.target.setSelectionRange(start, start);
+      } 
+    } else {
+      event.target.value = this.minute;
+      event.target.setSelectionRange(start, start);
+    }
+  }
+
+  _maskSecond(event) {
+    const { value: val, selectionStart: start } = event.target;
+
+    if (val == '' || val == this.second) {
+      this.second = val;
+    }
+
+    if (val != '' && !isNaN(val)) { 
+      if (parseInt(val) >= 0 && parseInt(val) < 60) {
+        this.second = val;
+      } else {
+        event.target.value = this.second;
+        event.target.setSelectionRange(start, start);
+      } 
+    } else {
+      event.target.value = this.second;
+      event.target.setSelectionRange(start, start);
     }
   }
 }
