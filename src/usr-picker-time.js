@@ -72,9 +72,6 @@ export class UsrPickerTime extends LitElement {
   static get properties() {
     return {
       value: { type: String },
-      /*hour: { type: String },
-      minute: { type: String },
-      second: { type: String },*/
       readonly: { type: String },
       disabled: { type: String },
     }
@@ -156,7 +153,11 @@ export class UsrPickerTime extends LitElement {
             @focus="${this.onFocus}" 
             @blur="${this.onBlur}">
           <span>&nbsp;</span>
-          <select id="system" @change="${this.onChange}">
+          <select 
+            id="system" 
+            @change="${this.onChange}"
+            @focus="${this.onFocus}" 
+            @blur="${this.onBlur}">
             <option value='--'>--</option>
             <option value='AM'>AM</option>
             <option value='PM'>PM</option>
@@ -172,26 +173,28 @@ export class UsrPickerTime extends LitElement {
 
     if (prevSystem == '--') {
       let hour = parseInt(this.hour);
-
-      if (hour >= 12 && hour < 24) {
+      
+      if (hour >= 12 && hour < 22) {
         this.hour = `0${String(hour - 12)}`;
-        this.requestUpdate();
+        this.shadowRoot.querySelector('#hour').value = this.hour;
       }
-      if (hour >= 24) {
+
+      if (hour >= 22) {
         this.hour = String(hour - 12);
-        this.requestUpdate();
+        this.shadowRoot.querySelector('#hour').value = this.hour;
       }
     }
   }
 
   onFocus(event) {
-    this.inputId = event.target.id;
     event.target.style.backgroundColor = 'lightblue';
+    this.shadowRoot.host.classList.add('usr-focus');
   }
 
   onBlur(event) {
-    this.inputId = event.target.id;
     event.target.style.backgroundColor = '';
+    this.shadowRoot.host.classList.remove('usr-focus');
+    this._formatValue(event);
   }
 
   onInput(event) {
@@ -357,6 +360,22 @@ export class UsrPickerTime extends LitElement {
       event.target.value = this.second;
       event.target.setSelectionRange(start, start);
     }
+  }
+
+  _formatValue(event) {
+    const { id, value: val } = event.target;
+
+    if (!['hour', 'minute', 'second'].includes(id) || val.length == 2) {
+      return;
+    }
+
+    if (val.length == 0) {
+      this[id] = '00';
+    } else if (val.length == 1) {
+      this[id] = `0${val}`;
+    }
+
+    this.shadowRoot.querySelector(`#${id}`).value = this[id];
   }
 }
 
