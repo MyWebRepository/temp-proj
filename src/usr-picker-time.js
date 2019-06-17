@@ -102,17 +102,7 @@ export class UsrPickerTime extends LitElement {
     
     if (name == 'value') {
       let val = newValue;
-      let [hour, minute, second, system] = val.replace(/ /g, ':').split(':');
-      
-      this.system = this._systemValid(system) ? system : '--';
-      this.hour = this._hourValid(system, hour) ? hour : '00';
-      this.minute = this._minuteValid(system, minute) ? minute : '00';
-      this.second = this._secondValid(system, second) ? second : '00';
-
-      if (!this._systemValid(system) || !this._hourValid(system, hour) || 
-        !this._minuteValid(system, minute) || !this._secondValid(system, second)) {
-        console.error('Time input is not in correct format.');
-      }
+      this._setTimeParts(val);
     }
   }
 
@@ -213,15 +203,33 @@ export class UsrPickerTime extends LitElement {
   }
 
   set value(val) {
+    let oldValue = this._value;
     this._value = val;
+    this._setTimeParts(val);
+    this.requestUpdate('value', oldValue);
   }
 
   get value() {
+    this._value = `${this.hour}:${this.minute}:${this.second} ${this.system}`;
     return this._value;
   }
 
-  _setClasses() {
-  
+  _setTimeParts(val) {
+    if (val == null || val == '') {
+      return;
+    }
+
+    let [hour, minute, second, system] = val.replace(/ /g, ':').split(':');
+      
+    this.system = this._systemValid(system) ? system : '--';
+    this.hour = this._hourValid(system, hour) ? hour : '00';
+    this.minute = this._minuteValid(system, minute) ? minute : '00';
+    this.second = this._secondValid(system, second) ? second : '00';
+
+    if (!this._systemValid(system) || !this._hourValid(system, hour) || 
+      !this._minuteValid(system, minute) || !this._secondValid(system, second)) {
+      console.error('Time input is not in correct format.');
+    }
   }
   
   _setAttributes() {
