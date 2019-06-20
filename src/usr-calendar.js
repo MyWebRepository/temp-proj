@@ -125,12 +125,16 @@ export class UsrCalender extends LitElement {
     this.shortWeekDayNames = DefaultShortWeekDayNames;
 
     // Non-observables
-    let parts = this._calenderParts;
+    let parts = this._yearParts;
     this.year = parts.year;
     this.month = parts.month;
     this.day = parts.day;
     this.dayOfWeek = parts.dayOfWeek;
     this.week = parts.week; 
+
+    this.currentMonthInfo = { year: this.year, month: this.month, day: this.day };
+    this.prevMonthInfo = null;
+    this.nextMonthInfo = null;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -225,7 +229,79 @@ export class UsrCalender extends LitElement {
     `;
   }
 
-  get _calenderParts() {
+
+
+  get _calendarDays() {
+    this._setInfo();
+
+    let calendarDays = [];
+    let lastDay = -1;
+    let dayOfWeek = -1;
+
+    // Following lines populate calendarDays in current month info.
+    (() => {
+      let { year, month, day: thisLastDay, dayOfWeek: thisDayOfWeek } = this._getLastDay(this.currentMonthInfo);
+      lastDay = thisLastDay;
+      
+      for (let d = thisLastDay; d >= 1; d--) {
+        if (d == thisLastDay) {
+          dayOfWeek = thisDayOfWeek;
+        }  else {
+          dayOfWeek--;
+        }
+      
+        calendarDays.unshift({ year, month, day: d, dayOfWeek: dayOfWeek });
+      
+        if (dayOfWeek == 0) {
+          dayOfWeek = 6;
+        }
+      }
+    })();
+
+    // Following lines populate calendarDays in next month info.
+    (() => {
+      while(true) {
+
+      }
+    })();
+
+    // Following lines populate calendarDays in previous month info.
+    (() => {
+      let { year, month, day: prevLastDay, dayOfWeek: prevDayOfWeek } = this._getLastDay(this.prevMonthInfo);
+      dayOfWeek = prevDayOfWeek; 
+      
+      while(dayOfWeek >= 0) {
+        calendarDays.unshift({ year, month, day: prevLastDay, dayOfWeek: dayOfWeek });
+        prevLastDay--;
+        dayOfWeek--
+      }
+    })();
+  }
+
+  _getLastDay({year, month}) {
+    let lastDay = new Date(year, month + 1, 0);
+    return { year, month, day: lastDay.getDate(), dayOfWeek: lastDay.getDay() };
+  }
+
+  // Set up info for previous and next months.
+  _setInfo() {
+    let { year: currentYear, month: currentMonth } = this.currentMonthInfo; 
+    
+    this.prevMonthInfo = { 
+      year: currentMonth == 0 ? currentYear - 1 : currentYear,
+      month: currentMonth == 0 ? 11 : currentMonth - 1,
+      day: null
+    };
+    
+    this.nextmonthInfo = {
+      year: currentMonth == 11 ? currentYear + 1 : currentMonth,
+      month: currentMonth == 11 ? 1 : currentMonth + 1,
+      day: null
+    }
+  }
+
+  // Get today's date info.
+  get _yearParts() {
     let date = new Date();
     let year = date.getFullYear();
     let month = date.getMonth();
