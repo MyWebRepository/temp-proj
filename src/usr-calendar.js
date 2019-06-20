@@ -50,6 +50,20 @@ export class UsrCalender extends LitElement {
         text-align: right;
         border: solid 1px gray;
       }`,
+      css`.upper-container > .action > .left-arrow{
+        font-size: 0.3em;
+        position: relative;
+        top: -2px;
+        left: 2px;
+      }`,
+      css`.upper-container > .action > .right-arrow {
+        font-size: 0.3em;
+        position: relative;
+        top: -2px;
+      }`,
+      css`span {
+        border: solid 1px red;
+      }`,
       css`.lower-container {
         display: line-block;
       }`,
@@ -62,8 +76,9 @@ export class UsrCalender extends LitElement {
         font-weight: normal;
         text-align: center;
         border: solid 1px gray;
-        padding: 3px 2px 3px 2px;
-        background-color: lightblue;
+        padding: 5px 2px 5px 2px;
+        color: white;
+        background-color: #1E90FF;
       }`,
       css`.lower-container > table td {
         width: 14.28%;
@@ -130,9 +145,9 @@ export class UsrCalender extends LitElement {
             <span>${this.year}-${this.monthNames[this.month]}-${this.day}-${this.shortWeekDayNames[this.dayOfWeek]}</span>
           </div>
           <div class="action">
-            <span>&#9664;</span>
+            <span class="left-arrow">&#9664;</span>
             <span>&#9724;</span>
-            <span>&#9658;</span>
+            <span class="right-arrow">&#9654;</span>
           </div>
         </div>
         <div class="lower-container">
