@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, repeat, LitElement } from 'lit-element';
 
 export const DefaultMonthNames = [
   'January', 'Febuary', 'Match', 'April', 'May', 'June',
@@ -135,10 +135,30 @@ export class UsrCalender extends LitElement {
     this.currentMonthInfo = { year: this.year, month: this.month, day: this.day };
     this.prevMonthInfo = null;
     this.nextMonthInfo = null;
+    this.calendarDays2D = null;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    let calendarDays = this._calendarDays;
+    this.calendarDays2D = this._transform(calendarDays);
+  }
+
+  _createHead(days) {
+    if (days == null) {
+      return html``;
+    }
+
+    return html`
+      ${repeat(days, day => `${day.day}${dayOfWeek}`, (day, indx) => 
+        html`<th>${day.day}</th>`
+      )}
+    `;
   }
 
   render() {
@@ -158,13 +178,7 @@ export class UsrCalender extends LitElement {
           <table>
             <thead>
               <tr>
-                <th>${this.shortWeekDayNames[0]}</th>
-                <th>${this.shortWeekDayNames[1]}</th>
-                <th>${this.shortWeekDayNames[2]}</th>
-                <th>${this.shortWeekDayNames[3]}</th>
-                <th>${this.shortWeekDayNames[4]}</th>
-                <th>${this.shortWeekDayNames[5]}</th>
-                <th>${this.shortWeekDayNames[6]}</th>
+                ${this._createHead(this.calendarDays2D)}
               </tr>
             </thead>
             <tbody>
@@ -229,10 +243,6 @@ export class UsrCalender extends LitElement {
     `;
   }
 
-  firstUpdated(changedProperties) {
-    let calendarDays = this._calendarDays;
-  }
-
   get _calendarDays() {
     this._setInfo();
 
@@ -270,14 +280,14 @@ export class UsrCalender extends LitElement {
         year: prevYear, month: prevMonth, day: prevLastDay, dayOfWeek: prevDayOfWeek 
       });
       prevLastDay--;
-      prevDayOfWeek--
+      prevDayOfWeek--;
     }
 
     // Following lines populate calendarDays in next month.
     _dayOfWeek++;
     let day = 1;
 
-    while(calendarDays.length <= 42) {
+    while(calendarDays.length < 42) {
       calendarDays.push({ 
         year: this.nextMonthInfo.year, 
         month: this.nextMonthInfo.month,
@@ -287,11 +297,24 @@ export class UsrCalender extends LitElement {
       day++;
       _dayOfWeek++;
     }
+
+    return calendarDays;
   }
 
   _getLastDay({year, month}) {
     let lastDay = new Date(year, month + 1, 0);
     return { year, month, day: lastDay.getDate(), dayOfWeek: lastDay.getDay() };
+  }
+
+  _transform(calendarDays) {
+    let result = [];
+    if (Array.isArray(calendarDays) && calendarDays.length == 42) {
+      for (let i = 0; i < 42; i = i + 7) {
+        result.push(calendarDays.slice(i, i + 7));
+      }
+    }
+
+    return result;
   }
 
   // Set up info for previous and next months.
