@@ -229,53 +229,64 @@ export class UsrCalender extends LitElement {
     `;
   }
 
-
+  firstUpdated(changedProperties) {
+    let calendarDays = this._calendarDays;
+  }
 
   get _calendarDays() {
     this._setInfo();
 
     let calendarDays = [];
-    let lastDay = -1;
-    let dayOfWeek = -1;
 
-    // Following lines populate calendarDays in current month info.
-    (() => {
-      let { year, month, day: thisLastDay, dayOfWeek: thisDayOfWeek } = this._getLastDay(this.currentMonthInfo);
-      lastDay = thisLastDay;
-      
-      for (let d = thisLastDay; d >= 1; d--) {
-        if (d == thisLastDay) {
-          dayOfWeek = thisDayOfWeek;
-        }  else {
-          dayOfWeek--;
-        }
-      
-        calendarDays.unshift({ year, month, day: d, dayOfWeek: dayOfWeek });
-      
-        if (dayOfWeek == 0) {
-          dayOfWeek = 6;
-        }
+    // Following lines populate calendarDays in current month.
+    let { 
+      year: thisYear, month: thisMonth, day: thisLastDay, dayOfWeek: thisDayOfWeek 
+    } = this._getLastDay(this.currentMonthInfo);
+    let _dayOfWeek = thisDayOfWeek;
+
+    for (let d = thisLastDay; d >= 1; d--) {
+      calendarDays.unshift({ 
+        year: thisYear, month: thisMonth, day: d, dayOfWeek: thisDayOfWeek 
+      });
+
+      if (thisDayOfWeek == 0) {
+        thisDayOfWeek = 6;
+      } else {
+        thisDayOfWeek--;
       }
-    })();
+    }
 
-    // Following lines populate calendarDays in next month info.
-    (() => {
-      while(true) {
+    // Following lines populate calendarDays in previous month.
+    let { 
+      year: prevYear, month: prevMonth, day: prevLastDay, dayOfWeek: prevDayOfWeek 
+    } = this._getLastDay(this.prevMonthInfo);
+    
+    if (prevDayOfWeek == 6) {
+      return;
+    }
 
-      }
-    })();
+    while(prevDayOfWeek >= 0) {
+      calendarDays.unshift({ 
+        year: prevYear, month: prevMonth, day: prevLastDay, dayOfWeek: prevDayOfWeek 
+      });
+      prevLastDay--;
+      prevDayOfWeek--
+    }
 
-    // Following lines populate calendarDays in previous month info.
-    (() => {
-      let { year, month, day: prevLastDay, dayOfWeek: prevDayOfWeek } = this._getLastDay(this.prevMonthInfo);
-      dayOfWeek = prevDayOfWeek; 
-      
-      while(dayOfWeek >= 0) {
-        calendarDays.unshift({ year, month, day: prevLastDay, dayOfWeek: dayOfWeek });
-        prevLastDay--;
-        dayOfWeek--
-      }
-    })();
+    // Following lines populate calendarDays in next month.
+    _dayOfWeek++;
+    let day = 1;
+
+    while(calendarDays.length <= 42) {
+      calendarDays.push({ 
+        year: this.nextMonthInfo.year, 
+        month: this.nextMonthInfo.month,
+        day: day,
+        dayOfWeek: _dayOfWeek
+      });
+      day++;
+      _dayOfWeek++;
+    }
   }
 
   _getLastDay({year, month}) {
@@ -293,8 +304,8 @@ export class UsrCalender extends LitElement {
       day: null
     };
     
-    this.nextmonthInfo = {
-      year: currentMonth == 11 ? currentYear + 1 : currentMonth,
+    this.nextMonthInfo = {
+      year: currentMonth == 11 ? currentYear + 1 : currentYear,
       month: currentMonth == 11 ? 1 : currentMonth + 1,
       day: null
     }
