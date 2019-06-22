@@ -96,7 +96,7 @@ export class UsrCalender extends LitElement {
         background-color: #05acd3;
       }`,
       css`.color {
-        color: lightgray;
+        color: gray;
       }`,
       css`.highlight {
         color: white;
@@ -196,6 +196,18 @@ export class UsrCalender extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  onClickPrev(event) {
+
+  }
+
+  onClickHdden(event) {
+
+  }
+
+  onClickNext(event) {
+    
   }
 
   get _calendarDate() {
