@@ -38,32 +38,32 @@ export class UsrCalender extends LitElement {
         display: flex;
         flex-direction: column
         overflow: hidden;
-        border: solid 1px gray;
         padding: 0 0 10px 0;
       }`,
       css`.upper-container > .date {
         width: 70%;
         text-align: left;
-        border: solid 1px gray;
       }`,
       css`.upper-container > .action {
         width: 30%;
         text-align: right;
-        border: solid 1px gray;
       }`,
-      css`.upper-container > .action > .left-arrow{
-        font-size: 0.3em;
-        position: relative;
-        top: -2px;
-        left: 2px;
+      css`.upper-container > .action a {
+        color: black;
+        text-decoration: none;
       }`,
-      css`.upper-container > .action > .right-arrow {
-        font-size: 0.3em;
+      css`.upper-container > .action .prev-arrow{
+        font-size: 1.2em;
         position: relative;
-        top: -2px;
+        top: -0.1em;
+      }`,
+      css`.upper-container > .action .next-arrow {
+        font-size: 1.2em;
+        position: relative;
+        top: -0.1em;
       }`,
       css`span {
-        border: solid 1px red;
+        /*border: solid 1px red;*/
       }`,
       css`.lower-container {
         display: line-block;
@@ -76,16 +76,31 @@ export class UsrCalender extends LitElement {
         width: 14.28%;
         font-weight: normal;
         text-align: center;
-        border: solid 1px gray;
+        /*border: solid 1px gray;*/
         padding: 5px 2px 5px 2px;
         color: white;
-        background-color: #1E90FF;
+        background-color: #0584f2;
+      }`,
+      css`.lower-container > table {
+        background-color: #f4f3f4;
       }`,
       css`.lower-container > table td {
         width: 14.28%;
         text-align: center;
-        border: solid 1px gray;
-        padding: 3px 2px 3px 2px;
+        /*border: solid 1px gray;*/
+        padding: 5px 2px 5px 2px;
+      }`,
+      css`.lower-container > table tbody td:hover {
+        color: white;
+        cursor: pointer;
+        background-color: #05acd3;
+      }`,
+      css`.color {
+        color: lightgray;
+      }`,
+      css`.highlight {
+        color: white;
+        background-color: #0584f2;
       }`
     ];
   }
@@ -146,32 +161,8 @@ export class UsrCalender extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    //let calendarDays = this._calendarDays;
-    //this.calendarDays2D = this._transform(calendarDays);
-  }
-
-  _createTableHead() {
-    return html`
-      <tr>${repeat(this.shortWeekDayNames, name => name, (name, indx) => 
-        html`<th>${name}</th>`
-      )}</tr>
-    `;
-  }
-
-  _createTableBody() {
     let calendarDays = this._calendarDays;
     this.calendarDays2D = this._transform(calendarDays);
-
-    let i = 0;
-    return html`
-      ${repeat(this.calendarDays2D, day2D => `${i++}`, (day2D, indx) => 
-        html`
-          <tr>${repeat(day2D, day1D => `${i++}`, (day1D, indx) =>
-            html`<td>${day1D.day}</td>`
-          )}<tr>
-        `
-      )}
-    `;
   }
 
   render() {
@@ -179,25 +170,65 @@ export class UsrCalender extends LitElement {
       <div class="container">
         <div class="upper-container">
           <div class="date">
-            <span>${this.year}-${this.monthNames[this.month]}-${this.day}-${this.shortWeekDayNames[this.dayOfWeek]}</span>
+            <span>${this._calendarDate}</span>
           </div>
           <div class="action">
-            <span class="left-arrow">&#9664;</span>
-            <span>&#9724;</span>
-            <span class="right-arrow">&#9654;</span>
+            <a href="javascript:void(0)" @click=${this.onClikPrev}>
+              <span class="prev-arrow">&lt;</span>&nbsp;
+            </a>
+            <a href="javascript:void(0)" @click=${this.onClikHidden}>
+              <span class="hidden">&#9711;</span>&nbsp;
+            </a>
+            <a href="javascript:void(0)" @click=${this.onClikNext}>
+              <span class="next-arrow">&gt;</span>
+            <a>
           </div>
         </div>
         <div class="lower-container">
           <table>
             <thead>
-              ${this._createTableHead()}
+              ${this._tableHead}
             </thead>
             <tbody>
-              ${this._createTableBody()}
+              ${this._tableBody}
             <tbody>
           </table>
         </div>
       </div>
+    `;
+  }
+
+  get _calendarDate() {
+    return `${this.shortWeekDayNames[this.dayOfWeek]} ${this.monthNames[this.month]} ${this.day}, ${this.year}`;
+  }
+
+  get _tableHead() {
+    return html`
+      <tr>${repeat(this.shortWeekDayNames, name => name, (name, indx) => 
+        html`<th>${name}</th>`
+      )}</tr>
+    `;
+  }
+
+  get _tableBody() {
+    let i = 0;
+    return html`
+      ${repeat(this.calendarDays2D, day2D => `${i++}`, (day2D, indx) => 
+        html`
+          <tr>${repeat(day2D, day1D => `${i++}`, (day1D, indx) => {
+            let cls = (() => {
+              if (day1D.month != this.month) {
+                return 'color';
+              }
+              if (day1D.month == this.month && day1D.day == this.day) {
+                return 'highlight';
+              }
+              return '';
+            })();
+            return html`<td class="${cls}">${day1D.day}</td>`
+          })}<tr>
+        `
+      )}
     `;
   }
 
