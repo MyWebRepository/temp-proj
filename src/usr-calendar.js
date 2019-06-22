@@ -1,4 +1,5 @@
-import { css, html, repeat, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
+import { repeat } from 'lit-html/directives/repeat';
 
 export const DefaultMonthNames = [
   'January', 'Febuary', 'Match', 'April', 'May', 'June',
@@ -145,18 +146,30 @@ export class UsrCalender extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    let calendarDays = this._calendarDays;
-    this.calendarDays2D = this._transform(calendarDays);
+    //let calendarDays = this._calendarDays;
+    //this.calendarDays2D = this._transform(calendarDays);
   }
 
-  _createHead(days) {
-    if (days == null) {
-      return html``;
-    }
-
+  _createTableHead() {
     return html`
-      ${repeat(days, day => `${day.day}${dayOfWeek}`, (day, indx) => 
-        html`<th>${day.day}</th>`
+      <tr>${repeat(this.shortWeekDayNames, name => name, (name, indx) => 
+        html`<th>${name}</th>`
+      )}</tr>
+    `;
+  }
+
+  _createTableBody() {
+    let calendarDays = this._calendarDays;
+    this.calendarDays2D = this._transform(calendarDays);
+
+    let i = 0;
+    return html`
+      ${repeat(this.calendarDays2D, day2D => `${i++}`, (day2D, indx) => 
+        html`
+          <tr>${repeat(day2D, day1D => `${i++}`, (day1D, indx) =>
+            html`<td>${day1D.day}</td>`
+          )}<tr>
+        `
       )}
     `;
   }
@@ -177,65 +190,10 @@ export class UsrCalender extends LitElement {
         <div class="lower-container">
           <table>
             <thead>
-              <tr>
-                ${this._createHead(this.calendarDays2D)}
-              </tr>
+              ${this._createTableHead()}
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
+              ${this._createTableBody()}
             <tbody>
           </table>
         </div>
