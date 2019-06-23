@@ -173,13 +173,13 @@ export class UsrCalender extends LitElement {
             <span>${this._calendarDate}</span>
           </div>
           <div class="action">
-            <a href="javascript:void(0)" @click=${this.onClikPrev}>
+            <a href="javascript:void(0)" @click=${this.onClickPrev}>
               <span class="prev-arrow">&lt;</span>&nbsp;
             </a>
-            <a href="javascript:void(0)" @click=${this.onClikHidden}>
+            <a href="javascript:void(0)" @click=${this.onClickHidden}>
               <span class="hidden">&#9711;</span>&nbsp;
             </a>
-            <a href="javascript:void(0)" @click=${this.onClikNext}>
+            <a href="javascript:void(0)" @click=${this.onClickNext}>
               <span class="next-arrow">&gt;</span>
             <a>
           </div>
@@ -199,19 +199,31 @@ export class UsrCalender extends LitElement {
   }
 
   onClickPrev(event) {
+    event.stopPropagation();
 
+    this.currentMonthInfo = this.prevMonthInfo;
+    let calendarDays = this._calendarDays;
+    this.calendarDays2D = this._transform(calendarDays);
+
+    this.requestUpdate();
   }
 
-  onClickHdden(event) {
-
-  }
-
-  onClickNext(event) {
+  onClickHidden(event) {
     
   }
 
+  onClickNext(event) {
+    event.stopPropagation();
+    
+    this.currentMonthInfo = this.nextMonthInfo;
+    let calendarDays = this._calendarDays;
+    this.calendarDays2D = this._transform(calendarDays);
+
+    this.requestUpdate();
+  }
+
   get _calendarDate() {
-    return `${this.shortWeekDayNames[this.dayOfWeek]} ${this.monthNames[this.month]} ${this.day}, ${this.year}`;
+    return `${this.monthNames[this.currentMonthInfo.month]}, ${this.year}`;
   }
 
   get _tableHead() {
@@ -229,10 +241,11 @@ export class UsrCalender extends LitElement {
         html`
           <tr>${repeat(day2D, day1D => `${i++}`, (day1D, indx) => {
             let cls = (() => {
-              if (day1D.month != this.month) {
+              if (day1D.month != this.currentMonthInfo.month) {
                 return 'color';
               }
-              if (day1D.month == this.month && day1D.day == this.day) {
+              if (this.currentMonthInfo.day != null && 
+                day1D.day == this.currentMonthInfo.day) {
                 return 'highlight';
               }
               return '';
@@ -271,12 +284,8 @@ export class UsrCalender extends LitElement {
     let { 
       year: prevYear, month: prevMonth, day: prevLastDay, dayOfWeek: prevDayOfWeek 
     } = this._getLastDay(this.prevMonthInfo);
-    
-    if (prevDayOfWeek == 6) {
-      return;
-    }
 
-    while(prevDayOfWeek >= 0) {
+    while(prevDayOfWeek < 6 && prevDayOfWeek >= 0) {
       calendarDays.unshift({ 
         year: prevYear, month: prevMonth, day: prevLastDay, dayOfWeek: prevDayOfWeek 
       });
