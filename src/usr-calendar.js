@@ -223,7 +223,7 @@ export class UsrCalender extends LitElement {
   }
 
   get _calendarDate() {
-    return `${this.monthNames[this.currentMonthInfo.month]}, ${this.year}`;
+    return `${this.monthNames[this.currentMonthInfo.month]}, ${this.currentMonthInfo.year}`;
   }
 
   get _tableHead() {
@@ -244,8 +244,9 @@ export class UsrCalender extends LitElement {
               if (day1D.month != this.currentMonthInfo.month) {
                 return 'color';
               }
-              if (this.currentMonthInfo.day != null && 
-                day1D.day == this.currentMonthInfo.day) {
+              if (this.currentMonthInfo.year == this.year && 
+                this.currentMonthInfo.month == this.month &&
+                day1D.day == this.day) {
                 return 'highlight';
               }
               return '';
@@ -339,7 +340,7 @@ export class UsrCalender extends LitElement {
     
     this.nextMonthInfo = {
       year: currentMonth == 11 ? currentYear + 1 : currentYear,
-      month: currentMonth == 11 ? 1 : currentMonth + 1,
+      month: currentMonth == 11 ? 0 : currentMonth + 1,
       day: null
     }
   }
