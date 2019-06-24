@@ -25,13 +25,13 @@
       //import '@polymer/iron-demo-helpers/demo-snippet';
     </script>
 
-    <!--<script type="module" src="../src/usr-textbox.js"></script>
-    <script type="module" src="../src/usr-textbox-integer.js"></script>
+    <script type="module" src="../src/usr-textbox.js"></script>
+    <!--<script type="module" src="../src/usr-textbox-integer.js"></script>
     <script type="module" src="../src/usr-textbox-decimal.js"></script>
     <script type="module" src="../src/usr-textbox-password.js"></script>
-    <script type="module" src="../src/usr-textbox-phone.js"></script>-->
+    <script type="module" src="../src/usr-textbox-phone.js"></script>
     <script type="module" src="../src/usr-picker-time.js"></script>
-    <script type="module" src="../src/usr-calendar.js"></script>
+    <script type="module" src="../src/usr-calendar.js"></script>-->
     <!--custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
@@ -39,11 +39,11 @@
   </head>
   <body>
     <div style="padding:20px;">
-        <usr-calendar 
+        <!--<usr-calendar 
           month-names="January, Febuary, Match, April, May, June,July, August, September, October, November, December"
           style="display:inline-block;border:solid 1px green;">
         </usr-calendar>
-        <!--<usr-picker-time class="width:200px;" value="21:45:23 --">
+        <usr-picker-time class="width:200px;" value="21:45:23 --">
           <span style="visibility:hidden; position: relative; top: 3px; color: blue;" class="glyphicon glyphicon-time"></span>
         </usr-picker-time>
         <usr-textbox-phone class="usr-slot-before" placeholder="Phone number" value="1111111111" format="(###) ###-####">
@@ -69,12 +69,11 @@
         </usr-textbox>
         <usr-textbox value="12345">
           <span style="visibility:hidden">A</span>
+        </usr-textbox>-->
+        <usr-textbox value="12345" minlength>
+          <span style="visibility:hidden">$</span>
         </usr-textbox>
-        <usr-textbox value="12345">
-          <span style="visibility:hidden">C</span>
-        </usr-textbox>
-    </div>-->
-    <!--<input id="aa" type="text" value="qwrqwtwq">-->
+    </div>
   </body>
   <script>
       /*const observer = new MutationObserver(mutation => {

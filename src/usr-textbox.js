@@ -73,20 +73,17 @@ export class UsrTextbox extends LitElement {
         } 
       },
       dir: { type: String },
-      readonly: { type: String },
-      disabled: { type: String },
-      required: { type: String },
-      pattern: { type: String },
-      placeholder: { 
-        type: String,
-        reflect: true
-      },
+      readonly: { type: Boolean, reflect: false },
+      disabled: { type: Boolean, reflect: false },
+      required: { type: Boolean, reflect: false },
+      pattern: { type: String, reflect: false },
+      placeholder: {  type: String, reflect: false },
       minlength: { 
-        reflect: true,
+        reflect: false,
         converter: { fromAttribute, toAttribute }
       },
       maxlength: {
-        reflect: true,
+        reflect: false,
         converter: { fromAttribute, toAttribute }
       }
     };
@@ -97,13 +94,13 @@ export class UsrTextbox extends LitElement {
 
     // Observables
     this.value = '';
-    this.dir = null;
-    this.readonly = null;
-    this.disabled = null;
-    this.required = null;
-    this.pattern = null;
-    this.maxlength = null;
-    this.minlength = null;
+    this.dir = '';
+    this.readonly = false;
+    this.disabled = false;
+    this.required = false;
+    this.pattern = '';
+    this.maxlength = NaN;
+    this.minlength = NaN;
     this.placeholder = '';
 
     // Non-observables
@@ -189,7 +186,7 @@ export class UsrTextbox extends LitElement {
     this.dispatchEvent(this.validationEvent);
   }
 
-  addEventListener(type = 'validation', fun) {
+  addEventListener(type = 'validate', fun) {
     if (type && fun && typeof(fun) == 'function') {
       super.addEventListener(type, fun);
       this.checkValidity();
@@ -198,33 +195,33 @@ export class UsrTextbox extends LitElement {
 
   set onValidate(fun) {
     if (fun && typeof(fun) == 'function') {
-      this.addEventListener('validation', fun);
+      this.addEventListener('validate', fun);
       this.checkValidity();
     }
   }
-
+/*
   set eventTrigger(name) {
     this[name] = (name) => {
       this.shadowRoot.querySelector('input')[name]();
     };
   }
-  
+  */
   _noValidation() {
-    return this.required == null && this.pattern == null && this.minlength == null;
+    return !this.required && this.pattern == '' && isNaN(this.minlength);
   }
 
   _exists(val) {
-    if (this.required == null || this.required == '') return true;
+    if (!this.required) return true;
     return val != null && val.trim() != '';
   }
 
   _matches(val) {
-    if (this.pattern == null || this.pattern == '') return true;
+    if (this.pattern == '') return true;
     return (new RegExp(this.pattern)).test(val);
   }
 
   _longEnough(val) {
-    if (this.minlength == null || this.minlength == '') return true;
+    if (isNaN(this.minlength)) return true;
     return val.length >= this.minlength;
   }
 
