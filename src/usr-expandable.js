@@ -24,6 +24,16 @@ export class UsrExpandable extends LitElement {
 
   constructor() {
     super();
+
+    this.dataSource = [];
+  }
+
+  get _listBody() {
+    return html`
+      <ul>
+        
+      </ul>
+    `;
   }
 
   render() {

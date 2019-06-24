@@ -1,5 +1,8 @@
 import { css, html, LitElement } from 'lit-element';
 
+export const fromAttribute = attr => parseInt(attr);
+export const toAttribute = prop => String(prop);
+
 /**
  * `usr-textbox`
  * Create a custom textbox.
@@ -78,17 +81,13 @@ export class UsrTextbox extends LitElement {
         type: String,
         reflect: true
       },
-      minlength: { type: {
-          fromAttribute: attr => parseInt(attr),
-          toAttribute: prop => String(prop)
-        },
-        reflect: true
+      minlength: { 
+        reflect: true,
+        converter: { fromAttribute, toAttribute }
       },
-      maxlength: { type: {
-          fromAttribute: attr => parseInt(attr),
-          toAttribute: prop => String(prop)
-        },
-        reflect: true
+      maxlength: {
+        reflect: true,
+        converter: { fromAttribute, toAttribute }
       }
     };
   }
@@ -158,7 +157,8 @@ export class UsrTextbox extends LitElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    this[name] = newValue;
+    super.attributeChangedCallback(name, oldValue, newValue);
+    //this[name] = newValue;
   }
 
   firstUpdated() {
@@ -196,7 +196,7 @@ export class UsrTextbox extends LitElement {
     }
   }
 
-  set onValidation(fun) {
+  set onValidate(fun) {
     if (fun && typeof(fun) == 'function') {
       this.addEventListener('validation', fun);
       this.checkValidity();
