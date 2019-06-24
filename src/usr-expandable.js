@@ -13,6 +13,7 @@ export class UsrExpandable extends LitElement {
 
   static get properties() {
     return {
+      value: { type: String },
       dataSource: {
         reflect: false,
         converter: { fromAttribute, toAttribute },
