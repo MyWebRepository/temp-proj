@@ -67,7 +67,7 @@ export class UsrTextbox extends LitElement {
     return {
       value: { 
         type: String, 
-        reflect: true, 
+        reflect: false, 
         hasChanged: (newVal, oldVal) => {
           return newVal != oldVal; 
         } 
@@ -155,7 +155,6 @@ export class UsrTextbox extends LitElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
-    //this[name] = newValue;
   }
 
   firstUpdated() {
@@ -199,13 +198,13 @@ export class UsrTextbox extends LitElement {
       this.checkValidity();
     }
   }
-/*
-  set eventTrigger(name) {
+
+  set trigger(name) {
     this[name] = (name) => {
       this.shadowRoot.querySelector('input')[name]();
     };
   }
-  */
+  
   _noValidation() {
     return !this.required && this.pattern == '' && isNaN(this.minlength);
   }
@@ -299,16 +298,16 @@ export class UsrTextbox extends LitElement {
     if (this.dir != null && this.dir != '') {
       inputElement.setAttribute('dir', this.dir);
     }
-    if (this.disabled != null) {
+    if (this.disabled) {
       inputElement.setAttribute('disabled', '');
     }
-    if (this.readonly != null) {
+    if (this.readonly) {
       inputElement.setAttribute('readonly', '');
     }
-    if (this.maxlength != null && this.maxlength != '') {
+    if (!isNaN(this.maxlength)) {
       inputElement.setAttribute('maxlength', this.maxlength);
     }
-    if (this.minlength != null && this.minlength != '') {
+    if (!isNaN(this.minlength)) {
       inputElement.setAttribute('minlength', this.minlength);
     }
   }

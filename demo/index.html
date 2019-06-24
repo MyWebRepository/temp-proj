@@ -16,6 +16,10 @@
         --usr-outline-color: lightblue;
         width: 230px;
       }
+
+      usr-textbox.usr-invalid {
+        border: solid 1px red;
+      }
     </style>
 
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -70,7 +74,7 @@
         <usr-textbox value="12345">
           <span style="visibility:hidden">A</span>
         </usr-textbox>-->
-        <usr-textbox value="12345" minlength>
+        <usr-textbox value="12345" required minlength="6">
           <span style="visibility:hidden">$</span>
         </usr-textbox>
     </div>
