@@ -3,6 +3,7 @@ import { UsrTextbox} from './usr-textbox';
 export class UsrTextboxInteger extends UsrTextbox {
 	constructor() {
 		super();
+
 		this._value = null;
 		this._digits = '0123456789';
 	}
@@ -40,6 +41,14 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 	get value() {
 		return this._value;
+	}
+
+	set integerValue(val) {
+		this.value = String(val);
+	}
+
+	get integerValue() {
+		return Number(this._value);
 	}
 
 	_getCursorPosition(event) {

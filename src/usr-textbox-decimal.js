@@ -4,27 +4,9 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 	static get properties() {
 		return {
 			...super.properties,
-			decimallength: { 
-				type: Number,
-				reflect: true,
-				hasChanged: (newVal, oldVal) => {
-          return newVal != oldVal; 
-        } 
-			},
-			decimalseparator: { 
-				type: String,
-				reflect: true,
-				hasChanged: (newVal, oldVal) => {
-          return newVal != oldVal; 
-				} 
-			},
-			thousandseparator: { 
-				type: String,
-				reflect: true,
-				hasChanged: (newVal, oldVal) => {
-          return newVal != oldVal; 
-				} 
-			}
+			decimallength: { type: Number, reflect: false },
+			decimalseparator: { type: String, reflect: false },
+			thousandseparator: { type: String, reflect: false }
 		};
 	}
 
@@ -32,9 +14,9 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
     super();
     
     // Observables
-		this.decimallength = null;
-		this.decimalseparator = null;
-		this.thousandseparator = null;
+		this.decimallength = 2;
+		this.decimalseparator = '.';
+		this.thousandseparator = ',';
     
     // Non-observables
     this.actionFromInput = false;
@@ -42,21 +24,15 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
   }
 
 	attributeChangedCallback(name, oldValue, newValue) {
-    if (name == 'decimallength') 
-      this[name] = newValue ? parseInt(newValue) : 0;
-    else 
-      this[name] = newValue;
+		super.attributeChangedCallback(name, oldValue, newValue);
 	}
 
   firstUpdated() {
-    console.log("firstUpdated 3");
     let value = this.value;
     this.value = this._addThousandSeparators(value);
   }
 
   updated(changedProperties) {
-		console.log('updated');
-    console.log(this.value + ' 3');
     if (!this.actionFromInput) {
       this.actionFromInput = false;
       this.shadowRoot.querySelector('input').value = this.value;
