@@ -44,10 +44,15 @@
   </head>
   <body>
     <div style="padding:20px;">
+        <usr-textbox value="12345" required minlength="6">
+            <span style="visibility:hidden">$</span>
+          </usr-textbox>
         <usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
             <span style="visibility:hidden">$</span>
         </usr-textbox-decimal>
-        
+        <usr-textbox-integer class="usr-slot-before" value="123">
+            <span style="visibility:hidden">Year</span>
+        </usr-textbox-integer>
         <!--<usr-calendar 
           month-names="January, Febuary, Match, April, May, June,July, August, September, October, November, December"
           style="display:inline-block;border:solid 1px green;">

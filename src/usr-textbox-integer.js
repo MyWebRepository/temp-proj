@@ -3,17 +3,20 @@ import { UsrTextbox} from './usr-textbox';
 export class UsrTextboxInteger extends UsrTextbox {
 	constructor() {
 		super();
-
-		this._value = null;
+		
 		this._digits = '0123456789';
 	}
 
+	attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+	}
+	
 	onInput(event) {
 		let cursorPosition = this._getCursorPosition(event);
 		let value = event.target.value;
 		this.value = event.target.value = this._removeNonDigits(value);
 
-		super.onInput(event);
+		//super.onInput(event);
 
 		let offset = (() => {
 			if (value < this.value)
@@ -26,11 +29,6 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 		const input = this.shadowRoot.querySelector('input');
 		this._setCursorPosition(input, cursorPosition + offset);
-	}
-
-	updated(changedProperties) {
-		console.log('updated');
-		console.log(this.value + ' 2');
 	}
 
 	set value(val) {

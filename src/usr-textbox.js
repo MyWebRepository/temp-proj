@@ -42,7 +42,7 @@ export class UsrTextbox extends LitElement {
         visibility: visible !important;
         font-size: var(--usr-icon-font-size, 14px);
       }`,
-      css`input {
+      css`input#textbox {
         box-sizing: border-box;
         width: 100%;
         padding: 1px 1px 1px 0px;
@@ -67,7 +67,7 @@ export class UsrTextbox extends LitElement {
     return {
       value: { 
         type: String, 
-        reflect: false, 
+        reflect: true, 
         hasChanged: (newVal, oldVal) => {
           return newVal != oldVal; 
         } 
@@ -118,6 +118,7 @@ export class UsrTextbox extends LitElement {
       composed: false 
     });
     this.inputType = 'text';
+    this._value = '';
 
     this.updateComplete.then(() => {
       console.log("updatecomplete");
@@ -127,10 +128,10 @@ export class UsrTextbox extends LitElement {
   }
 
   onInput(event) {
-    if (this._noValidation()) return;
+    this._value = event.target.value;
 
-    this.value = event.target.value;
-    this._updateClasses(this.value);
+    if (this._noValidation()) return;
+    this._updateClasses(this._value);
   }
 
   onFocus(event) {
@@ -142,34 +143,45 @@ export class UsrTextbox extends LitElement {
   }
 
   click() {
-    this.shadowRoot.querySelector('input').click();
+    this.shadowRoot.querySelector('input#textbox').click();
   }
 
   focus() {
-    this.shadowRoot.querySelector('input').focus();
+    this.shadowRoot.querySelector('input#textbox').focus();
   }
 
   blur() {
-    this.shadowRoot.querySelector('input').blur();
+    this.shadowRoot.querySelector('input#textbox').blur();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
   }
 
-  firstUpdated() {
-    console.log("firstUpdated");
+  updated() {
+    console.log("Updated");
+    this.shadowRoot.querySelector('input#textbox').value = this.value;
   }
 
-  render () {
+  set value(val) {
+    this._value = val;
+    this.requestUpdate();
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  render() {
     console.log("render");
-    console.log(this.value + ' 1');
+    console.log(this.value + '    1');
     return html`
       <div class="container">
         <div class="slot-container">
           <slot></slot>
         </div>
         <input 
+          id="textbox"
           type="${this.inputType}"
           placeholder="${this.placeholder}"
           value="${this.value}"
@@ -201,7 +213,7 @@ export class UsrTextbox extends LitElement {
 
   set trigger(name) {
     this[name] = (name) => {
-      this.shadowRoot.querySelector('input')[name]();
+      this.shadowRoot.querySelector('input#textbox')[name]();
     };
   }
   
@@ -292,7 +304,7 @@ export class UsrTextbox extends LitElement {
   }
 
   _setAttributes() {
-    let inputElement = this.shadowRoot.querySelector('input');
+    let inputElement = this.shadowRoot.querySelector('input#textbox');
     if (inputElement == null) return;
 
     if (this.dir != null && this.dir != '') {
