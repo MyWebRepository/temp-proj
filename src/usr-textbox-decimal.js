@@ -4,9 +4,9 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 	static get properties() {
 		return {
 			...super.properties,
-			decimallength: { type: Number, reflect: false },
-			decimalseparator: { type: String, reflect: false },
-			thousandseparator: { type: String, reflect: false }
+			decimalLength: { type: Number, reflect: false, attribute: 'decimal-length' },
+			decimalSeparator: { type: String, reflect: false, attribute: 'decimal-separator' },
+			thousandSeparator: { type: String, reflect: false, attribute: 'thousand-separator' }
 		};
 	}
 
@@ -14,9 +14,9 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
     super();
     
     // Observables
-		this.decimallength = 2;
-		this.decimalseparator = '.';
-		this.thousandseparator = ',';
+		this.decimalLength = 2;
+		this.decimalSeparator = '.';
+		this.thousandSeparator = ',';
     
     // Non-observables
     this.actionFromInput = false;
@@ -67,24 +67,24 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 
 	_addThousandSeparators(val) {
 		if (val) {
-      if (val.indexOf(this.decimalseparator) == -1) {
-        val += this.decimalseparator;
+      if (val.indexOf(this.decimalSeparator) == -1) {
+        val += this.decimalSeparator;
       }
 			if (val.endsWith('.')) {
-				if (this.decimallength == 0) {
+				if (this.decimalLength == 0) {
 					val = val + '0';
 				} else {
-					val = val + '0'.repeat(this.decimallength);
+					val = val + '0'.repeat(this.decimalLength);
 				}
       }
-      if (val.endsWith(this.decimalseparator + '0')) {
+      if (val.endsWith(this.decimalSeparator + '0')) {
         val += '0';
       }
 
       val = this._round(val);
 
       let result = '';
-			let indexOfDecimalSeparator = val.indexOf(this.decimalseparator);
+			let indexOfDecimalSeparator = val.indexOf(this.decimalSeparator);
 			let hasSign = val.startsWith('+') || val.startsWith('-');
 			let indexToStop = hasSign ? 1 : 0;
 
@@ -93,7 +93,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 				
 				if (indexOfDecimalSeparator > i && indexToStop < i && 
 					(indexOfDecimalSeparator - i + 1) % 3 == 1) {
-					result = this.thousandseparator + c + result;
+					result = this.thousandSeparator + c + result;
 				} else {
 					result = c + result;
 				}
@@ -106,12 +106,12 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 	}
 
   _round(val) {
-    return String(parseFloat(val).toFixed(this.decimallength));
+    return String(parseFloat(val).toFixed(this.decimalLength));
   }
 
 	_removeThousandSeparators(val) {
 		if (val) {
-			return val.split(this.thousandseparator).join('');
+			return val.split(this.thousandSeparator).join('');
 		} else {
 			return val;
 		}

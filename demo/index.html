@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <style>
-      usr-textbox, usr-textbox-integer, usr-textbox-decimal, usr-picker-time {
+      usr-textbox, usr-textbox-integer, usr-textbox-decimal, 
+      usr-picker-time {
         --usr-icon-color: blue;
         --usr-icon-font-size: 20px;
         --usr-text-font-size: 20px;
@@ -17,7 +18,7 @@
         width: 230px;
       }
 
-      usr-textbox.usr-invalid {
+      .usr-invalid {
         border: solid 1px red;
       }
     </style>
@@ -30,10 +31,10 @@
     </script>
 
     <script type="module" src="../src/usr-textbox-decimal.js"></script>
-    <!--<script type="module" src="../src/usr-textbox.js"></script>
+    <script type="module" src="../src/usr-textbox.js"></script>
     <script type="module" src="../src/usr-textbox-integer.js"></script>
     
-    <script type="module" src="../src/usr-textbox-password.js"></script>
+    <!--<<script type="module" src="../src/usr-textbox-password.js"></script>
     <script type="module" src="../src/usr-textbox-phone.js"></script>
     <script type="module" src="../src/usr-picker-time.js"></script>
     <script type="module" src="../src/usr-calendar.js"></script>-->
@@ -50,7 +51,7 @@
         <usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
             <span style="visibility:hidden">$</span>
         </usr-textbox-decimal>
-        <usr-textbox-integer class="usr-slot-before" value="123">
+        <usr-textbox-integer class="usr-slot-before" value="123" required minlength="5" validate="alert('invalidate')"> 
             <span style="visibility:hidden">Year</span>
         </usr-textbox-integer>
         <!--<usr-calendar 

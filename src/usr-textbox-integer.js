@@ -3,7 +3,7 @@ import { UsrTextbox} from './usr-textbox';
 export class UsrTextboxInteger extends UsrTextbox {
 	constructor() {
 		super();
-		
+
 		this._digits = '0123456789';
 	}
 
@@ -12,12 +12,13 @@ export class UsrTextboxInteger extends UsrTextbox {
 	}
 	
 	onInput(event) {
+		super.onInput(event);
+
 		let cursorPosition = this._getCursorPosition(event);
 		let value = event.target.value;
-		this.value = event.target.value = this._removeNonDigits(value);
+		this._value = event.target.value = this._removeNonDigits(value);
 
-		//super.onInput(event);
-
+		// Calculates cursor's position offset for single input.
 		let offset = (() => {
 			if (value < this.value)
 				return 1;
@@ -27,8 +28,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 				return 0;
 		})();
 
-		const input = this.shadowRoot.querySelector('input');
-		this._setCursorPosition(input, cursorPosition + offset);
+		this._setCursorPosition(event.target, cursorPosition + offset);
 	}
 
 	set value(val) {
