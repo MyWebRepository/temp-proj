@@ -51,7 +51,7 @@
         <usr-textbox-decimal class="usr-slot-before" decimallength="2" value="1111123.348" decimalseparator="." thousandseparator=",">
             <span style="visibility:hidden">$</span>
         </usr-textbox-decimal>
-        <usr-textbox-integer class="usr-slot-before" value="123" required minlength="5" validate="alert('invalidate')"> 
+        <usr-textbox-integer class="usr-slot-before" value="123" required minlength="5" onvalidate="() => {alert('invalid')}"> 
             <span style="visibility:hidden">Year</span>
         </usr-textbox-integer>
         <!--<usr-calendar 
@@ -107,7 +107,7 @@
               alert(m);
             }*/
 
-            document.querySelector('usr-textbox').addEventListener('validation', function(e) {
+            document.querySelector('usr-textbox').addEventListener('validate', function(e) {
               let m = e.detail.message;
               //alert(m);
             });

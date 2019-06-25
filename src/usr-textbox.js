@@ -112,7 +112,7 @@ export class UsrTextbox extends LitElement {
       },
       valid: true
     };
-    this.validationEvent = new CustomEvent('validation', { 
+    this.validationEvent = new CustomEvent('validate', { 
       detail: { message: null },
       bubbles: false, 
       composed: false 
@@ -198,14 +198,14 @@ export class UsrTextbox extends LitElement {
   }
 
   addEventListener(type = 'validate', fun) {
-    if (type && fun && typeof(fun) == 'function') {
+    if (type && fun && typeof fun == 'function') {
       super.addEventListener(type, fun);
       this.checkValidity();
     }
   }
 
   set onValidate(fun) {
-    if (fun && typeof(fun) == 'function') {
+    if (fun && typeof fun == 'function') {
       this.addEventListener('validate', fun);
       this.checkValidity();
     }
