@@ -1,12 +1,24 @@
-import { UsrTextboxInteger } from './usr-textbox-integer';
+import { UsrTextbox } from './usr-textbox';
 
-export class UsrTextboxDecimal extends UsrTextboxInteger {
+export class UsrTextboxDecimal extends UsrTextbox {
 	static get properties() {
 		return {
 			...super.properties,
-			decimalLength: { type: Number, reflect: false, attribute: 'decimal-length' },
-			decimalSeparator: { type: String, reflect: false, attribute: 'decimal-separator' },
-			thousandSeparator: { type: String, reflect: false, attribute: 'thousand-separator' }
+			decimalLength: { 
+				type: Number, 
+				reflect: false, 
+				attribute: 'decimal-length' 
+			},
+			decimalSeparator: { 
+				type: String, 
+				reflect: false, 
+				attribute: 'decimal-separator' 
+			},
+			thousandSeparator: { 
+				type: String, 
+				reflect: false, 
+				attribute: 'thousand-separator' 
+			}
 		};
 	}
 
@@ -126,7 +138,7 @@ export class UsrTextboxDecimal extends UsrTextboxInteger {
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
 
-				if (c == this.decimalseparator && 
+				if (c == this.decimalSeparator && 
 					(this.decimalSeparatorIndexInOldValue == -1 ||
 					(this.decimalSeparatorIndexInOldValue == decimalSeparatorIndexInNewValue && 
 						this.decimalSeparatorIndexInOldValue == i) ||

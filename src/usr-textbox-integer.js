@@ -13,22 +13,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 	
 	onInput(event) {
 		super.onInput(event);
-
-		let cursorPosition = this._getCursorPosition(event);
-		let value = event.target.value;
-		this._value = event.target.value = this._removeNonDigits(value);
-
-		// Calculates cursor's position offset for single input.
-		let offset = (() => {
-			if (value < this.value)
-				return 1;
-			else if (value > this.value)
-				return -1;
-			else
-				return 0;
-		})();
-
-		this._setCursorPosition(event.target, cursorPosition + offset);
+		this._resetCursorPosition(event);
 	}
 
 	set value(val) {
@@ -47,6 +32,24 @@ export class UsrTextboxInteger extends UsrTextbox {
 
 	get integerValue() {
 		return Number(this._value);
+	}
+
+	_resetCursorPosition(event) {
+		let cursorPosition = this._getCursorPosition(event);
+		let value = event.target.value;
+		this._value = event.target.value = this._removeNonDigits(value);
+
+		// Calculates cursor's position offset for single input.
+		let offset = (() => {
+			if (value < this.value)
+				return 1;
+			else if (value > this.value)
+				return -1;
+			else
+				return 0;
+		})();
+
+		this._setCursorPosition(event.target, cursorPosition + offset);
 	}
 
 	_getCursorPosition(event) {
