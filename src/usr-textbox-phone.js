@@ -28,14 +28,12 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
     this.value = this._addDelimiters(value);
   }
 
+  onClick(event) {
+    this._resetCursorPositionOnclick(event);
+  }
+
 	onFocus(event) {
 		super.onFocus(event);
-
-		//let value = event.target.value;
-    //this.value = this._removeDelimiters(value);
-    //setTimeout(() => {
-      this._resetCursorPositionOnfocus(event);
-    //}, 100);
   }
 
   onBlur(event) {
@@ -80,10 +78,11 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 		this._setCursorPosition(event.target, cursorPosition + offset);
   }
   
-  _resetCursorPositionOnfocus(event) {
+  _resetCursorPositionOnclick(event) {
 		let cursorPosition = this._getCursorPosition(event);
     let value = event.target.value;
-    
+    this._value = event.target.value = this._removeDelimiters(value);
+
 		// Calculates cursor's position offset for single input.
 		let offset = (() => {
       let count = 0;
@@ -95,8 +94,6 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 
 			return -count;
 		})();
-
-    this.value = this._removeDelimiters(value);
 
 		this._setCursorPosition(event.target, cursorPosition + offset);
   }
@@ -154,7 +151,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 
     val = this._removeDelimiters(val);
     let length = this.format.split('').filter(i => i == '#').length;
-    return  length == val.length;
+    return  length <= val.length;
   }
 }
 

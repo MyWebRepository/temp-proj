@@ -142,6 +142,9 @@ export class UsrTextbox extends LitElement {
     this.shadowRoot.host.classList.remove('usr-focus');
   }
 
+  onClick(event) { 
+  }
+
   click() {
     this.shadowRoot.querySelector('input#textbox').click();
   }
@@ -185,6 +188,7 @@ export class UsrTextbox extends LitElement {
           type="${this.inputType}"
           placeholder="${this.placeholder}"
           value="${this.value}"
+          @click="${this.onClick}"
           @input="${this.onInput}"
           @focus="${this.onFocus}"
           @blur="${this.onBlur}">
