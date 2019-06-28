@@ -197,16 +197,16 @@ export class UsrTextbox extends LitElement {
     this.dispatchEvent(this.validationEvent);
   }
 
-  addEventListener(type = 'validate', fun) {
-    if (type && fun && typeof fun == 'function') {
-      super.addEventListener(type, fun);
+  addEventListener(type = 'validate', func) {
+    if (type && func && typeof fun == 'function') {
+      super.addEventListener(type, func);
       this.checkValidity();
     }
   }
 
-  set onValidate(fun) {
-    if (fun && typeof fun == 'function') {
-      this.addEventListener('validate', fun);
+  set onValidate(func) {
+    if (func && typeof func == 'function') {
+      this.addEventListener('validate', func);
       this.checkValidity();
     }
   }

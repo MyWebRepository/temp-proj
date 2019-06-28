@@ -11,12 +11,11 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 	constructor() {
     super();
 
-    // Observables
-    //this.value = null; 
+    // Observable
     this.format = '';
 
     // Non-observable
-    //this.actionFromInput = false;
+    this._value = '';
   }
   
   attributeChangedCallback(name, oldValue, newValue) {
@@ -28,50 +27,37 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
     value = this._removeDelimiters(value);
     this.value = this._addDelimiters(value);
   }
-/*
-  updated(changedProperties) {
-    if (!this.actionFromInput) {
-      this.actionFromInput = false;
-      this.shadowRoot.querySelector('input').value = this.value;
-    }
-  }
-  */
-  //onInput(event) {
-    //this.actionFromInput = true;
-    //super.onInput(event);
-  //}
 
 	onFocus(event) {
 		super.onFocus(event);
 
-		let value = event.target.value;
-		this.value = this._removeDelimiters(value);
-		//this.requestUpdate('value', value);
+		//let value = event.target.value;
+    //this.value = this._removeDelimiters(value);
+    //setTimeout(() => {
+      this._resetCursorPositionOnfocus(event);
+    //}, 100);
   }
 
   onBlur(event) {
 		super.onBlur(event);
 
-    //this.actionFromInput = false;
 		let value = event.target.value;
-		this.value = this._addDelimiters(value);
-		//this.requestUpdate('value', value);
+    this.value = this._addDelimiters(value);
   }
 
-/*
   set value(val) {
-		let oldVal = this._value;
     //val = this._removeDelimiters(val);
-    //this._value = this._addDelimiters(val);
+    //val = this._addDelimiters(val);
 
-    //this._value = val;
-    this.requestUpdate('value', oldVal);
+    let oldValue = this._value;
+    this._value = val;
+    this.requestUpdate('value', oldValue);
 	}
 
 	get value() {
 		return this._value;
   }
-*/
+
   get rawValue() {
     return this._removeDelimiters(this._value);
   }
@@ -83,9 +69,9 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 
 		// Calculates cursor's position offset for single input.
 		let offset = (() => {
-			if (value < this.value)
+			if (value < this._value)
 				return 1;
-			else if (value > this.value)
+			else if (value > this._value)
 				return -1;
 			else
 				return 0;
@@ -94,6 +80,27 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 		this._setCursorPosition(event.target, cursorPosition + offset);
   }
   
+  _resetCursorPositionOnfocus(event) {
+		let cursorPosition = this._getCursorPosition(event);
+    let value = event.target.value;
+    
+		// Calculates cursor's position offset for single input.
+		let offset = (() => {
+      let count = 0;
+      for (let i = 0; i < cursorPosition; i++) {
+        if (!this._digits.includes(value[i])) {
+          count++;
+        }
+      }
+
+			return -count;
+		})();
+
+    this.value = this._removeDelimiters(value);
+
+		this._setCursorPosition(event.target, cursorPosition + offset);
+  }
+
   _addDelimiters(val) {
     if (this.format && val) {
       let result = '';
