@@ -44,8 +44,9 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   }
 
   set value(val) {
-    //val = this._removeDelimiters(val);
-    //val = this._addDelimiters(val);
+    if (this._isDigits(val)) {
+      val = this._addDelimiters(val);
+    }
 
     let oldValue = this._value;
     this._value = val;
@@ -58,6 +59,20 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 
   get rawValue() {
     return this._removeDelimiters(this._value);
+  }
+
+  _isDigits(val) {
+    if (!val || val == '') {
+      return false;
+    }
+
+    for (let c of val) {
+      if (!this._digits.includes(c)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   _resetCursorPosition(event) {
@@ -99,7 +114,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   }
 
   _addDelimiters(val) {
-    if (this.format && val) {
+    if (this.format.trim() != '' && val) {
       let result = '';
       let index = 0;
 
