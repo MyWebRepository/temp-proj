@@ -23,6 +23,9 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   }
 
   firstUpdated() {
+    // When value assignement from attribute happening, format property
+    // is not ready, so the method _addDelimiters is not working. Following
+    // code to format or reformat the value property.
     let value = this.value;
     value = this._removeDelimiters(value);
     this.value = this._addDelimiters(value);
