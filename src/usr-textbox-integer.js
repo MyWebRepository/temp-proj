@@ -13,7 +13,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 	
 	onInput(event) {
 		super.onInput(event);
-		this._resetCursorPosition(event);
+		this._resetValueAndCursor(event);
 	}
 
 	set value(val) {
@@ -34,7 +34,7 @@ export class UsrTextboxInteger extends UsrTextbox {
 		return Number(this._value);
 	}
 
-	_resetCursorPosition(event) {
+	_resetValueAndCursor(event) {
 		let cursorPosition = this._getCursorPosition(event);
 		let value = event.target.value;
 		this._value = event.target.value = this._removeNonDigits(value);

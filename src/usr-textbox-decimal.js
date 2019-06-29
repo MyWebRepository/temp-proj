@@ -163,6 +163,55 @@ export class UsrTextboxDecimal extends UsrTextbox {
 
 		return val;
 	}
+
+	_resetValueAndCursor(event) {
+		let cursorPosition = this._getCursorPosition(event);
+		let value = event.target.value;
+		this._value = event.target.value = this._removeNonDigits(value);
+
+		// Calculates cursor's position offset for single input.
+		let offset = (() => {
+			if (value < this.value)
+				return 1;
+			else if (value > this.value)
+				return -1;
+			else
+				return 0;
+		})();
+
+		this._setCursorPosition(event.target, cursorPosition + offset);
+	}
+
+	_resetValueAndCursorOnclick(event) {
+		let cursorPosition = this._getCursorPosition(event);
+    let value = event.target.value;
+    this._value = event.target.value = this._removeDelimiters(value);
+
+		// Calculates cursor's position offset for single input.
+		let offset = (() => {
+      let count = 0;
+      for (let i = 0; i < cursorPosition; i++) {
+        if (!this._digits.includes(value[i])) {
+          count++;
+        }
+      }
+
+			return -count;
+		})();
+
+		this._setCursorPosition(event.target, cursorPosition + offset);
+	}
+	
+	_getCursorPosition(event) {
+		if (event && event.target) 
+			return event.target.selectionStart;
+		else 
+			return 0; 
+	}
+
+	_setCursorPosition(element, positon) {
+		element.setSelectionRange(positon, positon);
+	}
 }
 
 window.customElements.define('usr-textbox-decimal', UsrTextboxDecimal);

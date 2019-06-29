@@ -167,8 +167,9 @@ export class UsrTextbox extends LitElement {
   }
 
   set value(val) {
+    let oldValue = this._value;
     this._value = val;
-    this.requestUpdate();
+    this.requestUpdate('value', oldValue);
   }
 
   get value() {

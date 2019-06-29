@@ -32,7 +32,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   }
 
   onClick(event) {
-    this._resetCursorPositionOnclick(event);
+    this._resetValueAndCursorOnclick(event);
   }
 
 	onFocus(event) {
@@ -78,7 +78,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
     return true;
   }
 
-  _resetCursorPosition(event) {
+  _resetValueAndCursor(event) {
 		let cursorPosition = this._getCursorPosition(event);
 		let value = event.target.value;
 		this._value = event.target.value = this._removeNonDigits(value);
@@ -96,7 +96,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
 		this._setCursorPosition(event.target, cursorPosition + offset);
   }
   
-  _resetCursorPositionOnclick(event) {
+  _resetValueAndCursorOnclick(event) {
 		let cursorPosition = this._getCursorPosition(event);
     let value = event.target.value;
     this._value = event.target.value = this._removeDelimiters(value);
