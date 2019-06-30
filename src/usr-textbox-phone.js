@@ -97,7 +97,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   }
   
   _resetValueAndCursorOnclick(event) {
-		let cursorPosition = this._getCursorPosition(event);
+    let cursorPosition = this._getCursorPosition(event);
     let value = event.target.value;
     this._value = event.target.value = this._removeDelimiters(value);
 
