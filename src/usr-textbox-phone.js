@@ -35,14 +35,14 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
     this._resetValueAndCursorOnclick(event);
   }
 
-	onFocus(event) {
-		super.onFocus(event);
+  onFocus(event) {
+    super.onFocus(event);
   }
 
   onBlur(event) {
-		super.onBlur(event);
+    super.onBlur(event);
 
-		let value = event.target.value;
+    let value = event.target.value;
     this.value = this._addDelimiters(value);
   }
 
@@ -54,10 +54,10 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
     let oldValue = this._value;
     this._value = val;
     this.requestUpdate('value', oldValue);
-	}
+  }
 
-	get value() {
-		return this._value;
+  get value() {
+    return this._value;
   }
 
   get rawValue() {
