@@ -53,7 +53,8 @@ export class UsrTextboxDecimal extends UsrTextbox {
   
   onInput(event) {
     this.actionFromInput = true;
-    super.onInput(event);
+		super.onInput(event);
+		this._resetValueAndCursor(event);
   }
 
 	onFocus(event) {
@@ -129,11 +130,12 @@ export class UsrTextboxDecimal extends UsrTextbox {
 		}
 	}
 
-	_removeNonDigit(val) {
-		if (val && this.decimalseparator != null && this.decimalseparator != undefined) {
+	_removeNonDigits(val) {
+		if (val && this.decimalSeparator != '') {
 			const digits = '0123456789';
+
 			let result = '';
-			let decimalSeparatorIndexInNewValue = val.indexOf(this.decimalseparator);
+			let decimalSeparatorIndexInNewValue = val.indexOf(this.decimalSeparator);
 			
 			for (let i = 0; i < val.length; i++) {
 				let c = val[i];
@@ -156,7 +158,8 @@ export class UsrTextboxDecimal extends UsrTextbox {
 					result += c;
 				}
 			}
-			this.decimalSeparatorIndexInOldValue = result.indexOf(this.decimalseparator);
+
+			this.decimalSeparatorIndexInOldValue = result.indexOf(this.decimalSeparator);
 			
 			return result;
 		}
