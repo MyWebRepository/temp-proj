@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 
-export const fromAttribute = attr => JSON.parse(attr);
-export const toAttribute = prop => JSON.stringify(prop);
+export const fromAttribute = attr => JSON.parse(unescape(attr));
+export const toAttribute = prop => escape(JSON.stringify(prop));
 
 export class UsrSelect extends LitElement {
   static get styles() {
@@ -57,36 +57,55 @@ export class UsrSelect extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-
-    if (this.firstItemValue != null || this.firstItemText != null) {
-      //this._dataSource = 
-    }
   }
 
   set dataSource(val) {
+    let oldValue = this._dataSourcel
     this._dataSource = val;
-    this.requestUpdate();
+    this.requestUpdate('dataSource', oldValue);
   }
+
   get dataSource() {
     return this._dataSource;
   }
 
+  get useEmptyItem() {
+    return this.firstItemValue != null || this.firstItemText  != null;
+  }
 
   get _listBody() {
+    let i = 0;
     return html`
       <ul>
-        
+        ${this.useEmptyItem ? 
+          html`
+            <li>
+              <span>&#9776<span>
+              <span>${this.firstItemText}</span>
+            </li>
+          ` : '' 
+        }
+        ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
+          html`
+            <li>
+              <span>&#9776<span>
+              <span>${item.text}</span>
+            </li>
+          `
+        )}
       </ul>
     `;
   }
 
   render() {
     return html`
-      <div>
-        <div>
-          <span></span><span><span>
+      <div class="container">
+        <div class="value-container">
+          <div></div>
+          <div></div>
         </div>
-        <div>
+        <div class="list-container">
+          ${this._listBody}
         </div>
       </div>
     `;

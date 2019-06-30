@@ -237,9 +237,9 @@ export class UsrCalender extends LitElement {
   get _tableBody() {
     let i = 0;
     return html`
-      ${repeat(this.calendarDays2D, day2D => `${i++}`, (day2D, indx) => 
+      ${repeat(this.calendarDays2D, day2D => `${i++}`, (day2D, index) => 
         html`
-          <tr>${repeat(day2D, day1D => `${i++}`, (day1D, indx) => {
+          <tr>${repeat(day2D, day1D => `${i++}`, (day1D, index) => {
             let cls = (() => {
               if (day1D.month != this.currentMonthInfo.month) {
                 return 'color';
