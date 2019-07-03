@@ -30,6 +30,7 @@
       //import '@polymer/iron-demo-helpers/demo-snippet';
     </script>
 
+    <script type="module" src= "../src/usr-calendar-year-list.js"></script>
     <script type="module" src="../src/usr-select.js"></script>
     <!--<script type="module" src="../src/usr-textbox-decimal.js"></script>
     <script type="module" src="../src/usr-picker-time.js"></script>
@@ -42,9 +43,10 @@
   </head>
   <body>
     <div style="padding:20px;">
-      <usr-select first-item-value='-1' first-item-text='--' data-source="%5B%7B%22value%22%3A%221%22%2C%20%22text%22%3A%22item1%22%7D%2C%7B%22value%22%3A%222%22%2C%20%22text%22%3A%22item2%22%7D%5D">
+      <usr-calendar-year-list></usr-calendar-year-list>
+      <!--<usr-select first-item-value='-1' first-item-text='--' data-source="%5B%7B%22value%22%3A%221%22%2C%20%22text%22%3A%22item1%22%7D%2C%7B%22value%22%3A%222%22%2C%20%22text%22%3A%22item2%22%7D%5D">
       </usr-select>
-      <!--<usr-textbox-decimal class="usr-slot-before" decimal-length="2" value="1111123.348" decimal-separator="." thousand-separator=",">
+      <usr-textbox-decimal class="usr-slot-before" decimal-length="2" value="1111123.348" decimal-separator="." thousand-separator=",">
         <span style="visibility:hidden">$</span>
       </usr-textbox-decimal>
       <usr-picker-time class="width:200px;" value="21:45:23 --">
