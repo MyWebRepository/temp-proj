@@ -8,6 +8,7 @@ export class UsrSelect extends LitElement {
   static get styles() {
     return [
       css`:host {
+        width: 100%;
         display: inline-block;
         border: solid 1px gray;
         padding: 2px 2px 2px 2px;
@@ -35,23 +36,51 @@ export class UsrSelect extends LitElement {
         visibility: visible !important;
         font-size: var(--usr-icon-font-size, 14px);
       }`,
-      css`input#textbox {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 1px 1px 1px 0px;
-        border-style: none;
-        outline: 0px;
-        font-size: var(--usr-text-font-size, 14px);
-        text-align: var(--usr-text-align, left);
-      }`,
-      css`.container {
-        display: flex;
-        flex-direction: row;
-        overflow: hidden;
-      }`,
       css`.slot-container {
         align-self: center;
         padding: 0 0.2em 0 0.2em;
+      }`,
+      css`.container {
+        width: 100%;
+      }`,
+      css`.value-container {
+        display: block;
+        border: solid 1px green;
+      }`,
+      css`.value-container:hover {
+        cursor: pointer;
+      }`,
+      css`.value-container div {
+        display: inline-block;
+        border: solid 1px green;
+      }`,
+      css`.value-container .text {
+        width: calc(100% - 35px);
+      }`,
+      css`.value-container .icon {
+        width: 30px;
+        float: right;
+        text-align: center;
+      }`,
+      css`.list-container {
+        height: 200px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }`,
+      css`ul {
+        padding-left: 0px;
+        margin: 0px;
+        border: solid 1px green;
+      }`,
+      css`li {
+        border: solid 1px yellow;
+        list-style-type: none;
+        text-align: left;
+        padding: 5px 0 5px 0;
+      }`,
+      css`li:hover {
+        background-color: gray;
+        cursor: pointer;
       }`
     ];
   }
@@ -93,7 +122,24 @@ export class UsrSelect extends LitElement {
     this.firstItemValue = null;
     this.firstItemText = null;
 
-    this._dataSource = [];
+    this._dataSource = [
+      { value: '1', text:'item 1' },
+      { value: '2', text:'item 2' },
+      { value: '3', text:'item 3' },
+      { value: '4', text:'item 4' },
+      { value: '5', text:'item 5' },
+      { value: '6', text:'item 6' },
+      { value: '7', text:'item 7' },
+      { value: '8', text:'item 8' },
+      { value: '9', text:'item 9' },
+      { value: '10', text:'item 10' },
+      { value: '11', text:'item 11' },
+      { value: '12', text:'item 12' },
+      { value: '13', text:'item 13' },
+      { value: '14', text:'item 14' },
+      { value: '15', text:'item 15' },
+      { value: '16', text:'item 16' }
+    ];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -146,8 +192,8 @@ export class UsrSelect extends LitElement {
     return html`
       <div class="container">
         <div class="value-container">
-          <div></div>
-          <div></div>
+          <div class="text">Text</div>
+          <div class="icon">&#9660</div>
         </div>
         <div class="list-container">
           ${this._listBody}
