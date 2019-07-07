@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 
-const NoOfPaddingYear = 10;
+const NoOfPaddingYears = 20;
 
 export class UsrCalendarYearList extends LitElement {
   static get styles() {
@@ -42,9 +42,10 @@ export class UsrCalendarYearList extends LitElement {
     super();
 
     this._currentYear = this._getYear();
-    this._noOfYear = 2 * NoOfPaddingYear + 1;
+    this._noOfYear = 2 * NoOfPaddingYears + 1;
     this._initialPosition = null;
     this._itemHeight = 0;
+    this._prevTop = 0;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -56,10 +57,11 @@ export class UsrCalendarYearList extends LitElement {
   }
 
   firstUpdated() {
-    let elem = this.shadowRoot.querySelector('#id11');
+    let elem = this.shadowRoot.querySelector('#id21');
     elem.scrollIntoView();
 
     this._initialPosition = this._getPosition(elem);
+    this._prevTop = this._initialPosition.top;
     this._itemHeight = this.initialPosition / this._noOfYear;
   }
 
@@ -72,10 +74,17 @@ export class UsrCalendarYearList extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    let e = event;
-    let top = event.target.scrollTop;
-    let height = event.target.scrollHeight;
-    console.log(top, height);
+    let currTop = event.target.scrollTop;
+
+    if (currTop > this._prevTop) { // Move down
+      this._prevTop = currTop;
+
+
+    } else { // Move up
+      this._prevTop = currTop;
+
+    }
+
   }
 
   render() {
@@ -107,13 +116,12 @@ export class UsrCalendarYearList extends LitElement {
   _yearList(year) {
     let list = [];
 
-    for (let i = year - 10; i <= year + 10; i++) {
+    for (let i = year - NoOfPaddingYears; i <= year + NoOfPaddingYears; i++) {
       list.push(i);
     }
 
     return list;
   }
-
 }
 
 window.customElements.define('usr-calendar-year-list', UsrCalendarYearList)
