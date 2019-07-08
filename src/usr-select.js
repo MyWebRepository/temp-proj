@@ -155,7 +155,26 @@ export class UsrSelect extends LitElement {
   }
 
   firstUpdated() {
-    document.addEventListener('click', this.onDocClick.bind(this));
+    document.addEventListener('click', this.onDocClick.bind(this), true);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this.onDocClick.bind(this), true);
+  }
+
+  render() {
+    return html`
+      <div class="container">
+        <div class="value-container">
+          <div class="text" @click="${this.onTextClick}">${this._text}</div>
+          <div class="icon" @click="${this.onTextClick}">&#9660</div>
+        </div>
+        <div class="list-container" style="${styleMap(this._listHide?{display:'none'}:{display:'block'})}">
+          ${this._listBody}
+        </div>
+      </div>
+    `;
   }
 
   onTextClick(event) {
@@ -176,6 +195,23 @@ export class UsrSelect extends LitElement {
   onDocClick(event) {
     this._listHide = true;
     this.requestUpdate();
+  }
+
+  onListMouseover(event) {
+    document.addEventListener('keyup', this.onDocKeyup.bind(this), true);
+  }
+
+  onListMouseout(event) {
+    document.removeEventListener('keyup', this.onDocKeyup.bind(this), true);
+  }
+
+  onDocKeyup(event) {
+    let value = event.key;
+    let date = new Date();
+    let time = date.getTime();
+    console.log(Date.now());
+    //alert(value);
+    //let code = event.code;
   }
 
   set dataSource(val) {
@@ -202,6 +238,14 @@ export class UsrSelect extends LitElement {
     return this.firstItemValue != null || this.firstItemText  != null;
   }
 
+  search(key) {
+    if (key && this._dataSource && Array.isArray(this._dataSource)) {
+      return this._dataSource.find(i => i.text.startsWith(key));
+    }
+
+    return null;
+  }
+
   get _text() {
     if (this._dataSource && Array.isArray(this._dataSource)) {
       let item = this._dataSource.find(i => i.value == this._value);
@@ -218,7 +262,7 @@ export class UsrSelect extends LitElement {
   get _listBody() {
     let i = 0;
     return html`
-      <ul>
+      <ul @mouseover="${this.onListMouseover}" @mouseout="${this.onListMouseout}">
         ${this.useEmptyItem ? 
           html`
             <li>
@@ -239,19 +283,7 @@ export class UsrSelect extends LitElement {
     `;
   }
 
-  render() {
-    return html`
-      <div class="container">
-        <div class="value-container">
-          <div class="text" @click="${this.onTextClick}">${this._text}</div>
-          <div class="icon" @click="${this.onTextClick}">&#9660</div>
-        </div>
-        <div class="list-container" style="${styleMap(this._listHide?{display:'none'}:{display:'block'})}">
-          ${this._listBody}
-        </div>
-      </div>
-    `;
-  }
+  
 }
 
 window.customElements.define('usr-select', UsrSelect);
