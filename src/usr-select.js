@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
+import { styleMap } from 'lit-html/directives/style-map';
 
 export const fromAttribute = attr => JSON.parse(unescape(attr));
 export const toAttribute = prop => escape(JSON.stringify(prop));
@@ -56,6 +57,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.value-container .text {
         width: calc(100% - 35px);
+        height: 100%;
       }`,
       css`.value-container .icon {
         width: 30px;
@@ -63,6 +65,7 @@ export class UsrSelect extends LitElement {
         text-align: center;
       }`,
       css`.list-container {
+        display: none;
         height: 200px;
         overflow-x: hidden;
         overflow-y: scroll;
@@ -117,11 +120,12 @@ export class UsrSelect extends LitElement {
     super();
 
     // Observables
-    this.value = ''
-    this.dataSource = [];
     this.firstItemValue = null;
     this.firstItemText = null;
 
+    this._dataSource = [];
+    this._value = '1';
+    this._listHide = true;
     this._dataSource = [
       { value: '1', text:'item 1' },
       { value: '2', text:'item 2' },
@@ -150,8 +154,32 @@ export class UsrSelect extends LitElement {
     super.connectedCallback();
   }
 
+  firstUpdated() {
+    document.addEventListener('click', this.onDocClick.bind(this));
+  }
+
+  onTextClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._listHide = false;
+    this.requestUpdate();
+  }
+
+  onItemClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.value = event.target.getAttribute('value');
+  }
+
+  onDocClick(event) {
+    this._listHide = true;
+    this.requestUpdate();
+  }
+
   set dataSource(val) {
-    let oldValue = this._dataSource
+    let oldValue = this._dataSource;
     this._dataSource = val;
     this.requestUpdate('dataSource', oldValue);
   }
@@ -160,8 +188,31 @@ export class UsrSelect extends LitElement {
     return this._dataSource;
   }
 
+  set value(val) {
+    let oldValue = this._value;
+    this._value = val;
+    this.requestUpdate('value', oldValue);
+  }
+
+  get value() {
+    return this._value;
+  }
+
   get useEmptyItem() {
     return this.firstItemValue != null || this.firstItemText  != null;
+  }
+
+  get _text() {
+    if (this._dataSource && Array.isArray(this._dataSource)) {
+      let item = this._dataSource.find(i => i.value == this._value);
+      if (item) {
+        return item.text;
+      } else {
+        return '';
+      }
+    }
+
+    return '';
   }
 
   get _listBody() {
@@ -178,7 +229,7 @@ export class UsrSelect extends LitElement {
         }
         ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
           html`
-            <li>
+            <li @click="${this.onItemClick}" value="${item.value}">
               <span>&#9776<span>
               <span>${item.text}</span>
             </li>
@@ -192,10 +243,10 @@ export class UsrSelect extends LitElement {
     return html`
       <div class="container">
         <div class="value-container">
-          <div class="text">Text</div>
-          <div class="icon">&#9660</div>
+          <div class="text" @click="${this.onTextClick}">${this._text}</div>
+          <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
-        <div class="list-container">
+        <div class="list-container" style="${styleMap(this._listHide?{display:'none'}:{display:'block'})}">
           ${this._listBody}
         </div>
       </div>
