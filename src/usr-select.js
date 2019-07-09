@@ -4,6 +4,7 @@ import { styleMap } from 'lit-html/directives/style-map';
 
 export const fromAttribute = attr => JSON.parse(unescape(attr));
 export const toAttribute = prop => escape(JSON.stringify(prop));
+export const timeDiff = 800;
 
 export class UsrSelect extends LitElement {
   static get styles() {
@@ -56,7 +57,7 @@ export class UsrSelect extends LitElement {
         border: solid 1px green;
       }`,
       css`.value-container .text {
-        width: calc(100% - 35px);
+        width: calc(100% - 45px);
         height: 100%;
       }`,
       css`.value-container .icon {
@@ -94,6 +95,10 @@ export class UsrSelect extends LitElement {
         type: String, 
         reflect: false 
       },
+      placeholder: {
+        type: String,
+        reflect: true
+      },
       dataSource: {
         type: Array,
         reflect: false,
@@ -120,6 +125,7 @@ export class UsrSelect extends LitElement {
     super();
 
     // Observables
+    this.placeholder = '';
     this.firstItemValue = null;
     this.firstItemText = null;
 
@@ -129,6 +135,7 @@ export class UsrSelect extends LitElement {
     this._listHide = true;
     this._prevTime = 0;
     this._prevInput = '';
+    this._onDocClick = null;
     this._onDocKeyup = null;
     this._dataSource = [
       { value: '1', text:'item 1' },
@@ -159,19 +166,23 @@ export class UsrSelect extends LitElement {
   }
 
   firstUpdated() {
-    document.addEventListener('click', this.onDocClick.bind(this), true);
+    this._onDocClick = this.onDocClick.bind(this);
+    document.addEventListener('click', this._onDocClick, false);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener('click', this.onDocClick.bind(this), true);
+
+    if (this._onDocClick != null) {
+      document.removeEventListener('click', this._onDocClick, false);
+    }
   }
 
   render() {
     return html`
       <div class="container">
         <div class="value-container">
-          <div class="text" @click="${this.onTextClick}">${this._text}</div>
+          <input class="text" @click="${this.onTextClick}" value="${this._text}" placeholder="${this.placeholder}" readonly>
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
         <div class="list-container" style="${styleMap(this._listHide?{display:'none'}:{display:'block'})}">
@@ -225,7 +236,7 @@ export class UsrSelect extends LitElement {
       let input = key;
       console.log(1, input);
     } else {
-      if (currTime - this._prevTime < 800) {
+      if (currTime - this._prevTime < timeDiff) {
         let input = this._prevInput + key;
         console.log(2, input);
       }
