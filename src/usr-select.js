@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 import { styleMap } from 'lit-html/directives/style-map';
 
-export const fromAttribute = attr => JSON.parse(unescape(attr));
-export const toAttribute = prop => escape(JSON.stringify(prop));
-export const timeDiff = 800;
+const fromAttribute = attr => JSON.parse(unescape(attr));
+const toAttribute = prop => escape(JSON.stringify(prop));
+const timeDiff = 800; // Milliseconds
 
 export class UsrSelect extends LitElement {
   static get styles() {
@@ -97,7 +97,7 @@ export class UsrSelect extends LitElement {
       },
       placeholder: {
         type: String,
-        reflect: true
+        reflect: false
       },
       dataSource: {
         type: Array,
