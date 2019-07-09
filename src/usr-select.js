@@ -73,7 +73,7 @@ export class UsrSelect extends LitElement {
       css`ul {
         padding-left: 0px;
         margin: 0px;
-        border: solid 1px green;
+        border: solid 1px red;
       }`,
       css`li {
         border: solid 1px yellow;
@@ -123,9 +123,13 @@ export class UsrSelect extends LitElement {
     this.firstItemValue = null;
     this.firstItemText = null;
 
+    // Non-obervables
     this._dataSource = [];
     this._value = '1';
     this._listHide = true;
+    this._prevTime = 0;
+    this._prevInput = '';
+    this._onDocKeyup = null;
     this._dataSource = [
       { value: '1', text:'item 1' },
       { value: '2', text:'item 2' },
@@ -198,20 +202,36 @@ export class UsrSelect extends LitElement {
   }
 
   onListMouseover(event) {
-    document.addEventListener('keyup', this.onDocKeyup.bind(this), true);
+    //console.log('add');
+    this._onDocKeyup = this.onDocKeyup.bind(this);
+    document.addEventListener('keyup', this._onDocKeyup, false);
   }
 
   onListMouseout(event) {
-    document.removeEventListener('keyup', this.onDocKeyup.bind(this), true);
+    //console.log('remove');
+    if (this._onDocKeyup != null) {
+      document.removeEventListener('keyup', this._onDocKeyup, false);
+    }
   }
 
   onDocKeyup(event) {
-    let value = event.key;
+    let key = event.key;
     let date = new Date();
-    let time = date.getTime();
-    console.log(Date.now());
-    //alert(value);
-    //let code = event.code;
+    let currTime = date.getTime();
+    
+    if (this._prevTime == 0) {
+      this._prevTime = currTime;
+      this._prevInput = key;
+      let input = key;
+      console.log(1, input);
+    } else {
+      if (currTime - this._prevTime < 800) {
+        let input = this._prevInput + key;
+        console.log(2, input);
+      }
+      this._prevTime = 0;
+      this._prevInput = '';
+    }
   }
 
   set dataSource(val) {
@@ -238,7 +258,7 @@ export class UsrSelect extends LitElement {
     return this.firstItemValue != null || this.firstItemText  != null;
   }
 
-  search(key) {
+  _search(key) {
     if (key && this._dataSource && Array.isArray(this._dataSource)) {
       return this._dataSource.find(i => i.text.startsWith(key));
     }
@@ -262,7 +282,7 @@ export class UsrSelect extends LitElement {
   get _listBody() {
     let i = 0;
     return html`
-      <ul @mouseover="${this.onListMouseover}" @mouseout="${this.onListMouseout}">
+      <ul @mouseenter="${this.onListMouseover}" @mouseleave="${this.onListMouseout}">
         ${this.useEmptyItem ? 
           html`
             <li>
@@ -282,8 +302,6 @@ export class UsrSelect extends LitElement {
       </ul>
     `;
   }
-
-  
 }
 
 window.customElements.define('usr-select', UsrSelect);
