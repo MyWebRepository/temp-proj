@@ -212,14 +212,12 @@ export class UsrSelect extends LitElement {
     this.requestUpdate();
   }
 
-  onListMouseover(event) {
-    //console.log('add');
+  onListMouseenter(event) {
     this._onDocKeyup = this.onDocKeyup.bind(this);
     document.addEventListener('keyup', this._onDocKeyup, false);
   }
 
-  onListMouseout(event) {
-    //console.log('remove');
+  onListMouseleave(event) {
     if (this._onDocKeyup != null) {
       document.removeEventListener('keyup', this._onDocKeyup, false);
     }
@@ -240,6 +238,7 @@ export class UsrSelect extends LitElement {
         let input = this._prevInput + key;
         console.log(2, input);
       }
+
       this._prevTime = 0;
       this._prevInput = '';
     }
@@ -266,7 +265,15 @@ export class UsrSelect extends LitElement {
   }
 
   get useEmptyItem() {
-    return this.firstItemValue != null || this.firstItemText  != null;
+    if (this.firstItemValue != null || this.firstItemText  != null) {
+      if (!this.firstItemValue) {
+        this.firstItemValue = '-1000';
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   _search(key) {
@@ -280,6 +287,7 @@ export class UsrSelect extends LitElement {
   get _text() {
     if (this._dataSource && Array.isArray(this._dataSource)) {
       let item = this._dataSource.find(i => i.value == this._value);
+
       if (item) {
         return item.text;
       } else {
@@ -292,12 +300,13 @@ export class UsrSelect extends LitElement {
 
   get _listBody() {
     let i = 0;
+
     return html`
-      <ul @mouseenter="${this.onListMouseover}" @mouseleave="${this.onListMouseout}">
+      <ul @mouseenter="${this.onListMouseenter}" @mouseleave="${this.onListMouseleave}">
         ${this.useEmptyItem ? 
           html`
             <li>
-              <span>&#9776<span>
+              <span>&diams;<span>
               <span>${this.firstItemText}</span>
             </li>
           ` : '' 
@@ -305,7 +314,7 @@ export class UsrSelect extends LitElement {
         ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
-              <span>&#9776<span>
+              <span>&diams;<span>
               <span>${item.text}</span>
             </li>
           `
