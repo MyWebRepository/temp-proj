@@ -14,6 +14,7 @@ export class UsrSelect extends LitElement {
         display: inline-block;
         border: solid 0px gray;
         padding: 0px;
+        z-index: 5;
       }`,
       css`:host([disabled]), :host([readonly]),
         :host([disabled]) *, :host([readonly]) * {
@@ -44,6 +45,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.container {
         width: 100%;
+        z-index: 5;
       }`,
       css`.value-container {
         display: block;
@@ -77,12 +79,14 @@ export class UsrSelect extends LitElement {
         padding-left: 0px;
         margin: 0px;
         border: solid 0px red;
+        z-index: 5;
       }`,
       css`li {
         border: solid 0px yellow;
         list-style-type: none;
         text-align: left;
         padding: 5px 0 5px 0;
+        z-index: 5;
       }`,
       css`li:hover {
         background-color: gray;
@@ -99,6 +103,7 @@ export class UsrSelect extends LitElement {
         overflow-x: hidden;
         overflow-y: scroll;
         border: solid 1px gray;
+        z-index: 5;
       }`
     ];
   }
@@ -329,7 +334,7 @@ export class UsrSelect extends LitElement {
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
               <span>&diams;<span>
-              <span>${item.text}</span>
+              <span z-index="200">${item.text}</span>
             </li>
           `
         )}
