@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
-import { styleMap } from 'lit-html/directives/style-map';
+import { classMap } from 'lit-html/directives/class-map';
 
 const fromAttribute = attr => JSON.parse(unescape(attr));
 const toAttribute = prop => escape(JSON.stringify(prop));
@@ -12,8 +12,8 @@ export class UsrSelect extends LitElement {
       css`:host {
         width: 100%;
         display: inline-block;
-        border: solid 1px gray;
-        padding: 2px 2px 2px 2px;
+        border: solid 0px gray;
+        padding: 0px;
       }`,
       css`:host([disabled]), :host([readonly]),
         :host([disabled]) *, :host([readonly]) * {
@@ -47,6 +47,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.value-container {
         display: block;
+        padding: 2px;
         border: solid 1px green;
       }`,
       css`.value-container:hover {
@@ -57,27 +58,28 @@ export class UsrSelect extends LitElement {
         border: solid 1px green;
       }`,
       css`.value-container .text {
-        width: calc(100% - 45px);
-        height: 100%;
+        width: calc(100% - 35px);
+        box-sizing: border-box;
+        padding: 1px 1px 1px 0px;
+        border-style: none;
+        outline: 0px;
+        font-size: var(--usr-text-font-size, 14px);
+        text-align: var(--usr-text-align, left);
       }`,
       css`.value-container .icon {
-        width: 30px;
+        width: 20px;
         float: right;
         text-align: center;
       }`,
       css`.list-container {
-        display: none;
-        height: 200px;
-        overflow-x: hidden;
-        overflow-y: scroll;
       }`,
       css`ul {
         padding-left: 0px;
         margin: 0px;
-        border: solid 1px red;
+        border: solid 0px red;
       }`,
       css`li {
-        border: solid 1px yellow;
+        border: solid 0px yellow;
         list-style-type: none;
         text-align: left;
         padding: 5px 0 5px 0;
@@ -85,6 +87,18 @@ export class UsrSelect extends LitElement {
       css`li:hover {
         background-color: gray;
         cursor: pointer;
+      }`,
+      css`.hide {
+        display: none;
+      }`,
+      css`.show {
+        position: absolute;
+        display: block;
+        width: 50%;
+        height: 200px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        border: solid 1px gray;
       }`
     ];
   }
@@ -185,7 +199,7 @@ export class UsrSelect extends LitElement {
           <input class="text" @click="${this.onTextClick}" value="${this._text}" placeholder="${this.placeholder}" readonly>
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
-        <div class="list-container" style="${styleMap(this._listHide?{display:'none'}:{display:'block'})}">
+        <div class="list-container" class="${classMap(this._listHide?{hide:true}:{show:true})}">
           ${this._listBody}
         </div>
       </div>
