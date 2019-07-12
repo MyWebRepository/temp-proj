@@ -49,7 +49,7 @@ export class UsrSelect extends LitElement {
       css`.value-container {
         display: block;
         padding: 2px;
-        border: solid 2px gray;
+        border: solid 1px gray;
       }`,
       css`.value-container:hover {
         cursor: pointer;
@@ -78,9 +78,11 @@ export class UsrSelect extends LitElement {
         height: 200px;
         overflow-x: hidden;
         overflow-y: scroll;
-        border: solid 2px gray;
+        margin-top: 1px;
+        border: solid 1px gray;
         background-color: white;
         opacity: 1;
+        z-index: var(--usr-select-list-z-index, 100);
       }`,
       css`ul {
         padding-left: 0px;
@@ -91,7 +93,7 @@ export class UsrSelect extends LitElement {
         border: solid 0px yellow;
         list-style-type: none;
         text-align: left;
-        padding: 5px 0 5px 0;
+        padding: 5px 5px 5px 5px;
       }`,
       css`li:hover {
         background-color: rgb(36, 106, 243);
@@ -135,11 +137,6 @@ export class UsrSelect extends LitElement {
         type: String, 
         reflect: false, 
         attribute: 'first-item-text'
-      },
-      listZIndex: {
-        type: Number,
-        reflect: false,
-        attribute: 'list-z-index'
       }
     };
   }
@@ -151,7 +148,6 @@ export class UsrSelect extends LitElement {
     this.placeholder = '';
     this.firstItemValue = null;
     this.firstItemText = null;
-    this.listZIndex = 100;
 
     // Non-obervables
     this._dataSource = [];
@@ -209,7 +205,7 @@ export class UsrSelect extends LitElement {
           <input class="text" @click="${this.onTextClick}" value="${this._text}" placeholder="${this.placeholder}" readonly>
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
-        <div style="${styleMap({'z-index':this.listZIndex})}" class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}">
+        <div class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}">
           ${this._listBody}
         </div>
       </div>
