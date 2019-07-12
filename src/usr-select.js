@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
+import { styleMap } from 'lit-html/directives/style-map';
 import { classMap } from 'lit-html/directives/class-map';
 
 const fromAttribute = attr => JSON.parse(unescape(attr));
@@ -14,7 +15,6 @@ export class UsrSelect extends LitElement {
         display: inline-block;
         border: solid 0px gray;
         padding: 0px;
-        z-index: 5;
       }`,
       css`:host([disabled]), :host([readonly]),
         :host([disabled]) *, :host([readonly]) * {
@@ -45,19 +45,18 @@ export class UsrSelect extends LitElement {
       }`,
       css`.container {
         width: 100%;
-        z-index: 5;
       }`,
       css`.value-container {
         display: block;
         padding: 2px;
-        border: solid 1px green;
+        border: solid 2px gray;
       }`,
       css`.value-container:hover {
         cursor: pointer;
       }`,
       css`.value-container div {
         display: inline-block;
-        border: solid 1px green;
+        border: solid 1px gray;
       }`,
       css`.value-container .text {
         width: calc(100% - 35px);
@@ -74,36 +73,36 @@ export class UsrSelect extends LitElement {
         text-align: center;
       }`,
       css`.list-container {
+        position: absolute;
+        width: 50%;
+        height: 200px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        border: solid 2px gray;
+        background-color: white;
+        opacity: 1;
       }`,
       css`ul {
         padding-left: 0px;
         margin: 0px;
         border: solid 0px red;
-        z-index: 5;
       }`,
       css`li {
         border: solid 0px yellow;
         list-style-type: none;
         text-align: left;
         padding: 5px 0 5px 0;
-        z-index: 5;
       }`,
       css`li:hover {
-        background-color: gray;
+        background-color: rgb(36, 106, 243);
+        color: white;
         cursor: pointer;
       }`,
       css`.hide {
         display: none;
       }`,
       css`.show {
-        position: absolute;
         display: block;
-        width: 50%;
-        height: 200px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        border: solid 1px gray;
-        z-index: 5;
       }`
     ];
   }
@@ -136,6 +135,11 @@ export class UsrSelect extends LitElement {
         type: String, 
         reflect: false, 
         attribute: 'first-item-text'
+      },
+      listZIndex: {
+        type: Number,
+        reflect: false,
+        attribute: 'list-z-index'
       }
     };
   }
@@ -147,6 +151,7 @@ export class UsrSelect extends LitElement {
     this.placeholder = '';
     this.firstItemValue = null;
     this.firstItemText = null;
+    this.listZIndex = 100;
 
     // Non-obervables
     this._dataSource = [];
@@ -204,7 +209,7 @@ export class UsrSelect extends LitElement {
           <input class="text" @click="${this.onTextClick}" value="${this._text}" placeholder="${this.placeholder}" readonly>
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
-        <div class="list-container" class="${classMap(this._listHide?{hide:true}:{show:true})}">
+        <div style="${styleMap({'z-index':this.listZIndex})}" class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}">
           ${this._listBody}
         </div>
       </div>
