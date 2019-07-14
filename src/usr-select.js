@@ -5,16 +5,14 @@ import { classMap } from 'lit-html/directives/class-map';
 
 const fromAttribute = attr => JSON.parse(unescape(attr));
 const toAttribute = prop => escape(JSON.stringify(prop));
-const timeDiff = 800; // Milliseconds
+const timeDiff = 800; // In milliseconds
 
 export class UsrSelect extends LitElement {
   static get styles() {
     return [
       css`:host {
-        width: 100%;
+        width: var(--usr-select-width, 100%);
         display: inline-block;
-        border: solid 0px gray;
-        padding: 0px;
       }`,
       css`:host([disabled]), :host([readonly]),
         :host([disabled]) *, :host([readonly]) * {
@@ -47,6 +45,9 @@ export class UsrSelect extends LitElement {
         width: 100%;
       }`,
       css`.value-container {
+        box-sizing: border-box;
+        display: inline-block;
+        width: 100%;
         display: block;
         padding: 2px;
         border: solid 1px gray;
@@ -56,7 +57,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.value-container div {
         display: inline-block;
-        border: solid 1px gray;
+        border: solid 0px gray;
       }`,
       css`.value-container .text {
         width: calc(100% - 35px);
@@ -74,22 +75,26 @@ export class UsrSelect extends LitElement {
       }`,
       css`.list-container {
         position: absolute;
-        width: 50%;
-        height: 200px;
+        height: 200px;ƒ
         overflow-x: hidden;
         overflow-y: scroll;
         margin-top: 1px;
+        box-sizing: border-box;
         border: solid 1px gray;
         background-color: white;
         opacity: 1;
         z-index: var(--usr-select-list-z-index, 100);
       }`,
       css`ul {
+        width: 100%;
+        box-sizing: border-box;
         padding-left: 0px;
         margin: 0px;
         border: solid 0px red;
       }`,
       css`li {
+        width: 100%;
+        box-sizing: border-box;
         border: solid 0px yellow;
         list-style-type: none;
         text-align: left;
@@ -157,6 +162,7 @@ export class UsrSelect extends LitElement {
     this._prevInput = '';
     this._onDocClick = null;
     this._onDocKeyup = null;
+    this._valueContainerWidth = 0;
     this._dataSource = [
       { value: '1', text:'item 1' },
       { value: '2', text:'item 2' },
@@ -186,6 +192,8 @@ export class UsrSelect extends LitElement {
   }
 
   firstUpdated() {
+    this._valueContainerWidth = this.shadowRoot.querySelector('.value-container').offsetWidth;
+
     this._onDocClick = this.onDocClick.bind(this);
     document.addEventListener('click', this._onDocClick, false);
   }
@@ -202,10 +210,15 @@ export class UsrSelect extends LitElement {
     return html`
       <div class="container">
         <div class="value-container">
-          <input class="text" @click="${this.onTextClick}" value="${this._text}" placeholder="${this.placeholder}" readonly>
+          <input readonly class="text" value="${this._text}" 
+            placeholder="${this.placeholder}" @click="${this.onTextClick}" 
+          >
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
-        <div class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}">
+        <div 
+          style="${styleMap({'min-width':this._valueContainerWidth+'px'})}" 
+          class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}"
+        >
           ${this._listBody}
         </div>
       </div>
@@ -335,7 +348,7 @@ export class UsrSelect extends LitElement {
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
               <span>&diams;<span>
-              <span z-index="200">${item.text}</span>
+              <span>${item.text}</span>
             </li>
           `
         )}
