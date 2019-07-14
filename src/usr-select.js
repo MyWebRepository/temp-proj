@@ -75,7 +75,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.list-container {
         position: absolute;
-        height: 200px;ƒ
+        height: 200px;
         overflow-x: hidden;
         overflow-y: scroll;
         margin-top: 1px;
@@ -88,17 +88,17 @@ export class UsrSelect extends LitElement {
       css`ul {
         width: 100%;
         box-sizing: border-box;
-        padding-left: 0px;
         margin: 0px;
+        padding-left: 0px;
         border: solid 0px red;
       }`,
       css`li {
         width: 100%;
         box-sizing: border-box;
-        border: solid 0px yellow;
+        padding-right: 10px;
         list-style-type: none;
         text-align: left;
-        padding: 5px 5px 5px 5px;
+        padding: 0.3em;
       }`,
       css`li:hover {
         background-color: rgb(36, 106, 243);
@@ -151,8 +151,8 @@ export class UsrSelect extends LitElement {
 
     // Observables
     this.placeholder = '';
-    this.firstItemValue = null;
-    this.firstItemText = null;
+    this.firstItemValue = '';
+    this.firstItemText = '';
 
     // Non-obervables
     this._dataSource = [];
@@ -192,8 +192,14 @@ export class UsrSelect extends LitElement {
   }
 
   firstUpdated() {
-    this._valueContainerWidth = this.shadowRoot.querySelector('.value-container').offsetWidth;
+    if (this.useEmptyItem) {
+      this._dataSource.unshift({
+        value: this.firstItemValue, 
+        text: this.firstItemText 
+      });
+    }
 
+    this._valueContainerWidth = this.shadowRoot.querySelector('.value-container').offsetWidth;
     this._onDocClick = this.onDocClick.bind(this);
     document.addEventListener('click', this._onDocClick, false);
   }
@@ -336,18 +342,10 @@ export class UsrSelect extends LitElement {
 
     return html`
       <ul @mouseenter="${this.onListMouseenter}" @mouseleave="${this.onListMouseleave}">
-        ${this.useEmptyItem ? 
-          html`
-            <li>
-              <span>&diams;<span>
-              <span>${this.firstItemText}</span>
-            </li>
-          ` : '' 
-        }
         ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
-              <span>&diams;<span>
+              <span style="color:green;">&#10004;</span>
               <span>${item.text}</span>
             </li>
           `
