@@ -1,7 +1,7 @@
 import { UsrTextbox } from './usr-textbox';
 
 export class UsrTextboxPassword extends UsrTextbox {
-	constructor() {
+  constructor() {
     super();
     
     this.inputType = 'password';
@@ -9,7 +9,7 @@ export class UsrTextboxPassword extends UsrTextbox {
   
   _matches(val) { 
     return true;
-	}
+  }
 }
 
 window.customElements.define('usr-textbox-password', UsrTextboxPassword);
