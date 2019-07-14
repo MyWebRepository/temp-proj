@@ -3,7 +3,7 @@ import { UsrTextbox } from './usr-textbox';
 export class UsrTextboxDecimal extends UsrTextbox {
 	static get properties() {
 		return {
-			...super.properties,
+			...super.properties, 
 			decimalLength: { 
 				type: Number, 
 				reflect: false, 
