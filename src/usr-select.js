@@ -68,6 +68,9 @@ export class UsrSelect extends LitElement {
         font-size: var(--usr-text-font-size, 14px);
         text-align: var(--usr-text-align, left);
       }`,
+      css`.value-container .text: hover {
+        cursor: pointer;
+      }`,
       css`.value-container .icon {
         width: 20px;
         float: right;
@@ -164,19 +167,19 @@ export class UsrSelect extends LitElement {
     this._onDocKeyup = null;
     this._valueContainerWidth = 0;
     this._dataSource = [
-      { value: '1', text:'item 1' },
-      { value: '2', text:'item 2' },
-      { value: '3', text:'item 3' },
-      { value: '4', text:'item 4' },
-      { value: '5', text:'item 5' },
-      { value: '6', text:'item 6' },
-      { value: '7', text:'item 7' },
-      { value: '8', text:'item 8' },
-      { value: '9', text:'item 9' },
-      { value: '10', text:'item 10' },
-      { value: '11', text:'item 11' },
-      { value: '12', text:'item 12' },
-      { value: '13', text:'item 13' },
+      { value: '1', text:'abitem 1' },
+      { value: '2', text:'acitem 2' },
+      { value: '3', text:'baitem 3' },
+      { value: '4', text:'bbitem 4' },
+      { value: '5', text:'eitem 5' },
+      { value: '6', text:'fitem 6' },
+      { value: '7', text:'gitem 7' },
+      { value: '8', text:'hitem 8' },
+      { value: '9', text:'iitem 9' },
+      { value: '10', text:'jitem 10' },
+      { value: '11', text:'kitem 11' },
+      { value: '12', text:'litem 12' },
+      { value: '13', text:'mitem 13' },
       { value: '14', text:'item 14' },
       { value: '15', text:'item 15' },
       { value: '16', text:'item 16' }
@@ -215,7 +218,10 @@ export class UsrSelect extends LitElement {
   render() {
     return html`
       <div class="container">
-        <div class="value-container">
+        <div class="value-container" 
+          @mouseenter="${this.onMouseenter}" 
+          @mouseleave="${this.onMouseleave}"
+        >
           <input readonly class="text" value="${this._text}" 
             placeholder="${this.placeholder}" @click="${this.onTextClick}" 
           >
@@ -251,12 +257,12 @@ export class UsrSelect extends LitElement {
     this.requestUpdate();
   }
 
-  onListMouseenter(event) {
+  onMouseenter(event) {
     this._onDocKeyup = this.onDocKeyup.bind(this);
     document.addEventListener('keyup', this._onDocKeyup, false);
   }
 
-  onListMouseleave(event) {
+  onMouseleave(event) {
     if (this._onDocKeyup != null) {
       document.removeEventListener('keyup', this._onDocKeyup, false);
     }
@@ -267,15 +273,25 @@ export class UsrSelect extends LitElement {
     let date = new Date();
     let currTime = date.getTime();
     
-    if (this._prevTime == 0) {
+    let setValue = key => {
+      let itemData = this._search(key);
+
+      if (itemData) {
+        this.value = itemData.value;
+      }
+    };
+
+    if (this._prevTime == 0) { // Perfoem single char search 
       this._prevTime = currTime;
       this._prevInput = key;
       let input = key;
-      console.log(1, input);
+      setValue(key);
     } else {
-      if (currTime - this._prevTime < timeDiff) {
+      if (currTime - this._prevTime < timeDiff) { // Perfoem 2-char search 
         let input = this._prevInput + key;
-        console.log(2, input);
+        setValue(input);
+      } else {
+        setValue(key);
       }
 
       this._prevTime = 0;
@@ -327,6 +343,10 @@ export class UsrSelect extends LitElement {
     return null;
   }
 
+  _getNode(val) {
+    return this.shadowRoot.querySelector('li[value=${val}]');
+  }
+
   get _text() {
     if (this._dataSource && Array.isArray(this._dataSource)) {
       let item = this._dataSource.find(i => i.value == this._value);
@@ -345,7 +365,7 @@ export class UsrSelect extends LitElement {
     let i = 0;
 
     return html`
-      <ul @mouseenter="${this.onListMouseenter}" @mouseleave="${this.onListMouseleave}">
+      <ul @mouseenter="${this.onMouseenter}" @mouseleave="${this.onMouseleave}">
         ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
