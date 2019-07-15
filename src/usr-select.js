@@ -285,7 +285,7 @@ export class UsrSelect extends LitElement {
       this._prevTime = currTime;
       this._prevInput = key;
       let input = key;
-      setValue(key);
+      setValue(input);
     } else {
       if (currTime - this._prevTime < timeDiff) { // Perfoem 2-char search 
         let input = this._prevInput + key;
