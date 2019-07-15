@@ -75,7 +75,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.list-container {
         position: absolute;
-        height: 200px;
+        max-height: 200px;
         overflow-x: hidden;
         overflow-y: scroll;
         margin-top: 1px;
@@ -151,8 +151,8 @@ export class UsrSelect extends LitElement {
 
     // Observables
     this.placeholder = '';
-    this.firstItemValue = '';
-    this.firstItemText = '';
+    this.firstItemValue = null;
+    this.firstItemText = null;
 
     // Non-obervables
     this._dataSource = [];
@@ -192,7 +192,7 @@ export class UsrSelect extends LitElement {
   }
 
   firstUpdated() {
-    if (this.useEmptyItem) {
+    if (this._useEmptyItem) {
       this._dataSource.unshift({
         value: this.firstItemValue, 
         text: this.firstItemText 
@@ -303,10 +303,14 @@ export class UsrSelect extends LitElement {
     return this._value;
   }
 
-  get useEmptyItem() {
+  get _useEmptyItem() {
     if (this.firstItemValue != null || this.firstItemText  != null) {
-      if (!this.firstItemValue) {
-        this.firstItemValue = '-1000';
+      if (this.firstItemValue == null) {
+        this.firstItemValue = '';
+      }
+
+      if (this.firstItemText == null) {
+        this.firstItemText = '';
       }
 
       return true;
