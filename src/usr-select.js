@@ -38,17 +38,18 @@ export class UsrSelect extends LitElement {
         font-size: var(--usr-icon-font-size, 14px);
       }`,
       css`.slot-container {
-        align-self: center;
+        display: inline-block;
         padding: 0 0.2em 0 0.2em;
+        border: solid 1px gray;
       }`,
       css`.container {
         width: 100%;
+        border: solid 1px gray;
       }`,
       css`.value-container {
         box-sizing: border-box;
         display: inline-block;
-        width: 100%;
-        display: block;
+        /*width: 80%;*/
         padding: 2px;
         border: solid 1px gray;
       }`,
@@ -57,7 +58,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.value-container div {
         display: inline-block;
-        border: solid 0px gray;
+        border: solid 1px gray;
       }`,
       css`.value-container .text {
         width: calc(100% - 35px);
@@ -218,6 +219,9 @@ export class UsrSelect extends LitElement {
   render() {
     return html`
       <div class="container">
+        <div class="slot-container">
+          <slot></slot>
+        </div>
         <div class="value-container" 
           @mouseenter="${this.onMouseenter}" 
           @mouseleave="${this.onMouseleave}"
