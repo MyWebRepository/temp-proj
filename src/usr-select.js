@@ -37,20 +37,26 @@ export class UsrSelect extends LitElement {
         visibility: visible !important;
         font-size: var(--usr-icon-font-size, 14px);
       }`,
-      css`.slot-container {
-        display: inline-block;
-        padding: 0 0.2em 0 0.2em;
-        border: solid 1px gray;
-      }`,
       css`.container {
+        display: flex;
+        flex-direction: row;
         width: 100%;
         border: solid 1px gray;
       }`,
+      css`.slot-container {
+        flex-basis: 12px;
+        flex-grow: 1;
+        align-self: center;
+        text-align: center;
+        width: fit-content;
+        white-space: nowrap;
+        padding: 0 0.2em 0 0.2em;
+        border: solid 1px gray;
+      }`,
       css`.value-container {
-        box-sizing: border-box;
-        display: inline-block;
-        /*width: 80%;*/
+        flex-grow: 100;
         padding: 2px;
+        box-sizing: border-box;
         border: solid 1px gray;
       }`,
       css`.value-container:hover {
@@ -203,7 +209,9 @@ export class UsrSelect extends LitElement {
       });
     }
 
-    this._valueContainerWidth = this.shadowRoot.querySelector('.value-container').offsetWidth;
+    let elem = this.shadowRoot.querySelector('slot').assignedNodes();
+
+    this._valueContainerWidth = this.shadowRoot.querySelector('.container').offsetWidth;
     this._onDocClick = this.onDocClick.bind(this);
     document.addEventListener('click', this._onDocClick, false);
   }
@@ -231,12 +239,12 @@ export class UsrSelect extends LitElement {
           >
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
-        <div 
-          style="${styleMap({'min-width':this._valueContainerWidth+'px'})}" 
-          class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}"
-        >
-          ${this._listBody}
-        </div>
+      </div>
+      <div 
+        style="${styleMap({'min-width':this._valueContainerWidth+'px'})}" 
+        class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}"
+      >
+        ${this._listBody}
       </div>
     `;
   }
