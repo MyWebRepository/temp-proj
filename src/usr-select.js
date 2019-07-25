@@ -173,6 +173,7 @@ export class UsrSelect extends LitElement {
     this._onDocClick = null;
     this._onDocKeyup = null;
     this._valueContainerWidth = 0;
+    this._hasSlotContent = false;
     this._dataSource = [
       { value: '1', text:'abitem 1' },
       { value: '2', text:'acitem 2' },
@@ -209,11 +210,11 @@ export class UsrSelect extends LitElement {
       });
     }
 
-    let elem = this.shadowRoot.querySelector('slot').assignedNodes();
-
     this._valueContainerWidth = this.shadowRoot.querySelector('.container').offsetWidth;
     this._onDocClick = this.onDocClick.bind(this);
     document.addEventListener('click', this._onDocClick, false);
+
+    this._checkSlotContent();
   }
 
   disconnectedCallback() {
@@ -346,6 +347,32 @@ export class UsrSelect extends LitElement {
     return false;
   }
 
+  _checkSlotContent() {
+    let slot = this.shadowRoot.querySelector('slot');
+
+    if (slot == null) {
+      this.hasSlotContent = false;
+      return;
+    }
+
+    let nodes = slot.assignedNodes();
+
+    if (nodes && nodes.length > 0) {
+      for (let n of nodes) {
+        if (n.tagName) {
+          this._hasSlotContent = true;
+          return;
+        }
+      }
+    }
+
+    if (!this.hasSlotContent) {
+      let classList = this.shadowRoot.querySelector('.slot-container').classList;
+      classList.remove('slot-container');
+      classList.add('hide');
+    }
+  }
+  
   _search(key) {
     if (key && this._dataSource && Array.isArray(this._dataSource)) {
       return this._dataSource.find(i => i.text.startsWith(key));
