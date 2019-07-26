@@ -51,19 +51,20 @@ export class UsrSelect extends LitElement {
         width: fit-content;
         white-space: nowrap;
         padding: 0 0.2em 0 0.2em;
-        border: solid 1px gray;
+        border: solid 0px gray;
       }`,
       css`.value-container {
         flex-grow: 100;
         padding: 2px;
         box-sizing: border-box;
-        border: solid 1px gray;
+        border: solid 0px gray;
       }`,
       css`.value-container:hover {
         cursor: pointer;
       }`,
       css`.value-container div {
         display: inline-block;
+        padding-top: 1px;
         border: solid 1px gray;
       }`,
       css`.value-container .text {
@@ -75,7 +76,7 @@ export class UsrSelect extends LitElement {
         font-size: var(--usr-text-font-size, 14px);
         text-align: var(--usr-text-align, left);
       }`,
-      css`.value-container .text: hover {
+      css`.value-container > .text:hover {
         cursor: pointer;
       }`,
       css`.value-container .icon {
@@ -114,6 +115,15 @@ export class UsrSelect extends LitElement {
         background-color: rgb(36, 106, 243);
         color: white;
         cursor: pointer;
+      }`,
+      css`li div {
+        display: inline-block;
+      }`,
+      css`li div:nth-child(1) {
+        width: 16px;
+      }`,
+      css`li div:nth-child(1) span {
+        display: none;
       }`,
       css`.hide {
         display: none;
@@ -173,7 +183,6 @@ export class UsrSelect extends LitElement {
     this._onDocClick = null;
     this._onDocKeyup = null;
     this._valueContainerWidth = 0;
-    this._hasSlotContent = false;
     this._dataSource = [
       { value: '1', text:'abitem 1' },
       { value: '2', text:'acitem 2' },
@@ -262,7 +271,11 @@ export class UsrSelect extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.value = event.currentTarget.getAttribute('value');
+    let target = event.currentTarget;
+    let span = target.querySelector('div:nth-child(1)>span');
+    span.classList.toggle('show');
+
+    this.value = target.getAttribute('value');
   }
 
   onDocClick(event) {
@@ -349,9 +362,9 @@ export class UsrSelect extends LitElement {
 
   _checkSlotContent() {
     let slot = this.shadowRoot.querySelector('slot');
+    let hasSlotContent = false;
 
     if (slot == null) {
-      this.hasSlotContent = false;
       return;
     }
 
@@ -360,19 +373,19 @@ export class UsrSelect extends LitElement {
     if (nodes && nodes.length > 0) {
       for (let n of nodes) {
         if (n.tagName) {
-          this._hasSlotContent = true;
+          hasSlotContent = true;
           return;
         }
       }
     }
 
-    if (!this.hasSlotContent) {
+    if (!hasSlotContent) {
       let classList = this.shadowRoot.querySelector('.slot-container').classList;
       classList.remove('slot-container');
       classList.add('hide');
     }
   }
-  
+
   _search(key) {
     if (key && this._dataSource && Array.isArray(this._dataSource)) {
       return this._dataSource.find(i => i.text.startsWith(key));
@@ -407,8 +420,8 @@ export class UsrSelect extends LitElement {
         ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
-              <span style="color:green;">&#10004;</span>
-              <span>${item.text}</span>
+              <div><span>&#10004;</span></div>
+              <div>${item.text}</div>
             </li>
           `
         )}
