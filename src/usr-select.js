@@ -121,9 +121,8 @@ export class UsrSelect extends LitElement {
       }`,
       css`li div:nth-child(1) {
         width: 16px;
-      }`,
-      css`li div:nth-child(1) span {
-        display: none;
+        color: green;
+        text-align: center;
       }`,
       css`.hide {
         display: none;
@@ -271,11 +270,22 @@ export class UsrSelect extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    let target = event.currentTarget;
-    let span = target.querySelector('div:nth-child(1)>span');
-    span.classList.toggle('show');
+    let prevSpan = this.shadowRoot.querySelector('li .show');
 
-    this.value = target.getAttribute('value');
+    if (prevSpan != null) {
+      prevSpan.classList.remove('show');
+      prevSpan.classList.add('hide');
+    }
+
+    let target = event.currentTarget;
+    let value = target.getAttribute('value');
+    let span = target.querySelector('div:nth-child(1)>span');
+
+    if (value != '') {
+      span.classList.add('show');
+    }
+
+    this.value = value;
   }
 
   onDocClick(event) {
@@ -420,7 +430,7 @@ export class UsrSelect extends LitElement {
         ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
-              <div><span>&#10004;</span></div>
+              <div><span class="hide">&#10004;</span></div>
               <div>${item.text}</div>
             </li>
           `
