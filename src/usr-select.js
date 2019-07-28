@@ -143,6 +143,18 @@ export class UsrSelect extends LitElement {
         type: String,
         reflect: false
       },
+      required: {
+        type: Boolean,
+        reflect: false
+      },
+      disabled: {
+        type: Boolean,
+        reflect: false
+      },
+      readonly: {
+        type: Boolean,
+        reflect: false
+      },
       dataSource: {
         type: Array,
         reflect: false,
