@@ -42,7 +42,7 @@ export class UsrSelect extends LitElement {
         flex-direction: row;
         box-sizing: border-box;
         width: 100%;
-        padding: 0.2em;
+        padding: 0.15em;
         border: solid 1px gray;
       }`,
       css`.slot-container {
@@ -110,7 +110,7 @@ export class UsrSelect extends LitElement {
         padding-right: 10px;
         list-style-type: none;
         text-align: left;
-        padding: 0.3em;
+        padding: 0.25em;
       }`,
       css`li:hover {
         background-color: rgb(36, 106, 243);
@@ -206,13 +206,6 @@ export class UsrSelect extends LitElement {
   }
 
   firstUpdated() {
-    if (this._useEmptyItem) {
-      this._dataSource.unshift({
-        value: this.firstItemValue, 
-        text: this.firstItemText 
-      });
-    }
-
     this._valueContainerWidth = this.shadowRoot.querySelector('.container').offsetWidth;
     this._onDocClick = this.onDocClick.bind(this);
     document.addEventListener('click', this._onDocClick, false);
@@ -332,6 +325,14 @@ export class UsrSelect extends LitElement {
   set dataSource(val) {
     let oldValue = this._dataSource;
     this._dataSource = val;
+    
+    if (this._useEmptyItem) {
+      this._dataSource.unshift({
+        value: this.firstItemValue, 
+        text: this.firstItemText 
+      });
+    }
+
     this.requestUpdate('dataSource', oldValue);
   }
 
