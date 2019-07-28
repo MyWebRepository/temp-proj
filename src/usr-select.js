@@ -194,24 +194,6 @@ export class UsrSelect extends LitElement {
     this._onDocClick = null;
     this._onDocKeyup = null;
     this._valueContainerWidth = 0;
-    this._dataSource = [
-      { value: '1', text:'abitem 1' },
-      { value: '2', text:'acitem 2' },
-      { value: '3', text:'baitem 3' },
-      { value: '4', text:'bbitem 4' },
-      { value: '5', text:'eitem 5' },
-      { value: '6', text:'fitem 6' },
-      { value: '7', text:'gitem 7' },
-      { value: '8', text:'hitem 8' },
-      { value: '9', text:'iitem 9' },
-      { value: '10', text:'jitem 10' },
-      { value: '11', text:'kitem 11' },
-      { value: '12', text:'litem 12' },
-      { value: '13', text:'mitem 13' },
-      { value: '14', text:'item 14' },
-      { value: '15', text:'item 15' },
-      { value: '16', text:'item 16' }
-    ];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
