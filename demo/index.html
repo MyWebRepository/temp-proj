@@ -56,7 +56,7 @@
     <div style="padding:20px;width:50%;">
       <div>
         <input type="text">
-        <usr-select placeholder="Please select" first-item-value first-item-text data-source-="%5B%7B%22value%22%3A%221%22%2C%20%22text%22%3A%22item1%22%7D%2C%7B%22value%22%3A%222%22%2C%20%22text%22%3A%22item2%22%7D%5D">
+        <usr-select placeholder="Please select" first-item-value first-item-text>
           <span style="visibility:hidden">$</span>
         </usr-select>
       </div>
@@ -145,8 +145,7 @@
       document.onreadystatechange = () => {
         if (document.readyState === 'complete') {
           function foo() {
-            debugger;
-            document.querySelector('usr-select').dataSoource = [
+            document.querySelector('usr-select').dataSource = [
               { value: '1', text:'abitem 1' },
               { value: '2', text:'acitem 2' },
               { value: '3', text:'baitem 3' },

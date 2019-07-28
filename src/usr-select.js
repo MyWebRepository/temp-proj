@@ -40,7 +40,9 @@ export class UsrSelect extends LitElement {
       css`.container {
         display: flex;
         flex-direction: row;
+        box-sizing: border-box;
         width: 100%;
+        padding: 0.2em;
         border: solid 1px gray;
       }`,
       css`.slot-container {
@@ -54,27 +56,26 @@ export class UsrSelect extends LitElement {
         border: solid 0px gray;
       }`,
       css`.value-container {
+        display: flex;
+        justify-content: center;
         flex-grow: 100;
-        padding: 2px;
-        box-sizing: border-box;
-        border: solid 0px gray;
+        padding: 0em;
+        border: solid 1px gray;
       }`,
       css`.value-container:hover {
         cursor: pointer;
       }`,
-      css`.value-container div {
-        display: inline-block;
-        padding-top: 1px;
-        border: solid 1px gray;
-      }`,
       css`.value-container .text {
-        width: calc(100% - 35px);
-        box-sizing: border-box;
-        padding: 1px 1px 1px 0px;
+        flex-grow: 100;
         border-style: none;
+        border: 1px solid red;
         outline: 0px;
         font-size: var(--usr-text-font-size, 14px);
         text-align: var(--usr-text-align, left);
+      }`,
+      css`.value-container div {
+        flex-grow: 1;
+        border: solid 1px gray;
       }`,
       css`.value-container > .text:hover {
         cursor: pointer;
@@ -421,7 +422,7 @@ export class UsrSelect extends LitElement {
 
     return html`
       <ul @mouseenter="${this.onMouseenter}" @mouseleave="${this.onMouseleave}">
-        ${repeat(this.dataSource, item => `${i++}`, (item, index) => 
+        ${repeat(this._dataSource, item => `${i++}`, (item, index) => 
           html`
             <li @click="${this.onItemClick}" value="${item.value}">
               <div><span class="hide">&#10004;</span></div>
