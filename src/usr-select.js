@@ -74,7 +74,6 @@ export class UsrSelect extends LitElement {
         text-align: var(--usr-text-align, left);
       }`,
       css`.value-container div {
-        flex-grow: 1;
         border: solid 1px gray;
       }`,
       css`.value-container > .text:hover {
@@ -82,7 +81,7 @@ export class UsrSelect extends LitElement {
       }`,
       css`.value-container .icon {
         width: 20px;
-        float: right;
+        flex-grow: 1;
         text-align: center;
       }`,
       css`.list-container {
