@@ -182,11 +182,25 @@ export class UsrSelect extends LitElement {
     super();
 
     // Observables
+    this.disabled = false;
+    this.readonly = false;
     this.placeholder = '';
     this.firstItemValue = null;
     this.firstItemText = null;
 
     // Non-obervables
+    this.validity = {
+      errors: {
+        required: false
+      },
+      valid: true
+    };
+    this.validationEvent = new CustomEvent('validate', { 
+      detail: { message: null },
+      bubbles: false, 
+      composed: false 
+    });
+
     this._dataSource = [];
     this._value = '1';
     this._listHide = true;
@@ -250,6 +264,10 @@ export class UsrSelect extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
     this._listHide = false;
     this.shadowRoot.host.classList.add('usr-focus');
 
@@ -279,6 +297,10 @@ export class UsrSelect extends LitElement {
   }
 
   onDocClick(event) {
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
     this._listHide = true;
     this.shadowRoot.host.classList.remove('usr-focus');
 
