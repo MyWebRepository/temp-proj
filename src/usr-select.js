@@ -251,6 +251,8 @@ export class UsrSelect extends LitElement {
     event.stopPropagation();
 
     this._listHide = false;
+    this.shadowRoot.host.classList.add('usr-focus');
+
     this.requestUpdate();
   }
 
@@ -278,6 +280,8 @@ export class UsrSelect extends LitElement {
 
   onDocClick(event) {
     this._listHide = true;
+    this.shadowRoot.host.classList.remove('usr-focus');
+
     this.requestUpdate();
   }
 
