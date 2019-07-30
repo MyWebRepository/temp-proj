@@ -72,19 +72,42 @@ export class UsrTextbox extends LitElement {
           return newVal != oldVal; 
         } 
       },
-      dir: { type: String },
-      readonly: { type: Boolean, reflect: false },
-      disabled: { type: Boolean, reflect: false },
-      required: { type: Boolean, reflect: false },
-      pattern: { type: String, reflect: false },
-      placeholder: {  type: String, reflect: false },
+      dir: { 
+        type: String 
+      },
+      readonly: { 
+        type: Boolean, 
+        reflect: false 
+      },
+      disabled: { 
+        type: Boolean, 
+        reflect: false 
+      },
+      required: { 
+        type: Boolean, 
+        reflect: false 
+      },
+      pattern: { 
+        type: String, 
+        reflect: false 
+      },
+      placeholder: {  
+        type: String, 
+        reflect: false 
+      },
       minlength: { 
         reflect: false,
-        converter: { fromAttribute, toAttribute }
+        converter: { 
+          fromAttribute, 
+          toAttribute 
+        }
       },
       maxlength: {
         reflect: false,
-        converter: { fromAttribute, toAttribute }
+        converter: { 
+          fromAttribute, 
+          toAttribute 
+        }
       }
     };
   }
