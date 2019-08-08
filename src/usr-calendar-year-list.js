@@ -2,6 +2,10 @@ import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
 
 const NoOfPaddingYears = 20;
+const DefaultMonthNames = [
+  'January', 'Febuary', 'Match', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
 
 export class UsrCalendarYearList extends LitElement {
   static get styles() {
@@ -26,7 +30,8 @@ export class UsrCalendarYearList extends LitElement {
         padding: 5px 0 5px 0;
       }`,
       css`li:hover {
-        background-color: gray;
+        color: white;
+        background-color: rgb(36, 106, 243);
         cursor: pointer;
       }`
     ];
@@ -65,11 +70,6 @@ export class UsrCalendarYearList extends LitElement {
     this._itemHeight = this.initialPosition / this._noOfYear;
   }
 
-  _getPosition(elem) {
-    let { scrollTop: top, scrollHeight: height, clientHeight } = elem;
-    return { top, height, clientHeight };
-  }
-
   onScroll(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -87,6 +87,10 @@ export class UsrCalendarYearList extends LitElement {
 
   }
 
+  onItemClick(event) {
+
+  }
+
   render() {
     return html`
       <div @scroll=${this.onScroll}>
@@ -96,17 +100,21 @@ export class UsrCalendarYearList extends LitElement {
   }
 
   get _listHTML() {
-    let i = 0;
     let yearList = this._yearList(this._currentYear);
     return html`
       <ul>
-        ${repeat(yearList, year => i++, (year, index) => {
+        ${repeat(yearList, year => '', (year, index) => {
           return html`
-            <li id="id${i}">${year}</li>
+            <li id="id${index}" @click="${this.onItemClick}">${year}</li>
           `;
         })}
       </ul>
     `;
+  }
+
+  _getPosition(elem) {
+    let { scrollTop: top, scrollHeight: height, clientHeight } = elem;
+    return { top, height, clientHeight };
   }
 
   _getYear() {
