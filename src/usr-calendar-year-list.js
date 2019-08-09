@@ -42,6 +42,9 @@ export class UsrCalendarYearList extends LitElement {
         text-align: center;
         vertical-align: middle;
         cursor: pointer;
+      }`,
+      css`td:hover {
+        background-color: gray;
       }`
     ];
   }

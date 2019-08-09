@@ -71,7 +71,7 @@ export class UsrSelect extends LitElement {
         border: 1px solid red;
         outline: 0px;
         font-size: var(--usr-text-font-size, 14px);
-        text-align: var(--usr-text-align, left);
+        /*text-align: var(--usr-text-align, left);*/
       }`,
       css`.value-container div {
         border: solid 1px gray;
