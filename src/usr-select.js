@@ -70,6 +70,7 @@ export class UsrSelect extends LitElement {
         border-style: none;
         border: 1px solid red;
         outline: 0px;
+        margin: 0px;
         font-size: var(--usr-text-font-size, 14px);
         /*text-align: var(--usr-text-align, left);*/
       }`,
