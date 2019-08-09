@@ -33,6 +33,15 @@ export class UsrCalendarYearList extends LitElement {
         color: white;
         background-color: rgb(36, 106, 243);
         cursor: pointer;
+      }`,
+      css`table {
+        width: 100%;
+      }`,
+      css`td {
+        width: 25%;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
       }`
     ];
   }
@@ -51,6 +60,7 @@ export class UsrCalendarYearList extends LitElement {
     this._initialPosition = null;
     this._itemHeight = 0;
     this._prevTop = 0;
+    this.clickedIndex = -1;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -87,28 +97,56 @@ export class UsrCalendarYearList extends LitElement {
 
   }
 
-  onItemClick(event) {
+  onItemClick(index) {
+    this.clickedIndex = index;
+    this.requestUpdate();
+  }
 
+  onMonthClick(index) {
+    alert(index);
   }
 
   render() {
     return html`
       <div @scroll=${this.onScroll}>
-        ${this._listHTML}
+        ${this._yearHTML}
       </div>
     `;
   }
 
-  get _listHTML() {
+  get _yearHTML() {
     let yearList = this._yearList(this._currentYear);
     return html`
       <ul>
-        ${repeat(yearList, year => '', (year, index) => {
+        ${repeat(yearList, () => '', (year, index) => {
           return html`
-            <li id="id${index}" @click="${this.onItemClick}">${year}</li>
+            <li id="id${index}" @click="${() => this.onItemClick(index)}">${year}</li>
+            ${this.clickedIndex == index ? html`<li>${this._monthHTML}</li>`: ''}
           `;
         })}
       </ul>
+    `;
+  }
+
+  get _monthHTML() {
+    return html`
+      <table>
+        <tbody>
+          ${repeat([0, 1, 2, 3], () => '', (row, index) => {
+            return html`
+              <tr>
+                ${repeat([0, 1, 2], () => '', (col, index) => {
+                  return html`
+                    <td @click="${() => this.onMonthClick(3*row+col)}">
+                      ${DefaultMonthNames[3*row+col]}
+                    </td>
+                  `;
+                })}
+              </tr>
+            `;
+          })}
+        </tbody>
+      </table>
     `;
   }
 
