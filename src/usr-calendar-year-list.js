@@ -24,10 +24,10 @@ export class UsrCalendarYearList extends LitElement {
         border: solid 1px green;
       }`,
       css`li {
-        border: solid 1px yellow;
+        border: 1px solid rgb(36, 106, 243);;
         list-style-type: none;
         text-align: center;
-        padding: 5px 0 5px 0;
+        padding: 3px 0 3px 0;
       }`,
       css`li:hover {
         color: white;
@@ -36,15 +36,19 @@ export class UsrCalendarYearList extends LitElement {
       }`,
       css`table {
         width: 100%;
+        border-collapse: collapse;
       }`,
       css`td {
-        width: 25%;
+        padding: 3px 0 3px 0;
+        width: 33.3%;
+        border: 1px solid white;
         text-align: center;
         vertical-align: middle;
         cursor: pointer;
       }`,
       css`td:hover {
-        background-color: gray;
+        color: white;
+        background-color: rgb(36, 106, 243);
       }`
     ];
   }
@@ -92,12 +96,10 @@ export class UsrCalendarYearList extends LitElement {
     if (currTop > this._prevTop) { // Move down
       this._prevTop = currTop;
 
-
     } else { // Move up
       this._prevTop = currTop;
 
     }
-
   }
 
   onItemClick(index) {
@@ -106,7 +108,7 @@ export class UsrCalendarYearList extends LitElement {
   }
 
   onMonthClick(index) {
-    alert(index);
+    
   }
 
   render() {
@@ -124,7 +126,7 @@ export class UsrCalendarYearList extends LitElement {
         ${repeat(yearList, () => '', (year, index) => {
           return html`
             <li id="id${index}" @click="${() => this.onItemClick(index)}">${year}</li>
-            ${this.clickedIndex == index ? html`<li>${this._monthHTML}</li>`: ''}
+            ${this.clickedIndex == index ? html`${this._monthHTML}`: ''}
           `;
         })}
       </ul>
