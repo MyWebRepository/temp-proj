@@ -21,7 +21,7 @@ export class UsrCalendarYearList extends LitElement {
       css`ul {
         padding-left: 0px;
         margin: 0px;
-        border: solid 1px green;
+        border: 1px solid green;
       }`,
       css`li {
         border: 1px solid rgb(36, 106, 243);;
