@@ -67,7 +67,7 @@ export class UsrCalendarYearList extends LitElement {
     this._initialPosition = null;
     this._itemHeight = 0;
     this._prevTop = 0;
-    this.clickedIndex = -1;
+    this._clickedIndex = -1;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -103,7 +103,7 @@ export class UsrCalendarYearList extends LitElement {
   }
 
   onItemClick(index) {
-    this.clickedIndex = index;
+    this._clickedIndex = index;
     this.requestUpdate();
   }
 
@@ -126,7 +126,7 @@ export class UsrCalendarYearList extends LitElement {
         ${repeat(yearList, () => '', (year, index) => {
           return html`
             <li id="id${index}" @click="${() => this.onItemClick(index)}">${year}</li>
-            ${this.clickedIndex == index ? html`${this._monthHTML}`: ''}
+            ${this._clickedIndex == index ? html`${this._monthHTML}`: ''}
           `;
         })}
       </ul>
