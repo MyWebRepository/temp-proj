@@ -64,10 +64,15 @@ export class UsrCalendarYearList extends LitElement {
 
     this._currentYear = this._getYear();
     this._noOfYear = 2 * NoOfPaddingYears + 1;
-    this._initialPosition = null;
+    this._yearList = [];
+    this._initialPosition = 0;
+    this._startYear = 0;
+    this._endYear = 0;
     this._itemHeight = 0;
     this._prevTop = 0;
     this._clickedIndex = -1;
+
+    this._padYears(this._currentYear);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -95,10 +100,12 @@ export class UsrCalendarYearList extends LitElement {
 
     if (currTop > this._prevTop) { // Move down
       this._prevTop = currTop;
-
+      //this._updateYearList('down');
+      //this.requestUpdate();
     } else { // Move up
       this._prevTop = currTop;
-
+      //this._updateYearList('up');
+      //this.requestUpdate();
     }
   }
 
@@ -120,10 +127,9 @@ export class UsrCalendarYearList extends LitElement {
   }
 
   get _yearHTML() {
-    let yearList = this._yearList(this._currentYear);
     return html`
       <ul>
-        ${repeat(yearList, () => '', (year, index) => {
+        ${repeat(this._yearList, () => '', (year, index) => {
           return html`
             <li id="id${index}" @click="${() => this.onItemClick(index)}">${year}</li>
             ${this._clickedIndex == index ? html`${this._monthHTML}`: ''}
@@ -164,14 +170,35 @@ export class UsrCalendarYearList extends LitElement {
     return (new Date()).getFullYear();
   }
 
-  _yearList(year) {
-    let list = [];
+  _padYears(year) {
+    this._startYear = year - NoOfPaddingYears;
+    this._endYear = year + NoOfPaddingYears;
 
-    for (let i = year - NoOfPaddingYears; i <= year + NoOfPaddingYears; i++) {
-      list.push(i);
+    for (let i = this._startYear; i <= this._endYear; i++) {
+      this._yearList.push(i);
     }
+  }
 
-    return list;
+  _updateYearList(dir) {
+    if (dir == 'up') {
+      for (let i = 1; i <= 5; i++) { 
+        this._yearList.unshift(this._startYear - i);
+      }
+      for (let i = 1; i <= 5; i++) { 
+        this._yearList.pop();
+      }
+      this._startYear -= 5;
+      this._endYear -= 5;
+    } else {
+      for (let i = 1; i <= 5; i++) { 
+        this._yearList.shift();
+      }
+      for (let i = 1; i <= 5; i++) { 
+        this._yearList.push(this._endYear + 1);
+      }
+      this._startYear += 5;
+      this._endYear += 5;
+    }
   }
 }
 
