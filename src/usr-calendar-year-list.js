@@ -202,4 +202,5 @@ export class UsrCalendarYearList extends LitElement {
   }
 }
 
-window.customElements.define('usr-calendar-year-list', UsrCalendarYearList)
+window.customElements.define('usr-calendar-year-list', UsrCalendarYearList);
+
