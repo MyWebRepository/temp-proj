@@ -331,12 +331,12 @@ export class UsrSelect extends LitElement {
       }
     };
 
-    if (this._prevTime == 0) { // Perfoem single char search 
+    if (this._prevTime == 0) { // Perform single char search 
       this._prevTime = currTime;
       this._prevInput = key;
       setValue(key);
     } else {
-      if (currTime - this._prevTime < timeDiff) { // Perfoem 2-char search 
+      if (currTime - this._prevTime < timeDiff) { // Perform 2-char search 
         let input = `${this._prevInput}${key}`;
         setValue(input);
       } else {
