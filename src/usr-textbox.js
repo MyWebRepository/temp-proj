@@ -17,7 +17,7 @@ export class UsrTextbox extends LitElement {
       css`:host {
         display: inline-block;
         border: solid 1px gray;
-        padding: var(--usr-txt-padding-top, 0.2em) var(--usr-txt-padding-right, 0.2em) var(--usr-txt-padding-bottom, 0.2em) var(--usr-txt-padding-left, 0.2em);
+        padding: 0.2em;
       }`,
       css`:host([disabled]), :host([readonly]),
         :host([disabled]) *, :host([readonly]) * {
@@ -100,6 +100,22 @@ export class UsrTextbox extends LitElement {
         type: String, 
         reflect: false 
       },
+      autocomplete: {
+        type: String,
+        reflect: false
+      },
+      autocorrect: {
+        type: String,
+        reflect: false
+      },
+      autocapitalize: {
+        type: String,
+        reflect: false
+      },
+      spellcheck: {
+        type: Boolean,
+        reflect: false        
+      },
       minlength: { 
         reflect: false,
         converter: { 
@@ -113,6 +129,11 @@ export class UsrTextbox extends LitElement {
           fromAttribute, 
           toAttribute 
         }
+      },
+      tabIndex: {
+        type: Number,
+        reflect: true,
+        attribute: 'tabindex'
       }
     };
   }
@@ -130,7 +151,12 @@ export class UsrTextbox extends LitElement {
     this.maxlength = NaN;
     this.minlength = NaN;
     this.placeholder = '';
-
+    this.autocomplete= "off";
+    this.autocorrect = "off";
+    this.autocapitalize = "off";
+    this.spellcheck = "false";
+    this.tabIndex = "";
+    
     // Non-observables
     this.validity = {
       errors: {
@@ -217,6 +243,11 @@ export class UsrTextbox extends LitElement {
           type="${this.inputType}"
           placeholder="${this.placeholder}"
           value="${this.value}"
+          autocomplete="${this.autocomplete}" 
+          autocorrect="${this.autocorrect}"
+          autocapitalize="${this.autocapitalize}" 
+          spellcheck="${this.spellcheck}"
+          tabindex="${this.tabIndex}"
           @click="${this.onClick}"
           @input="${this.onInput}"
           @focus="${this.onFocus}"
