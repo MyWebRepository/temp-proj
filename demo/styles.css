@@ -1,0 +1,22 @@
+usr-textbox {
+	--usr-txt-padding-top: 0.3em;
+	--usr-txt-padding-right: 0.3em;
+	--usr-txt-padding-bottom: 0.3em;
+	--usr-txt-padding-left: 0.3em;
+
+	--usr-txt-outline-width: 5px;
+	--usr-txt-outline-style: solid;
+	--usr-txt-outline-color: gold;
+
+	--usr-txt-icon-font-size: 15px;
+	--usr-txt-text-font-size: 18px;
+	--usr-txt-text-align: left;
+}
+
+usr-textbox {
+	border-radius: 4px;
+}
+
+usr-textbox.usr-invalid {
+	border-color: red;
+}

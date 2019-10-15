@@ -17,14 +17,14 @@ export class UsrTextbox extends LitElement {
       css`:host {
         display: inline-block;
         border: solid 1px gray;
-        padding: 2px 2px 2px 2px;
+        padding: var(--usr-txt-padding-top, 0.2em) var(--usr-txt-padding-right, 0.2em) var(--usr-txt-padding-bottom, 0.2em) var(--usr-txt-padding-left, 0.2em);
       }`,
       css`:host([disabled]), :host([readonly]),
         :host([disabled]) *, :host([readonly]) * {
         background-color: lightgray;
       }`,
       css`:host(.usr-focus) {
-        outline: 2px solid var(--usr-outline-color, lightblue);
+        outline: var(--usr-txt-outline-width, 2px) var(--usr-txt-outline-style, solid) var(--usr-txt-outline-color, lightblue);
       }`,
       css`:host(.usr-slot-before) .slot-container {
         order: 1;
@@ -40,25 +40,30 @@ export class UsrTextbox extends LitElement {
       }`,
       css`::slotted(span) {
         visibility: visible !important;
-        font-size: var(--usr-icon-font-size, 14px);
+        font-size: var(--usr-txt-icon-font-size, 14px);
       }`,
       css`input#textbox {
         box-sizing: border-box;
         width: 100%;
-        padding: 1px 1px 1px 0px;
-        border-style: none;
+        padding: 1px 2px 1px 2px;
+        // border-style: none;
+        margin: 0px;
+        border: 1px solid black;
         outline: 0px;
-        font-size: var(--usr-text-font-size, 14px);
-        text-align: var(--usr-text-align, left);
+        font-size: var(--usr-txt-text-font-size, 14px);
+        text-align: var(--usr-txt-text-align, left);
       }`,
       css`.container {
         display: flex;
         flex-direction: row;
         overflow: hidden;
+        border: 1px solid black;
+        padding: 0px;
       }`,
       css`.slot-container {
         align-self: center;
         padding: 0 0.2em 0 0.2em;
+        border: 1px solid black;
       }`
     ];
   }
