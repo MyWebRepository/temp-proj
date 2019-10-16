@@ -256,6 +256,10 @@ export class UsrTextbox extends LitElement {
     `;
   }
 
+  // createRenderRoot() {
+  //   return this;
+  // }
+
   checkValidity() {
     this.validationEvent.detail.message = this.validity.valid ? 'valid': 'invalid';
     this.dispatchEvent(this.validationEvent);

@@ -7,6 +7,7 @@ export class UsrTextboxPassword extends UsrTextbox {
     this.inputType = 'password';
   }
   
+  // Override the method in parent class.
   _matches(val) { 
     return true;
   }
