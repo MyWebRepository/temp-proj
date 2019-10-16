@@ -1,20 +1,20 @@
 usr-textbox, usr-textbox-phone {
-	--usr-txt-outline-width: 3px;
-	--usr-txt-outline-style: solid;
-	--usr-txt-outline-color: lightblue;
+  --usr-txt-outline-width: 3px;
+  --usr-txt-outline-style: solid;
+  --usr-txt-outline-color: lightblue;
 
-	--usr-txt-icon-font-size: 16px;
-	--usr-txt-text-font-size: 18px;
-	--usr-txt-text-align: left;
+  --usr-txt-icon-font-size: 16px;
+  --usr-txt-text-font-size: 18px;
+  --usr-txt-text-align: left;
 }
 
 usr-textbox, usr-textbox-phone {
-	border-color: gray;
-	border-radius: 4px;
-	width: 100%;
-	padding: 0.2em;
+  border-color: gray;
+  border-radius: 4px;
+  width: 100%;
+  padding: 0.2em;
 }
 
 usr-textbox.usr-invalid, usr-textbox-phone.usr-invalid {
-	border-color: red;
+  border-color: red;
 }
