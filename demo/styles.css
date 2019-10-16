@@ -1,4 +1,6 @@
-usr-textbox, usr-textbox-phone {
+usr-textbox, 
+usr-textbox-phone,
+usr-textbox-password {
   --usr-txt-outline-width: 3px;
   --usr-txt-outline-style: solid;
   --usr-txt-outline-color: lightblue;
@@ -8,13 +10,17 @@ usr-textbox, usr-textbox-phone {
   --usr-txt-text-align: left;
 }
 
-usr-textbox, usr-textbox-phone {
+usr-textbox,
+usr-textbox-phone, 
+usr-textbox-password {
   border-color: gray;
   border-radius: 4px;
   width: 100%;
   padding: 0.2em;
 }
 
-usr-textbox.usr-invalid, usr-textbox-phone.usr-invalid {
+usr-textbox.usr-invalid,
+usr-textbox-phone.usr-invalid, 
+usr-textbox-password.usr-invalid {
   border-color: red;
 }
