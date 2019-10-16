@@ -14,32 +14,32 @@
   </head>
   <body>
     <div style="padding:20px;width:50%;">
-			<usr-textbox-phone class="usr-slot-before" placeholder="Phone number" value="1111111111" format="(###) ###-####">
-				<span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-phone"></span>
-			</usr-textbox-phone>
+      <usr-textbox-phone class="usr-slot-before" placeholder="Phone number" value="1111111111" format="(###) ###-####">
+        <span style="visibility:hidden; position: relative; top: 2px; color: blue;" class="glyphicon glyphicon-phone"></span>
+      </usr-textbox-phone>
     </div>
   </body>
   <script>
-		document.onreadystatechange = () => {
-			if (document.readyState === 'complete') {
-				function foo() {
-					let elem = document.querySelector('usr-textbox-phone');
-					let value = elem.value;  
-					let rawValue = elem.rawValue;    
-					console.log("value = " + value, "raw valule = " + rawValue)
+    document.onreadystatechange = () => {
+      if (document.readyState === 'complete') {
+        function foo() {
+          let elem = document.querySelector('usr-textbox-phone');
+          let value = elem.value;  
+          let rawValue = elem.rawValue;    
+          console.log("value = " + value, "raw valule = " + rawValue)
 
-					elem.onValidate = function(e) {
-					  let m = e.detail.message;
-					  console.log("event", m);
-					}
+          elem.onValidate = function(e) {
+            let m = e.detail.message;
+            console.log("event", m);
+          }
 
-					// elem.addEventListener('validate', function(e) {
-					// 	let m = e.detail.message;
-					// 	alert(m);
-					// });
-				}
-				foo();
-			}
-		};
-	</script>
+          // elem.addEventListener('validate', function(e) {
+          // 	let m = e.detail.message;
+          // 	alert(m);
+          // });
+        }
+        foo();
+      }
+    };
+  </script>
 </html>
