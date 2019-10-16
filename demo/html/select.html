@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Dropdownlist control demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    
+    <!-- <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script> -->
+
+    <script type="module" src="../../src/usr-select.js"></script>
+  </head>
+  <body>
+    <div style="padding:20px;width:50%;">
+      <usr-select placeholder="Please select" first-item-value first-item-text>
+        <span style="visibility:hidden">$</span>
+      </usr-select>
+    </div>
+  </body>
+  <script>
+    document.onreadystatechange = () => {
+      if (document.readyState === 'complete') {
+        function foo() {
+          document.querySelector('usr-select').dataSource = [
+              { value: '1', text:'abitem 1' },
+              { value: '2', text:'acitem 2' },
+              { value: '3', text:'baitem 3' },
+              { value: '4', text:'bbitem 4' },
+              { value: '5', text:'eitem 5' },
+              { value: '6', text:'fitem 6' },
+              { value: '7', text:'gitem 7' },
+              { value: '8', text:'hitem 8' },
+              { value: '9', text:'iitem 9' },
+              { value: '10', text:'jitem 10' },
+              { value: '11', text:'kitem 11' },
+              { value: '12', text:'litem 12' },
+              { value: '13', text:'mitem 13' },
+              { value: '14', text:'item 14' },
+              { value: '15', text:'item 15' },
+              { value: '16', text:'item 16' }
+            ];
+
+          // elem.onValidate = function(e) {
+          //   let m = e.detail.message;
+          //   console.log("event", m);
+          // }
+
+          // elem.addEventListener('validate', function(e) {
+          // 	let m = e.detail.message;
+          // 	alert(m);
+          // });
+        }
+        foo();
+      }
+    };
+  </script>
+</html>
