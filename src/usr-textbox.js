@@ -262,7 +262,7 @@ export class UsrTextbox extends LitElement {
   }
 
   addEventListener(type = 'validate', func) {
-    if (type && func && typeof fun == 'function') {
+    if (type && func && typeof func == 'function') {
       super.addEventListener(type, func);
       this.checkValidity();
     }
@@ -270,7 +270,7 @@ export class UsrTextbox extends LitElement {
 
   set onValidate(func) {
     if (func && typeof func == 'function') {
-      this.addEventListener('validate', func);
+      super.addEventListener('validate', func);
       this.checkValidity();
     }
   }

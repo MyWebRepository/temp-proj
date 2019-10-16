@@ -47,6 +47,7 @@ export class UsrTextboxPhone extends UsrTextboxInteger {
   }
 
   set value(val) {
+    val = String(val);
     if (this._isDigits(val)) {
       val = this._addDelimiters(val);
     }

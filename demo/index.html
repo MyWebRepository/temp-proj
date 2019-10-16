@@ -163,15 +163,16 @@
             //   { value: '15', text:'item 15' },
             //   { value: '16', text:'item 16' }
             // ];
-            /*document.querySelector('usr-textbox').onValidation = function(e) {
+            
+            // document.querySelector('usr-textbox').onValidate = function(e) {
+            //   let m = e.detail.message;
+            //   alert(m);
+            // }
+
+            document.querySelector('usr-textbox').addEventListener('validate', function(e) {
               let m = e.detail.message;
               alert(m);
-            }*/
-
-            //document.querySelector('usr-textbox').addEventListener('validate', function(e) {
-            //  let m = e.detail.message;
-              //alert(m);
-            //});
+            });
           }
           foo();
         }
