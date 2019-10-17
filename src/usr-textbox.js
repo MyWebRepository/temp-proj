@@ -254,7 +254,7 @@ export class UsrTextbox extends LitElement {
   }
 
   // createRenderRoot() {
-  //   return this;
+  //   return this.attachShadow({mode: 'closed'});
   // }
 
   checkValidity() {
