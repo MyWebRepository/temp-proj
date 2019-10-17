@@ -1,5 +1,7 @@
 usr-textbox, 
 usr-textbox-phone,
+usr-textbox-email,
+usr-textbox-integer,
 usr-textbox-password {
   --usr-txt-icon-font-size: 26px;
   --usr-txt-text-font-size: 28px;
@@ -8,6 +10,8 @@ usr-textbox-password {
 
 usr-textbox,
 usr-textbox-phone, 
+usr-textbox-email,
+usr-textbox-integer,
 usr-textbox-password {
   border-color: gray;
   border-radius: 4px;
@@ -17,12 +21,16 @@ usr-textbox-password {
 
 usr-textbox.usr-invalid,
 usr-textbox-phone.usr-invalid, 
+usr-textbox-email.usr-invalid,
+usr-textbox-integer.usr-invalid,
 usr-textbox-password.usr-invalid {
   border-color: red;
 }
 
 usr-textbox.usr-focus,
 usr-textbox-phone.usr-focus, 
+usr-textbox-email.usr-focus,
+usr-textbox-integer.usr-focus,
 usr-textbox-password.usr-focus {
   box-shadow: 0 0 3px 3px #2196F3;
 }
