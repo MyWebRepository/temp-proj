@@ -243,18 +243,14 @@ export class UsrSelect extends LitElement {
         </div>
         <div class="value-container" 
           @mouseenter="${this.onMouseenter}" 
-          @mouseleave="${this.onMouseleave}"
-        >
+          @mouseleave="${this.onMouseleave}">
           <input readonly class="text" value="${this._text}" 
-            placeholder="${this.placeholder}" @click="${this.onTextClick}" 
-          >
+            placeholder="${this.placeholder}" @click="${this.onTextClick}">
           <div class="icon" @click="${this.onTextClick}">&#9660</div>
         </div>
       </div>
-      <div 
-        style="${styleMap({'min-width':this._valueContainerWidth+'px'})}" 
-        class="${classMap(this._listHide?{hide:true,'list-container':true}:{show:true,'list-container':true})}"
-      >
+      <div style="${styleMap({'min-width':this._valueContainerWidth+'px'})}" 
+        class="list-container ${classMap(this._listHide?{hide:true}:{show:true})}">
         ${this._listBody}
       </div>
     `;
