@@ -186,26 +186,26 @@ export class UsrTextbox extends LitElement {
   }
 
   onFocus(event) {
-    this.shadowRoot.host.classList.add('usr-focus');
+    this.renderRoot.host.classList.add('usr-focus');
   }
 
   onBlur(event) {
-    this.shadowRoot.host.classList.remove('usr-focus');
+    this.renderRoot.host.classList.remove('usr-focus');
   }
 
   onClick(event) { 
   }
 
   click() {
-    this.shadowRoot.querySelector('input#textbox').click();
+    this.renderRoot.querySelector('input#textbox').click();
   }
 
   focus() {
-    this.shadowRoot.querySelector('input#textbox').focus();
+    this.renderRoot.querySelector('input#textbox').focus();
   }
 
   blur() {
-    this.shadowRoot.querySelector('input#textbox').blur();
+    this.renderRoot.querySelector('input#textbox').blur();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -214,7 +214,7 @@ export class UsrTextbox extends LitElement {
 
   updated() {
     console.log("Updated");
-    this.shadowRoot.querySelector('input#textbox').value = this.value;
+    this.renderRoot.querySelector('input#textbox').value = this.value;
   }
 
   set value(val) {
@@ -253,9 +253,9 @@ export class UsrTextbox extends LitElement {
     `;
   }
 
-  // createRenderRoot() {
-  //   return this.attachShadow({mode: 'closed'});
-  // }
+  createRenderRoot() {
+    return this.attachShadow({mode: 'closed'});
+  }
 
   checkValidity() {
     this.validationEvent.detail.message = this.validity.valid ? 'valid': 'invalid';
@@ -278,7 +278,7 @@ export class UsrTextbox extends LitElement {
 
   set trigger(name) {
     this[name] = (name) => {
-      this.shadowRoot.querySelector('input#textbox')[name]();
+      this.renderRoot.querySelector('input#textbox')[name]();
     };
   }
   
@@ -326,14 +326,14 @@ export class UsrTextbox extends LitElement {
       this.dispatchEvent(invalidEvent);
     }
 
-    this.shadowRoot.host.classList.add(...classes);
+    this.renderRoot.host.classList.add(...classes);
   }
 
   _updateClasses(val) {
     let exists = this._exists(val);
     let matches = this._matches(val);
     let longEnough = this._longEnough(this.value);
-    let classList = this.shadowRoot.host.classList;
+    let classList = this.renderRoot.host.classList;
 
     if (classList.contains('usr-untouched')) {
       classList.replace('usr-untouched', 'usr-touched');
@@ -369,7 +369,7 @@ export class UsrTextbox extends LitElement {
   }
 
   _setAttributes() {
-    let inputElement = this.shadowRoot.querySelector('input#textbox');
+    let inputElement = this.renderRoot.querySelector('input#textbox');
     if (inputElement == null) return;
 
     if (this.dir != null && this.dir != '') {
