@@ -23,9 +23,6 @@ export class UsrTextbox extends LitElement {
         :host([disabled]) *, :host([readonly]) * {
         background-color: lightgray;
       }`,
-      css`:host(.usr-focus) {
-        outline: var(--usr-txt-outline-width, 2px) var(--usr-txt-outline-style, solid) var(--usr-txt-outline-color, lightblue);
-      }`,
       css`:host(.usr-slot-before) .slot-container {
         order: 1;
       }`,
@@ -40,7 +37,7 @@ export class UsrTextbox extends LitElement {
       }`,
       css`::slotted(span) {
         visibility: visible !important;
-        font-size: var(--usr-txt-icon-font-size, 14px);
+        font-size: var(--usr-txt-icon-font-size, inherit);
       }`,
       css`input#textbox {
         box-sizing: border-box;
@@ -50,7 +47,7 @@ export class UsrTextbox extends LitElement {
         margin: 0px;
         border: 1px solid black;
         outline: 0px;
-        font-size: var(--usr-txt-text-font-size, 14px);
+        font-size: var(--usr-txt-text-font-size, inherit);
         text-align: var(--usr-txt-text-align, left);
       }`,
       css`.container {

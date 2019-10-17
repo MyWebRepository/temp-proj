@@ -1,12 +1,8 @@
 usr-textbox, 
 usr-textbox-phone,
 usr-textbox-password {
-  --usr-txt-outline-width: 3px;
-  --usr-txt-outline-style: solid;
-  --usr-txt-outline-color: lightblue;
-
-  --usr-txt-icon-font-size: 16px;
-  --usr-txt-text-font-size: 18px;
+  --usr-txt-icon-font-size: 26px;
+  --usr-txt-text-font-size: 28px;
   --usr-txt-text-align: left;
 }
 
@@ -23,4 +19,10 @@ usr-textbox.usr-invalid,
 usr-textbox-phone.usr-invalid, 
 usr-textbox-password.usr-invalid {
   border-color: red;
+}
+
+usr-textbox.usr-focus,
+usr-textbox-phone.usr-focus, 
+usr-textbox-password.usr-focus {
+  box-shadow: 0 0 3px 3px #2196F3;
 }
