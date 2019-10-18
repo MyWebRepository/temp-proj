@@ -3,16 +3,16 @@
   "description": "Create a custom textbox.",
   "main": "usr-textbox.js",
   "dependencies": {
-    "@polymer/polymer": "^3.0.0",
+    "@polymer/polymer": "^3.3.0",
     "lit-html": "^1.1.2"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0-pre.19",
     "@polymer/test-fixture": "^4.0.2",
-    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "@webcomponents/webcomponentsjs": "^2.3.0",
     "chai": "^4.2.0",
     "lit-element": "^2.2.1",
     "mocha": "^5.2.0",
-    "wct-mocha": "^1.0.0"
+    "wct-mocha": "^1.0.1"
   }
 }
